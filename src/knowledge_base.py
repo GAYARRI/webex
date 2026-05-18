@@ -14,6 +14,8 @@ def tag_sources_with_page_url(entities: list[Entity], page_url: str) -> None:
     """Stamp page_url on every source that doesn't already have one."""
     for entity in entities:
         for source in entity.sources:
+            if not source.page_url:
+                source.page_url = page_url
             if "page_url" not in source.metadata:
                 source.metadata["page_url"] = page_url
 

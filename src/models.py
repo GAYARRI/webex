@@ -22,9 +22,17 @@ class Evidence:
     images: list[str] = field(default_factory=list)
     coordinates: Coordinates | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
+    page_url: str = ""  # crawl page this evidence was extracted from
 
     @classmethod
     def from_dict(cls, value: dict[str, Any]) -> "Evidence":
+        meta = value.get("metadata") if isinstance(value.get("metadata"), dict) else {}
+        # page_url: explicit field first, then legacy metadata stamp, then url
+        page_url = (
+            str(value.get("page_url", "") or "")
+            or str(meta.get("page_url", "") or "")
+            or str(value.get("url", "") or "")
+        )
         return cls(
             url=str(value.get("url", "") or ""),
             block_id=str(value.get("block_id", "") or ""),
@@ -35,7 +43,8 @@ class Evidence:
             coordinates=Coordinates.from_dict(value.get("coordinates"))
             if value.get("coordinates")
             else None,
-            metadata=value.get("metadata") if isinstance(value.get("metadata"), dict) else {},
+            metadata=meta,
+            page_url=page_url,
         )
 
     def to_dict(self) -> dict[str, Any]:
