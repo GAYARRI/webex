@@ -7,8 +7,10 @@ from urllib.parse import urljoin, urlparse, urlunparse
 
 try:
     import requests as _requests
+    from requests.exceptions import SSLError as _SSLError
 except ImportError:
     _requests = None  # type: ignore[assignment]
+    _SSLError = Exception  # type: ignore[assignment,misc]
 
 _SKIP_EXTENSIONS = {
     ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".zip",
@@ -38,20 +40,36 @@ def fetch_sitemap_urls(home_url: str) -> list[str]:
         return []
     base = home_url.rstrip("/")
     for path in _SITEMAP_CANDIDATES:
-        try:
-            resp = _requests.get(
-                base + path,
-                timeout=_SITEMAP_TIMEOUT,
-                headers={"User-Agent": "Mozilla/5.0"},
-                allow_redirects=True,
-            )
-            if resp.status_code == 200 and "<url" in resp.text:
-                urls = _parse_sitemap_xml(resp.text, home_url)
-                if urls:
-                    return urls
-        except Exception:
+        url = base + path
+        resp = _get(url)
+        if resp is None:
             continue
+        if resp.status_code == 200 and _looks_like_sitemap(resp.text):
+            urls = _parse_sitemap_xml(resp.text, home_url)
+            if urls:
+                return urls
     return []
+
+
+def _get(url: str, **kwargs) -> "object | None":
+    """GET with automatic SSL fallback, returns None on unrecoverable error."""
+    if _requests is None:
+        return None
+    headers = {"User-Agent": "Mozilla/5.0"}
+    try:
+        return _requests.get(url, timeout=_SITEMAP_TIMEOUT, headers=headers, allow_redirects=True, **kwargs)
+    except _SSLError:
+        try:
+            import urllib3
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        except Exception:
+            pass
+        try:
+            return _requests.get(url, timeout=_SITEMAP_TIMEOUT, headers=headers, verify=False, allow_redirects=True, **kwargs)
+        except Exception:
+            return None
+    except Exception:
+        return None
 
 
 def _parse_sitemap_xml(xml_text: str, home_url: str, _depth: int = 0) -> list[str]:
@@ -69,14 +87,11 @@ def _parse_sitemap_xml(xml_text: str, home_url: str, _depth: int = 0) -> list[st
     if "sitemapindex" in tag:
         for child in root:
             loc = _loc(child)
-            if not loc or not loc.endswith(".xml"):
+            if not loc:
                 continue
-            try:
-                resp = _requests.get(loc, timeout=_SITEMAP_TIMEOUT, headers={"User-Agent": "Mozilla/5.0"})
-                if resp.status_code == 200:
-                    urls.extend(_parse_sitemap_xml(resp.text, home_url, _depth + 1))
-            except Exception:
-                continue
+            resp = _get(loc)
+            if resp is not None and resp.status_code == 200 and _looks_like_sitemap(resp.text):
+                urls.extend(_parse_sitemap_xml(resp.text, home_url, _depth + 1))
     else:
         home_domain = _domain(home_url)
         for child in root:
@@ -93,6 +108,10 @@ def _parse_sitemap_xml(xml_text: str, home_url: str, _depth: int = 0) -> list[st
             urls.append(norm)
 
     return urls
+
+
+def _looks_like_sitemap(text: str) -> bool:
+    return "<url" in text or "sitemapindex" in text or "urlset" in text
 
 
 def _loc(elem: ET.Element) -> str:
