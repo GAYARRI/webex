@@ -83,10 +83,15 @@ def _enrich(base: Entity, incoming: Entity) -> None:
             base.images.append(img)
             seen.add(img)
 
-    # Types: union preserving order
+    # Types: merge then re-normalize so a specific inferred type (e.g. Cathedral)
+    # wins over accumulated generic types (e.g. Monument + Church).
+    combined_types = list(base.types)
     for t in incoming.types:
-        if t not in base.types:
-            base.types.append(t)
+        if t not in combined_types:
+            combined_types.append(t)
+    if combined_types:
+        from .entity_extractor import _normalize_types  # lazy import avoids circular dep
+        base.types = _normalize_types(combined_types, base)
 
     # Coordinates: keep the one with higher confidence
     incoming_conf = incoming.coordinates.confidence or 0.0

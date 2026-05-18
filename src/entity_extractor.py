@@ -377,10 +377,12 @@ def _normalize_types(types: list[str], entity: Entity) -> list[str]:
     normalized = [item for item in _dedupe(types) if item in allowed]
     inferred, confidence = _infer_type(entity)
     if normalized and inferred:
+        if confidence >= 90:
+            # Strong name-based inference wins: drop generic co-types (e.g. Monument+Church
+            # when Cathedral is clearly inferred from the entity name).
+            return [inferred]
         if inferred in normalized:
             return normalized
-        if confidence >= 90:
-            return [inferred]
     if normalized:
         return normalized
     return [inferred] if inferred else []

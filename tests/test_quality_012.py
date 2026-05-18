@@ -53,6 +53,24 @@ class MergeTextBoilerplateTests(unittest.TestCase):
         self.assertEqual(result, "Catedral gótica del siglo XIII.")
 
 
+class KBTypeMergeTests(unittest.TestCase):
+    def test_specific_type_replaces_generic_on_enrich(self):
+        """Cathedral must win over Monument+Church accumulated in a stale KB."""
+        base = Entity(name="Catedral de Burgos", types=["Monument", "Church"])
+        incoming = Entity(name="Catedral de Burgos", types=["Cathedral"])
+        kb, _ = merge_into_kb([base], [incoming])
+        self.assertEqual(kb[0].types, ["Cathedral"])
+
+    def test_unknown_types_filtered_out_on_enrich(self):
+        """HistoricalSite and TouristAttraction are not in the ontology — must be dropped."""
+        base = Entity(name="Catedral de Burgos", types=["HistoricalSite", "TouristAttraction"])
+        incoming = Entity(name="Catedral de Burgos", types=["Cathedral"])
+        kb, _ = merge_into_kb([base], [incoming])
+        self.assertNotIn("HistoricalSite", kb[0].types)
+        self.assertNotIn("TouristAttraction", kb[0].types)
+        self.assertIn("Cathedral", kb[0].types)
+
+
 class KBImageCapTests(unittest.TestCase):
     def test_enrich_caps_images_at_max(self):
         base = Entity(
