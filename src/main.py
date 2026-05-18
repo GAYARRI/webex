@@ -539,7 +539,10 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
                 f"~{kb_report['enriched']} enriquecidas  "
                 f"KB total: {len(kb_entities)}"
             )
-            crawl.feed(html, url)
+            # Only do BFS discovery when no sitemap was found; the sitemap
+            # already provides the complete URL list for the site.
+            if not crawl.sitemap_urls_found:
+                crawl.feed(html, url)
         except Exception as exc:
             pages_report.append({
                 "url": url,
