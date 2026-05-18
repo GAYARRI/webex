@@ -56,15 +56,20 @@ class OutputFormatTests(unittest.TestCase):
                 "description",
                 "images",
                 "wikidataId",
+                "evidence",
                 "sources",
             },
         )
-        self.assertEqual(result[0]["coordinates"], {"lat": 42.0, "lng": -3.0})
+        coords = result[0]["coordinates"]
+        self.assertEqual(coords["lat"], 42.0)
+        self.assertEqual(coords["lng"], -3.0)
+        self.assertIn("source", coords)
+        self.assertIn("confidence", coords)
         self.assertEqual(result[0]["sourceText"], "Texto fuente del bloque")
         self.assertEqual(result[0]["relatedUrls"], ["https://example.com/related"])
         self.assertIn("https://example.com/image.jpg", result[0]["images"])
         self.assertIsInstance(result[0]["sources"], list)
-        self.assertNotIn("evidence", result[0])
+        self.assertIn("evidence", result[0])
 
     def test_sanitize_entity_images_removes_icons(self):
         entity = Entity(
@@ -214,14 +219,14 @@ class SourceTraceabilityTests(unittest.TestCase):
         self.assertEqual(sources[0]["title"], "Catedral de Burgos")
         self.assertIn("patrimonio", sources[0]["text"])
 
-    def test_compact_source_truncates_long_text(self):
+    def test_source_exposes_full_text(self):
         long_text = "x" * 1000
         entity = Entity(
             name="Test",
             sources=[Evidence(url="https://example.com", block_id="b", text=long_text, page_url="https://example.com")],
         )
         result = _build_golden_result([entity])
-        self.assertLessEqual(len(result[0]["sources"][0]["text"]), 500)
+        self.assertEqual(len(result[0]["sources"][0]["text"]), 1000)
 
 
 if __name__ == "__main__":

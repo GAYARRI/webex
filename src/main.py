@@ -362,6 +362,8 @@ def _golden_entity(entity) -> dict[str, Any]:
         "coordinates": {
             "lat": entity.coordinates.lat,
             "lng": entity.coordinates.lng,
+            "source": entity.coordinates.source,
+            "confidence": entity.coordinates.confidence,
         },
         "shortDescription": entity.shortDescription,
         "longDescription": entity.longDescription,
@@ -369,17 +371,21 @@ def _golden_entity(entity) -> dict[str, Any]:
         "description": entity.description,
         "images": entity.images,
         "wikidataId": entity.wikidataId,
-        "sources": [_compact_source(s) for s in entity.sources],
+        "evidence": entity.evidence,
+        "sources": [_source_dict(s) for s in entity.sources],
     }
 
 
-def _compact_source(source) -> dict[str, Any]:
+def _source_dict(source) -> dict[str, Any]:
     return {
         "page_url": source.page_url or source.metadata.get("page_url", "") or source.url,
+        "url": source.url,
+        "block_id": source.block_id,
         "source_type": source.source_type,
         "title": source.title,
-        "text": source.text[:500] if source.text else "",
+        "text": source.text,
         "images": source.images,
+        "metadata": source.metadata,
     }
 
 
