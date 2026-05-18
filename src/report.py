@@ -125,10 +125,21 @@ def count_by_page(entities: list[dict[str, Any]]) -> dict[str, int]:
     return dict(counts.most_common())
 
 
-def print_type_counts(kb_path: str) -> None:
-    path = Path(kb_path)
+def zero_contribution_pages(pages_report: list[dict[str, Any]]) -> list[str]:
+    """Return URLs of pages that were crawled successfully but added no entities."""
+    return [
+        p["url"]
+        for p in pages_report
+        if p.get("status") == "ok"
+        and p.get("added", 0) == 0
+        and p.get("enriched", 0) == 0
+    ]
+
+
+def print_type_counts(report_path: str) -> None:
+    path = Path(report_path)
     if not path.exists():
-        print(f"Fichero no encontrado: {kb_path}", file=sys.stderr)
+        print(f"Fichero no encontrado: {report_path}", file=sys.stderr)
         sys.exit(1)
     data = json.loads(path.read_text(encoding="utf-8"))
     entities = data.get("entities", [])
@@ -148,15 +159,32 @@ def print_type_counts(kb_path: str) -> None:
     page_counts = count_by_page(entities)
     print("=== Entidades por pagina de origen ===")
     if not page_counts:
-        print("  (sin datos de página)")
+        print("  (sin datos de pagina)")
     else:
         max_url = max(len(u) for u in page_counts)
         for page_url, count in page_counts.items():
             print(f"{page_url:<{max_url + 2}} {count}")
 
+    pages_report = (
+        data.get("pages")
+        or data.get("crawl_report", {}).get("pages")
+        or data.get("batch_report", {}).get("pages")
+        or []
+    )
+    if pages_report:
+        zero_pages = zero_contribution_pages(pages_report)
+        print()
+        print("=== Paginas sin aportacion ===")
+        if not zero_pages:
+            print("  (todas las paginas aportaron entidades)")
+        else:
+            for url in zero_pages:
+                print(f"  {url}")
+            print(f"  Total: {len(zero_pages)} de {len(pages_report)} paginas procesadas")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Uso: python -m src.report <kb_file.json>", file=sys.stderr)
+        print("Uso: python -m src.report <fichero.json>", file=sys.stderr)
         sys.exit(1)
     print_type_counts(sys.argv[1])

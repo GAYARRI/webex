@@ -1,6 +1,6 @@
 import unittest
 
-from src.report import count_by_type, count_by_page, to_markdown
+from src.report import count_by_type, count_by_page, to_markdown, zero_contribution_pages
 
 
 def _entity(name, types=None, *, lat=None, lng=None, desc="", address="", images=None, wikidata=""):
@@ -81,6 +81,33 @@ class CountByPageTests(unittest.TestCase):
         e3 = self._entity_with_sources(["https://b.com"])
         counts = count_by_page([e1, e2, e3])
         self.assertEqual(list(counts.keys())[0], "https://a.com")
+
+
+class ZeroContributionPagesTests(unittest.TestCase):
+    def test_returns_pages_with_no_entities(self):
+        pages = [
+            {"url": "https://a.com/about", "status": "ok", "added": 0, "enriched": 0},
+            {"url": "https://a.com/catedral", "status": "ok", "added": 3, "enriched": 1},
+        ]
+        result = zero_contribution_pages(pages)
+        self.assertEqual(result, ["https://a.com/about"])
+
+    def test_excludes_error_pages(self):
+        pages = [
+            {"url": "https://a.com/broken", "status": "error", "added": 0, "enriched": 0},
+        ]
+        result = zero_contribution_pages(pages)
+        self.assertEqual(result, [])
+
+    def test_empty_pages_report(self):
+        self.assertEqual(zero_contribution_pages([]), [])
+
+    def test_all_pages_contributed(self):
+        pages = [
+            {"url": "https://a.com/p1", "status": "ok", "added": 2, "enriched": 0},
+            {"url": "https://a.com/p2", "status": "ok", "added": 0, "enriched": 1},
+        ]
+        self.assertEqual(zero_contribution_pages(pages), [])
 
 
 class ToMarkdownTests(unittest.TestCase):
