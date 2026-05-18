@@ -7,6 +7,14 @@ from .entity_merger import entity_key
 from .models import Entity
 
 
+def tag_sources_with_page_url(entities: list[Entity], page_url: str) -> None:
+    """Stamp page_url on every source that doesn't already have one."""
+    for entity in entities:
+        for source in entity.sources:
+            if "page_url" not in source.metadata:
+                source.metadata["page_url"] = page_url
+
+
 def load_kb(path: str) -> list[Entity]:
     kb_path = Path(path)
     if not kb_path.exists():

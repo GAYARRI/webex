@@ -1,7 +1,9 @@
+import argparse
 import unittest
 
 from src.main import (
     _build_golden_result,
+    _collect_urls,
     _consolidate_entity_evidence,
     _coverage_summary,
     _page_summary,
@@ -147,6 +149,25 @@ class OutputFormatTests(unittest.TestCase):
         self.assertNotIn("block_resolution", summary)
         self.assertNotIn("uncovered_blocks", summary)
         self.assertEqual(summary["status_counts"], {"unresolved_relevant": 1})
+
+    def test_collect_urls_from_urls_arg(self):
+        args = argparse.Namespace(urls=["https://a.com", "https://b.com"], urls_file=None, url=None)
+        self.assertEqual(_collect_urls(args), ["https://a.com", "https://b.com"])
+
+    def test_collect_urls_from_urls_file(self, tmp_path=None):
+        import tempfile, os
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as f:
+            f.write("https://a.com\n# comentario\nhttps://b.com\n\n")
+            tmp = f.name
+        try:
+            args = argparse.Namespace(urls=None, urls_file=tmp, url=None)
+            self.assertEqual(_collect_urls(args), ["https://a.com", "https://b.com"])
+        finally:
+            os.unlink(tmp)
+
+    def test_collect_urls_fallback_to_single_url(self):
+        args = argparse.Namespace(urls=None, urls_file=None, url="https://single.com")
+        self.assertEqual(_collect_urls(args), ["https://single.com"])
 
 
 if __name__ == "__main__":

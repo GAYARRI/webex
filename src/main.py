@@ -18,13 +18,24 @@ from .ground_truth import compare_entities, load_ground_truth
 from .image_ai import analyze_images_with_vision
 from .image_filters import is_image_url, is_noise_image
 from .images import enrich_entities_images
-from .knowledge_base import load_kb, merge_into_kb, save_kb
+from .knowledge_base import load_kb, merge_into_kb, save_kb, tag_sources_with_page_url
 from .web_extractor import extract_page
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="MVP de extraccion web semantica.")
-    parser.add_argument("url", help="URL publica HTTP o HTTPS.")
+    parser.add_argument("url", nargs="?", help="URL publica HTTP o HTTPS.")
+    parser.add_argument(
+        "--urls",
+        nargs="+",
+        metavar="URL",
+        help="Varias URLs para procesamiento batch (requiere --kb).",
+    )
+    parser.add_argument(
+        "--urls-file",
+        metavar="PATH",
+        help="Fichero con una URL por linea para procesamiento batch (requiere --kb).",
+    )
     parser.add_argument("--output", help="Ruta opcional para guardar el JSON.")
     parser.add_argument("--quiet", action="store_true", help="No imprime el JSON en consola.")
     parser.add_argument("--ground-truth", help="Ruta a ground_truth.json.")
@@ -73,13 +84,16 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def run(args: argparse.Namespace) -> dict[str, Any]:
-    load_dotenv()
-    page = extract_page(args.url)
+def _process_page(
+    url: str,
+    args: argparse.Namespace,
+) -> tuple[list[Any], Any, dict[str, Any]]:
+    """Extract and enrich entities from a single page. Returns (entities, page, image_report)."""
+    page = extract_page(url)
     model = args.model or configured_model()
     entities = extract_entities(page, use_ai=not args.no_ai, model=model)
     entities = enrich_entities_images(entities, page)
-    image_analysis_report = {
+    image_analysis_report: dict[str, Any] = {
         "enabled": False,
         "status": "not_requested",
         "candidates_count": 0,
@@ -102,19 +116,26 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         entities = enrich_entities_external_context(entities, page)
     entities = _consolidate_entity_evidence(entities)
     entities = _sanitize_entity_images(entities)
+    return entities, page, image_analysis_report
+
+
+def run(args: argparse.Namespace) -> dict[str, Any]:
+    load_dotenv()
+    model = args.model or configured_model()
+    entities, page, image_analysis_report = _process_page(args.url, args)
 
     output_format = getattr(args, "format", "full")
     use_clean = output_format == "clean"
     use_golden = output_format == "golden"
 
-    # Knowledge base: load → merge → save
+    # Knowledge base: load → tag → merge → save
     kb_report: dict[str, Any] | None = None
     if args.kb:
         kb_entities = load_kb(args.kb)
+        tag_sources_with_page_url(entities, args.url)
         kb_entities, kb_report = merge_into_kb(kb_entities, entities)
         kb_entities = _sanitize_entity_images(kb_entities)
         save_kb(args.kb, kb_entities)
-        # In compact modes, output the full KB (all accumulated entities)
         if use_clean or use_golden:
             entities = kb_entities
 
@@ -147,6 +168,75 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         )
 
     return result
+
+
+def _collect_urls(args: argparse.Namespace) -> list[str]:
+    if getattr(args, "urls", None):
+        return list(args.urls)
+    if getattr(args, "urls_file", None):
+        lines = Path(args.urls_file).read_text(encoding="utf-8").splitlines()
+        return [line.strip() for line in lines if line.strip() and not line.startswith("#")]
+    if getattr(args, "url", None):
+        return [args.url]
+    return []
+
+
+def run_batch(args: argparse.Namespace) -> dict[str, Any]:
+    load_dotenv()
+    urls = _collect_urls(args)
+    model = args.model or configured_model()
+
+    kb_entities: list[Any] = load_kb(args.kb) if args.kb else []
+    pages_report: list[dict[str, Any]] = []
+    added_total = 0
+    enriched_total = 0
+
+    for url in urls:
+        try:
+            entities, _page, _img_report = _process_page(url, args)
+            tag_sources_with_page_url(entities, url)
+            kb_entities, kb_report = merge_into_kb(kb_entities, entities)
+            kb_entities = _sanitize_entity_images(kb_entities)
+            if args.kb:
+                save_kb(args.kb, kb_entities)
+            added_total += kb_report["added"]
+            enriched_total += kb_report["enriched"]
+            pages_report.append({
+                "url": url,
+                "status": "ok",
+                "added": kb_report["added"],
+                "enriched": kb_report["enriched"],
+                "added_names": kb_report["added_names"],
+                "enriched_names": kb_report["enriched_names"],
+            })
+        except Exception as exc:
+            pages_report.append({
+                "url": url,
+                "status": "error",
+                "error": f"{exc.__class__.__name__}: {exc}",
+            })
+
+    batch_report = {
+        "extracted_at": datetime.now(timezone.utc).isoformat(),
+        "model": None if args.no_ai else model,
+        "pages_processed": sum(1 for p in pages_report if p["status"] == "ok"),
+        "pages_error": sum(1 for p in pages_report if p["status"] == "error"),
+        "added_total": added_total,
+        "enriched_total": enriched_total,
+        "kb_total": len(kb_entities),
+        "pages": pages_report,
+    }
+
+    output_format = getattr(args, "format", "full")
+    if output_format == "golden":
+        return {"batch_report": batch_report, "entities": _build_golden_result(kb_entities)}
+    elif output_format == "clean":
+        first_url = urls[0] if urls else ""
+        result = _build_clean_result(first_url, kb_entities)
+        result["batch_report"] = batch_report
+        return result
+    else:
+        return {**batch_report, "entities": _build_golden_result(kb_entities)}
 
 
 CLEAN_COORDS_MIN_CONFIDENCE = 0.3
@@ -305,7 +395,15 @@ def _dedupe_urls(values: list[str]) -> list[str]:
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
-    result = run(args)
+
+    is_batch = bool(getattr(args, "urls", None) or getattr(args, "urls_file", None))
+    if is_batch:
+        result = run_batch(args)
+    else:
+        if not args.url:
+            parser.error("Se requiere una URL o --urls / --urls-file.")
+        result = run(args)
+
     output = json.dumps(result, ensure_ascii=False, indent=2)
     if args.output:
         Path(args.output).parent.mkdir(parents=True, exist_ok=True)
