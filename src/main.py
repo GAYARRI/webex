@@ -486,10 +486,13 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
     added_total = 0
     enriched_total = 0
 
+    # Snapshot total before the loop so the denominator stays stable.
+    # New BFS-discovered URLs still get processed; they just push n beyond the estimate.
+    initial_total = args.max_pages or crawl.total_known
+
     for url in crawl:
         n = crawl.visited_count
-        cap = str(args.max_pages) if args.max_pages else str(crawl.total_known)
-        _progress(f"[{n}/{cap}] {url}")
+        _progress(f"[{n}/{initial_total}] {url}")
         try:
             resolved_url, html, fetch_warnings = fetch_html(url)
             page = parse_html(resolved_url, html, errors=fetch_warnings)
