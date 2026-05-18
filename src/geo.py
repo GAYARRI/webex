@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import atexit
 import json
 import math
 import re
 import time
 import unicodedata
+from dataclasses import asdict
+from pathlib import Path
 from typing import Any
 from urllib.parse import quote
 
@@ -27,6 +30,37 @@ _WIKIDATA_CACHE: dict[str, tuple[Coordinates, str] | None] = {}
 _WIKIDATA_DATA_CACHE: dict[str, dict | None] = {}
 _WIKIPEDIA_SUMMARY_CACHE: dict[tuple[str, str], dict[str, str] | None] = {}
 _LAST_NOMINATIM_REQUEST = 0.0
+
+# ---------------------------------------------------------------------------
+# Disk cache — persists Wikidata, Wikipedia and Nominatim results across runs
+# ---------------------------------------------------------------------------
+
+_DISK_CACHE_PATH = Path(__file__).parent.parent / ".cache" / "geo_cache.json"
+_disk_cache: dict[str, dict] = {}
+
+
+def _load_disk_cache() -> None:
+    global _disk_cache
+    try:
+        if _DISK_CACHE_PATH.exists():
+            _disk_cache = json.loads(_DISK_CACHE_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        _disk_cache = {}
+
+
+def _save_disk_cache() -> None:
+    try:
+        _DISK_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        _DISK_CACHE_PATH.write_text(
+            json.dumps(_disk_cache, ensure_ascii=False),
+            encoding="utf-8",
+        )
+    except Exception:
+        pass
+
+
+_load_disk_cache()
+atexit.register(_save_disk_cache)
 
 
 def extract_structured_data(soup: BeautifulSoup) -> list[dict[str, Any]]:
@@ -164,6 +198,10 @@ def _wikidata_search(name: str, timeout: int = 12) -> list[str]:
 def _fetch_wikidata_entity(qid: str, timeout: int = 12) -> dict | None:
     if qid in _WIKIDATA_DATA_CACHE:
         return _WIKIDATA_DATA_CACHE[qid]
+    disk_section = _disk_cache.get("wikidata_entities", {})
+    if qid in disk_section:
+        _WIKIDATA_DATA_CACHE[qid] = disk_section[qid]
+        return disk_section[qid]
     try:
         response = requests.get(
             WIKIDATA_ENTITY_URL.format(qid=qid),
@@ -176,6 +214,7 @@ def _fetch_wikidata_entity(qid: str, timeout: int = 12) -> dict | None:
         _WIKIDATA_DATA_CACHE[qid] = None
         return None
     _WIKIDATA_DATA_CACHE[qid] = data
+    _disk_cache.setdefault("wikidata_entities", {})[qid] = data
     return data
 
 
@@ -247,12 +286,13 @@ def enrich_entities_external_context(
     entities: list[Entity],
     page: PageExtraction,
     timeout: int = 12,
+    include_osm_lookup: bool = False,
 ) -> list[Entity]:
     for entity in entities:
         if entity.wikidataId:
             _add_wikidata_evidence(entity, entity.wikidataId, entity.coordinates, timeout=timeout)
             _add_wikipedia_evidence(entity, entity.wikidataId, timeout=timeout)
-        if entity.coordinates.lat is not None and not _has_source(entity, "openstreetmap"):
+        if include_osm_lookup and entity.coordinates.lat is not None and not _has_source(entity, "openstreetmap"):
             geocode_result = geocode_entity(entity, page, timeout=timeout)
             if geocode_result:
                 candidate, metadata = geocode_result
@@ -338,6 +378,12 @@ def _fetch_wikipedia_summary(language: str, title: str, timeout: int = 12) -> di
     cache_key = (language, title)
     if cache_key in _WIKIPEDIA_SUMMARY_CACHE:
         return _WIKIPEDIA_SUMMARY_CACHE[cache_key]
+    disk_key = f"{language}:{title}"
+    disk_section = _disk_cache.get("wikipedia_summaries", {})
+    if disk_key in disk_section:
+        result = disk_section[disk_key]
+        _WIKIPEDIA_SUMMARY_CACHE[cache_key] = result
+        return result
     try:
         response = requests.get(
             WIKIPEDIA_SUMMARY_URL.format(language=language, title=quote(title.replace(" ", "_"), safe="")),
@@ -367,6 +413,7 @@ def _fetch_wikipedia_summary(language: str, title: str, timeout: int = 12) -> di
     if not result["url"]:
         result["url"] = f"https://{language}.wikipedia.org/wiki/{quote(title.replace(' ', '_'), safe='')}"
     _WIKIPEDIA_SUMMARY_CACHE[cache_key] = result
+    _disk_cache.setdefault("wikipedia_summaries", {})[disk_key] = result
     return result
 
 
@@ -452,6 +499,15 @@ def _geocode_query(
             confidence=cached_coord.confidence,
         )
         return coord, dict(cached_metadata)
+    disk_section = _disk_cache.get("nominatim", {})
+    if cache_key in disk_section:
+        entry = disk_section[cache_key]
+        if entry is None:
+            _GEOCODE_CACHE[cache_key] = None
+            return None
+        coord = Coordinates(**entry["coord"])
+        _GEOCODE_CACHE[cache_key] = (coord, entry["metadata"])
+        return coord, dict(entry["metadata"])
 
     elapsed = time.monotonic() - _LAST_NOMINATIM_REQUEST
     if elapsed < NOMINATIM_MIN_INTERVAL_SECONDS:
@@ -485,8 +541,10 @@ def _geocode_query(
         coord = Coordinates(lat=lat, lng=lng, source="openstreetmap", confidence=confidence)
         metadata = _nominatim_metadata(item)
         _GEOCODE_CACHE[cache_key] = (coord, metadata)
+        _disk_cache.setdefault("nominatim", {})[cache_key] = {"coord": asdict(coord), "metadata": metadata}
         return coord, metadata
     _GEOCODE_CACHE[cache_key] = None
+    _disk_cache.setdefault("nominatim", {})[cache_key] = None
     return None
 
 
