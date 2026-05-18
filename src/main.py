@@ -534,7 +534,6 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
             entities = _sanitize_entity_images(entities)
             tag_sources_with_page_url(entities, url)
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
-            kb_entities = classify_entities(kb_entities)
             kb_entities = _sanitize_entity_images(kb_entities)
             crawled_urls.add(url)
             if args.kb:
@@ -563,6 +562,11 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
                 "error": f"{exc.__class__.__name__}: {exc}",
             })
             _progress(f"       ERROR: {exc.__class__.__name__}: {exc}")
+
+    # Final classification once, after all evidence is accumulated
+    kb_entities = classify_entities(kb_entities)
+    if args.kb:
+        save_kb(args.kb, kb_entities, crawled_urls=crawled_urls)
 
     ok_count = sum(1 for p in pages_report if p["status"] == "ok")
     err_count = sum(1 for p in pages_report if p["status"] == "error")
