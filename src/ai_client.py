@@ -7,33 +7,41 @@ from typing import Any
 from dotenv import load_dotenv
 
 from .models import Entity, PageExtraction
+from .ontology import get_index
 
 
 DEFAULT_MODEL = "gpt-5.4-mini"
 
-TOURIST_TYPES = [
-    "TouristAttraction",
-    "Museum",
-    "Church",
-    "Monument",
-    "HistoricalSite",
-    "Park",
-    "ArtGallery",
-    "Theater",
-    "PerformingArtsTheater",
-    "NaturalFeature",
-    "Restaurant",
-    "Hotel",
-    "Lodging",
-    "LocalBusiness",
-    "CulturalEvent",
-    "Festival",
-    "Tour",
-    "NightClub",
-    "TouristInformationCenter",
-    "EntertainmentBusiness",
-    "TraditionalArt",
-]
+
+def _tourist_types() -> list[str]:
+    return get_index().classifiable_types()
+
+
+# Public alias kept for external callers and tests that reference TOURIST_TYPES.
+# Resolved lazily so the ontology file is not required at import time.
+class _LazyTypes(list):
+    _loaded = False
+
+    def _ensure(self) -> None:
+        if not self._loaded:
+            self.clear()
+            self.extend(_tourist_types())
+            self.__class__._loaded = True
+
+    def __iter__(self):
+        self._ensure()
+        return super().__iter__()
+
+    def __contains__(self, item):
+        self._ensure()
+        return super().__contains__(item)
+
+    def __len__(self):
+        self._ensure()
+        return super().__len__()
+
+
+TOURIST_TYPES: list[str] = _LazyTypes()
 
 
 def configured_model() -> str:
@@ -119,12 +127,15 @@ def _build_prompt(page: PageExtraction) -> str:
                 "8. Para imagenes, asocia preferentemente las del bloque (blocks) donde aparece la entidad. Descarta logos, iconos, botones, apps y decoracion.",
                 "9. Si structured_data contiene la entidad (name, address, geo, telephone, etc.), usa esos campos como fuente de maxima prioridad y no los inventes.",
             ],
-            "tourist_types": TOURIST_TYPES,
+            "tourist_types": [
+                f"{name} ({label})" if label != name else name
+                for name, label in get_index().prompt_vocabulary()
+            ],
             "schema": {
                 "entities": [
                     {
                         "name": "string",
-                        "types": ["<uno o mas valores exactos de tourist_types>"],
+                        "types": ["<uno o mas nombres locales exactos de tourist_types, sin la etiqueta entre paréntesis>"],
                         "score": 0.0,
                         "sourceUrl": "string",
                         "url": "string",

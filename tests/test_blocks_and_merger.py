@@ -208,7 +208,7 @@ class BlocksAndMergerTests(unittest.TestCase):
         cleaned = clean_entities(entities, page)
 
         self.assertEqual([entity.name for entity in cleaned], ["Catedral de Burgos"])
-        self.assertEqual(cleaned[0].types, ["Church"])
+        self.assertEqual(cleaned[0].types, ["Cathedral"])
 
     def test_heuristic_entities_are_created_from_blocks_not_page_url(self):
         page = PageExtraction(
@@ -234,7 +234,7 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].name, "Catedral de Burgos")
-        self.assertEqual(entities[0].types, ["Church"])
+        self.assertEqual(entities[0].types, ["Cathedral"])
 
     def test_heuristic_entities_ignore_navigation_titles(self):
         page = PageExtraction(
@@ -328,7 +328,7 @@ class BlocksAndMergerTests(unittest.TestCase):
             [entity.name for entity in entities],
             ["Centro de Biodiversidad de Burgos", "Pulsera turistica de Burgos"],
         )
-        self.assertEqual(entities[0].types, ["TouristAttraction"])
+        self.assertEqual(entities[0].types, ["TouristAttractionSite"])
         self.assertEqual(entities[1].types, ["Tour"])
 
     def test_block_entities_use_relevant_text_for_mixed_news_blocks(self):
@@ -426,7 +426,7 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         entities = entities_from_blocks(page)
 
-        self.assertEqual(entities[0].types, ["HistoricalSite"])
+        self.assertEqual(entities[0].types, ["Castle"])
 
     def test_type_normalization_corrects_contextually_weak_existing_type(self):
         page = PageExtraction(
@@ -448,7 +448,7 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         cleaned = clean_entities([entity], page)
 
-        self.assertEqual(cleaned[0].types, ["HistoricalSite"])
+        self.assertEqual(cleaned[0].types, ["Castle"])
 
     def test_clean_entities_moves_image_urls_out_of_related_urls(self):
         page = PageExtraction(
