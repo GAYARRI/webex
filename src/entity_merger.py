@@ -99,6 +99,9 @@ def _merge_entity(base: Entity, incoming: Entity) -> Entity:
     return base
 
 
+_MAX_BLOCKS_PER_ENTITY = 5
+
+
 def _matching_blocks(entity: Entity, page: PageExtraction):
     name_key = normalize_key(entity.name)
     tokens = [token for token in name_key.split() if len(token) >= 4]
@@ -117,11 +120,13 @@ def _matching_blocks(entity: Entity, page: PageExtraction):
             word_count = len(block_text.split())
             if word_count <= 120:
                 score += 30
+            elif word_count > 600:
+                score -= 60
             elif word_count > 450:
                 score -= 40
             matches.append((score, block))
     matches.sort(key=lambda item: (item[0], -len(item[1].text)), reverse=True)
-    return [block for _, block in matches]
+    return [block for _, block in matches[:_MAX_BLOCKS_PER_ENTITY]]
 
 
 def _merge_sources(existing: list[Evidence], incoming: list[Evidence]) -> list[Evidence]:

@@ -22,6 +22,7 @@ from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
 from .knowledge_base import load_kb, save_kb, tag_sources_with_page_url
 from .report import count_by_type, to_markdown
+from .text_utils import is_boilerplate_text, normalize_key
 from .web_extractor import extract_page, fetch_html, parse_html
 
 
@@ -368,6 +369,9 @@ def _golden_entity(entity) -> dict[str, Any]:
     }
 
 
+_MAX_ENTITY_IMAGES = 10
+
+
 def _sanitize_entity_images(entities: Any) -> Any:
     for entity in entities:
         clean_images = []
@@ -386,9 +390,24 @@ def _sanitize_entity_images(entities: Any) -> Any:
                 continue
             seen.add(image)
             clean_images.append(image)
-        entity.images = clean_images
+        entity.images = _rank_and_cap_images(clean_images, entity, _MAX_ENTITY_IMAGES)
         entity.relatedUrls = _dedupe_urls(clean_related_urls)
     return entities
+
+
+def _rank_and_cap_images(images: list[str], entity: Any, max_count: int) -> list[str]:
+    """Sort images by slug relevance to entity name, keep top max_count."""
+    from urllib.parse import unquote, urlparse as _up
+    name_words = {w for w in normalize_key(entity.name).split() if len(w) >= 4}
+    if not name_words:
+        return images[:max_count]
+
+    def _slug_score(url: str) -> int:
+        slug = normalize_key(_up(unquote(url)).path.replace("/", " "))
+        return sum(1 for w in name_words if w in slug)
+
+    scored = sorted(range(len(images)), key=lambda i: _slug_score(images[i]), reverse=True)
+    return [images[i] for i in scored[:max_count]]
 
 
 def _consolidate_entity_evidence(entities: Any) -> Any:
@@ -413,11 +432,13 @@ def _append_context(current: str, incoming: str) -> str:
     if not incoming:
         return current
     if not current:
-        return incoming
+        return incoming if not is_boilerplate_text(incoming) else current
     if incoming in current:
         return current
     if current in incoming:
         return incoming
+    if is_boilerplate_text(incoming):
+        return current
     return f"{current} {incoming}"
 
 

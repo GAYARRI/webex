@@ -53,7 +53,7 @@ GENERIC_IMAGE_TOKENS = {
 }
 
 
-def enrich_entities_images(entities: list[Entity], page: PageExtraction, max_images: int = 50) -> list[Entity]:
+def enrich_entities_images(entities: list[Entity], page: PageExtraction, max_images: int = 8) -> list[Entity]:
     for entity in entities:
         existing = [url for url in entity.images if url and not _is_generic_image(_url_haystack(url))]
         matches = match_images_for_entity(entity, page)
@@ -131,10 +131,10 @@ def _score_context(image: dict[str, str], keywords: set[str]) -> int:
 
 
 def _has_strong_enough_signal(context_score: int, metadata_score: int, url: str = "") -> bool:
-    # CMS guest images have opaque slugs — context_score >= 1 is sufficient when
-    # the URL itself carries no semantic signal.
+    # Guest images have opaque slugs: require context_score >= 2 to reduce
+    # false positives from Liferay "related content" widgets.
     if _GUEST_IMAGE_PATH in url:
-        return metadata_score > 0 or context_score >= 1
+        return metadata_score > 0 or context_score >= 2
     return metadata_score > 0 or context_score >= 2
 
 

@@ -5,6 +5,9 @@ from pathlib import Path
 
 from .entity_merger import entity_key
 from .models import Entity
+from .text_utils import is_boilerplate_text
+
+_MAX_KB_IMAGES = 10
 
 
 def tag_sources_with_page_url(entities: list[Entity], page_url: str) -> None:
@@ -73,10 +76,10 @@ def _enrich(base: Entity, incoming: Entity) -> None:
     base.sourceText = _merge_text(base.sourceText, incoming.sourceText)
     base.description = _merge_text(base.description, incoming.description)
 
-    # Images: accumulate without duplicates
+    # Images: accumulate without duplicates, capped to avoid unrelated image drift
     seen = set(base.images)
     for img in incoming.images:
-        if img and img not in seen:
+        if img and img not in seen and len(base.images) < _MAX_KB_IMAGES:
             base.images.append(img)
             seen.add(img)
 
@@ -118,15 +121,17 @@ def _enrich(base: Entity, incoming: Entity) -> None:
 
 
 def _merge_text(current: str, incoming: str) -> str:
-    """Accumulate two text fields, discarding clones and subsets."""
+    """Accumulate two text fields, discarding clones, subsets, and boilerplate."""
     current = (current or "").strip()
     incoming = (incoming or "").strip()
     if not incoming:
         return current
     if not current:
-        return incoming
+        return incoming if not is_boilerplate_text(incoming) else current
     if incoming in current:   # incoming is a clone or subset
         return current
     if current in incoming:   # current is a subset of incoming
         return incoming
+    if is_boilerplate_text(incoming):
+        return current
     return f"{current} {incoming}"
