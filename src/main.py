@@ -20,7 +20,7 @@ from .image_filters import is_image_url, is_noise_image
 from .images import enrich_entities_images
 from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
-from .knowledge_base import load_kb, save_kb, tag_sources_with_page_url
+from .knowledge_base import load_crawled_urls, load_kb, save_kb, tag_sources_with_page_url
 from .report import count_by_type, to_markdown
 from .text_utils import is_boilerplate_text, normalize_key
 from .web_extractor import extract_page, fetch_html, parse_html
@@ -484,7 +484,15 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
         _progress("  Buscando sitemap.xml ...")
 
     lang = getattr(args, "lang", "") or ""
-    crawl = SiteCrawl(args.url, args.max_pages, use_sitemap=use_sitemap, lang=lang)
+    crawled_urls: set[str] = load_crawled_urls(args.kb) if args.kb else set()
+    if crawled_urls:
+        _progress(f"  Retomando crawl: {len(crawled_urls)} paginas ya procesadas, saltando...")
+
+    crawl = SiteCrawl(
+        args.url, args.max_pages,
+        use_sitemap=use_sitemap, lang=lang,
+        already_visited=crawled_urls,
+    )
 
     if use_sitemap:
         if crawl.sitemap_urls_found:
@@ -498,7 +506,6 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
     enriched_total = 0
 
     # Snapshot total before the loop so the denominator stays stable.
-    # New BFS-discovered URLs still get processed; they just push n beyond the estimate.
     initial_total = args.max_pages or crawl.total_known
 
     for url in crawl:
@@ -524,8 +531,9 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
             tag_sources_with_page_url(entities, url)
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
             kb_entities = _sanitize_entity_images(kb_entities)
+            crawled_urls.add(url)
             if args.kb:
-                save_kb(args.kb, kb_entities)
+                save_kb(args.kb, kb_entities, crawled_urls=crawled_urls)
             added_total += kb_report["added"]
             enriched_total += kb_report["enriched"]
             pages_report.append({

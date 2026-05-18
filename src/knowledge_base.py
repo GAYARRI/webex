@@ -35,11 +35,26 @@ def load_kb(path: str) -> list[Entity]:
         return []
 
 
-def save_kb(path: str, entities: list[Entity]) -> None:
+def load_crawled_urls(path: str) -> set[str]:
+    """Return the set of URLs already processed in a previous crawl run."""
+    kb_path = Path(path)
+    if not kb_path.exists():
+        return set()
+    try:
+        data = json.loads(kb_path.read_text(encoding="utf-8"))
+        return set(data.get("crawled_urls", []))
+    except Exception:
+        return set()
+
+
+def save_kb(path: str, entities: list[Entity], crawled_urls: set[str] | None = None) -> None:
     kb_path = Path(path)
     kb_path.parent.mkdir(parents=True, exist_ok=True)
+    data: dict = {"entities": [e.to_dict() for e in entities]}
+    if crawled_urls is not None:
+        data["crawled_urls"] = sorted(crawled_urls)
     kb_path.write_text(
-        json.dumps({"entities": [e.to_dict() for e in entities]}, ensure_ascii=False, indent=2),
+        json.dumps(data, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
 

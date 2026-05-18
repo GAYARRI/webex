@@ -177,11 +177,18 @@ def crawl_urls(home_url: str, max_pages: int | None = None, use_sitemap: bool = 
 class SiteCrawl:
     """BFS iterator seeded with sitemap URLs (when available) + HTML link discovery."""
 
-    def __init__(self, home_url: str, max_pages: int | None = None, use_sitemap: bool = True, lang: str = "") -> None:
+    def __init__(
+        self,
+        home_url: str,
+        max_pages: int | None = None,
+        use_sitemap: bool = True,
+        lang: str = "",
+        already_visited: set[str] | None = None,
+    ) -> None:
         self.home_url = home_url
         self.max_pages = max_pages  # None means unlimited
         self.lang = lang
-        self._visited: set[str] = set()
+        self._visited: set[str] = set(already_visited or [])
         self._queue: deque[str] = deque([_normalize(home_url) or home_url])
         self.sitemap_urls_found = 0
 
