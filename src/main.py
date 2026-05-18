@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 from .ai_client import configured_model
 from .content_coverage import analyze_content_coverage
-from .entity_extractor import extract_entities
+from .entity_extractor import classify_entities, extract_entities
 from .entity_merger import attach_block_evidence, merge_entities
 from .geo import enrich_entities_coordinates, enrich_entities_external_context, enrich_entities_wikidata_images
 from .ground_truth import compare_entities, load_ground_truth
@@ -154,6 +154,7 @@ def _process_page(
         entities = enrich_entities_wikidata_images(entities)
         entities = enrich_entities_external_context(entities, page)
     entities = _consolidate_entity_evidence(entities)
+    entities = classify_entities(entities)
     entities = _sanitize_entity_images(entities)
     return entities, page, image_analysis_report
 
@@ -174,6 +175,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         tag_sources_with_page_url(entities, args.url)
         threshold = getattr(args, "merge_threshold", 0.70)
         kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
+        kb_entities = classify_entities(kb_entities)
         kb_entities = _sanitize_entity_images(kb_entities)
         save_kb(args.kb, kb_entities)
         if use_clean or use_golden:
@@ -237,6 +239,7 @@ def run_batch(args: argparse.Namespace) -> dict[str, Any]:
             entities, _page, _img_report = _process_page(url, args)
             tag_sources_with_page_url(entities, url)
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
+            kb_entities = classify_entities(kb_entities)
             kb_entities = _sanitize_entity_images(kb_entities)
             if args.kb:
                 save_kb(args.kb, kb_entities)
@@ -527,9 +530,11 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
                 entities = enrich_entities_wikidata_images(entities)
                 entities = enrich_entities_external_context(entities, page)
             entities = _consolidate_entity_evidence(entities)
+            entities = classify_entities(entities)
             entities = _sanitize_entity_images(entities)
             tag_sources_with_page_url(entities, url)
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
+            kb_entities = classify_entities(kb_entities)
             kb_entities = _sanitize_entity_images(kb_entities)
             crawled_urls.add(url)
             if args.kb:

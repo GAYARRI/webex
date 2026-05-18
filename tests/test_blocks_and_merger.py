@@ -1,9 +1,9 @@
 import unittest
 
-from src.entity_extractor import clean_entities, entities_from_blocks, heuristic_entities
+from src.entity_extractor import classify_entities, clean_entities, entities_from_blocks, heuristic_entities
 from src.entity_merger import attach_block_evidence, merge_entities
 from src.entity_text import relevant_text_for_entity
-from src.models import ContentBlock, Entity, PageExtraction
+from src.models import ContentBlock, Entity, Evidence, PageExtraction
 from src.web_extractor import parse_html
 
 
@@ -449,6 +449,28 @@ class BlocksAndMergerTests(unittest.TestCase):
         cleaned = clean_entities([entity], page)
 
         self.assertEqual(cleaned[0].types, ["Castle"])
+
+    def test_final_classification_uses_accumulated_sources(self):
+        entity = Entity(
+            name="San Nicolas de Bari",
+            types=["Event"],
+            shortDescription="Recurso turistico de Burgos.",
+        )
+        entity.sources = [
+            # Simulates accumulated Wikipedia/Wikidata evidence arriving after extraction.
+            # The final classifier must use it before deciding the ontology class.
+            Evidence(
+                url="https://es.wikipedia.org/wiki/Iglesia_de_San_Nicolas_de_Bari",
+                block_id="Q5910998",
+                source_type="wikipedia",
+                title="Iglesia de San Nicolas de Bari",
+                text="La iglesia de San Nicolas de Bari es un templo historico de Burgos.",
+            )
+        ]
+
+        classify_entities([entity])
+
+        self.assertEqual(entity.types, ["Church"])
 
     def test_clean_entities_moves_image_urls_out_of_related_urls(self):
         page = PageExtraction(

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from urllib.parse import urlparse
 from typing import Any
 
@@ -71,6 +72,13 @@ def clean_entities(entities: list[Entity], page: PageExtraction) -> list[Entity]
         if _is_valid_entity(entity, page):
             cleaned.append(entity)
     return cleaned
+
+
+def classify_entities(entities: list[Entity]) -> list[Entity]:
+    """Final ontology classification after all evidence has been accumulated."""
+    for entity in entities:
+        entity.types = _normalize_types(entity.types, entity, final=True)
+    return entities
 
 
 def entities_from_structured_data(page: PageExtraction) -> list[Entity]:
@@ -372,10 +380,15 @@ def _name_after_date(text: str) -> str:
     return name
 
 
-def _normalize_types(types: list[str], entity: Entity) -> list[str]:
+def _normalize_types(types: list[str], entity: Entity, final: bool = False) -> list[str]:
     allowed = set(TOURIST_TYPES)
     normalized = [item for item in _dedupe(types) if item in allowed]
     inferred, confidence = _infer_type(entity)
+    if final and inferred:
+        if inferred in normalized:
+            return normalized
+        if confidence >= 30 or not normalized:
+            return [inferred]
     if normalized and inferred:
         if confidence >= 90:
             # Strong name-based inference wins: drop generic co-types (e.g. Monument+Church
@@ -397,12 +410,15 @@ def _infer_type(entity: Entity) -> tuple[str, int]:
         (entity.longDescription, 15),
         (entity.description, 15),
     ]
+    for source in entity.sources:
+        contexts.append((source.title, 40))
+        contexts.append((source.text, 20))
     scores: dict[str, int] = {}
     first_seen: dict[str, int] = {}
     for order, (keyword, tourist_type) in enumerate(TYPE_KEYWORDS):
         keyword_key = normalize_key(keyword)
         for text, weight in contexts:
-            if keyword_key and keyword_key in normalize_key(text):
+            if _contains_keyword(normalize_key(text), keyword_key):
                 scores[tourist_type] = scores.get(tourist_type, 0) + weight
                 first_seen.setdefault(tourist_type, order)
     if not scores:
@@ -412,6 +428,13 @@ def _infer_type(entity: Entity) -> tuple[str, int]:
         key=lambda tourist_type: (scores[tourist_type], -first_seen.get(tourist_type, 0)),
     )
     return best_type, scores[best_type]
+
+
+def _contains_keyword(text_key: str, keyword_key: str) -> bool:
+    if not text_key or not keyword_key:
+        return False
+    pattern = rf"(?<![a-z0-9]){re.escape(keyword_key)}(?![a-z0-9])"
+    return re.search(pattern, text_key) is not None
 
 
 def _is_valid_entity(entity: Entity, page: PageExtraction) -> bool:
