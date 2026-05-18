@@ -579,8 +579,9 @@ def _format_nominatim_address(address: dict[str, Any]) -> str:
 
 def _build_geocode_queries(entity: Entity, page: PageExtraction) -> list[str]:
     city_hint = _city_hint(page)
+    address = entity.address if entity.address and len(entity.address.split()) <= 10 else ""
     queries = [
-        compact_text(", ".join(part for part in [entity.name, entity.address] if part)),
+        compact_text(", ".join(part for part in [entity.name, address] if part)),
         compact_text(", ".join(part for part in [entity.name, city_hint, "Spain"] if part)),
         compact_text(entity.name),
     ]

@@ -314,9 +314,18 @@ TYPE_KEYWORDS: list[tuple[str, str]] = [
 ]
 
 
+def _is_valid_address(address: str) -> bool:
+    if not address:
+        return False
+    words = address.split()
+    return len(words) <= 10 and len(address) <= 120
+
+
 def _normalize_entity(entity: Entity, page: PageExtraction) -> None:
     entity.name = _clean_name(entity.name)
     entity.sourceUrl = entity.sourceUrl or page.url
+    if not _is_valid_address(entity.address):
+        entity.address = ""
     if entity.url and is_image_url(entity.url):
         entity.images = _dedupe([*entity.images, entity.url])
         entity.url = ""
