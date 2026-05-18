@@ -113,7 +113,12 @@ def count_by_page(entities: list[dict[str, Any]]) -> dict[str, int]:
         for source in entity.get("sources") or []:
             if not isinstance(source, dict):
                 continue
-            page_url = source.get("metadata", {}).get("page_url", "")
+            # Prefer explicit metadata stamp; fall back to source url for legacy KB data
+            page_url = (
+                source.get("metadata", {}).get("page_url")
+                or source.get("url")
+                or ""
+            )
             if page_url and page_url not in seen_pages:
                 seen_pages.add(page_url)
                 counts[page_url] += 1
@@ -136,12 +141,12 @@ def print_type_counts(kb_path: str) -> None:
         max_len = max(len(t) for t in counts)
         for type_name, count in counts.items():
             print(f"{type_name:<{max_len + 2}} {count}")
-        print(f"{'─' * (max_len + 8)}")
+        print("-" * (max_len + 8))
         print(f"{'Total':<{max_len + 2}} {len(entities)}")
 
     print()
     page_counts = count_by_page(entities)
-    print("=== Entidades por página de origen ===")
+    print("=== Entidades por pagina de origen ===")
     if not page_counts:
         print("  (sin datos de página)")
     else:
