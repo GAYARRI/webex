@@ -1,0 +1,51 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Caches de herramientas
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Variables de entorno (claves API)
+.env
+.env.*
+!.env.example
+
+# Editor / IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Claude Code
+.claude/
+
+# Datos crudos y procesados (generados, no versionables)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Salidas generadas del pipeline (no commitear runs intermedios)
+data/output/*
+!data/output/burgos-home-golden.json
+
+# Base de conocimiento acumulativa (generada en ejecución)
+data/kb/
+
+# Binarios y ejecutables en datos
+data/ontology/*.exe
+data/ontology/*.msi
+
+# OS
+Thumbs.db
+.DS_Store

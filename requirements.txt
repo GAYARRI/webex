@@ -1,0 +1,8 @@
+requests
+beautifulsoup4
+lxml
+rdflib
+owlready2
+pandas
+openai
+python-dotenv
