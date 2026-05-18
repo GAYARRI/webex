@@ -33,6 +33,22 @@ python -m src.main --crawl https://visitaburgos.es \
 python -m src.report data/kb/burgos.json
 ```
 
+## Descubrimiento de URLs: sitemap + BFS
+
+Al iniciar un crawl el sistema intenta obtener el sitemap del site antes de
+empezar el BFS:
+
+1. Prueba `/sitemap.xml`, `/sitemap_index.xml` y `/sitemap/sitemap.xml` en orden.
+2. Si el sitemap es un índice (`<sitemapindex>`), descarga y procesa cada sub-sitemap
+   (máximo 3 niveles de recursión).
+3. Las URLs del sitemap pasan el mismo filtro que las del BFS (dominio, extensión,
+   segmentos de sistema). Se añaden al inicio de la cola BFS.
+4. Si no se encuentra sitemap o la respuesta no es XML válido, continúa solo con BFS.
+5. El flag `--no-sitemap` desactiva el descubrimiento por sitemap.
+
+Esto permite descubrir URLs que no están enlazadas en el HTML estático
+(portales con navegación JavaScript, Liferay, SPAs, etc.).
+
 ## Reglas del crawler
 
 - El dominio de la URL raíz define el perímetro: solo se siguen enlaces del mismo host.

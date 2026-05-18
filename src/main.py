@@ -108,6 +108,11 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="PATH",
         help="Ruta para guardar el informe en formato Markdown.",
     )
+    parser.add_argument(
+        "--no-sitemap",
+        action="store_true",
+        help="Desactiva la descubrimiento de URLs via sitemap.xml en modo --crawl.",
+    )
     return parser
 
 
@@ -428,18 +433,29 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
     model = args.model or configured_model()
     threshold = getattr(args, "merge_threshold", 0.70)
 
-    crawl = SiteCrawl(args.url, args.max_pages)
-    kb_entities: list[Any] = load_kb(args.kb) if args.kb else []
-    pages_report: list[dict[str, Any]] = []
-    added_total = 0
-    enriched_total = 0
+    use_sitemap = not getattr(args, "no_sitemap", False)
     quiet = getattr(args, "quiet", False)
 
     def _progress(msg: str) -> None:
         if not quiet:
             print(msg, file=sys.stderr, flush=True)
 
-    _progress(f"Crawl iniciado: {args.url}  (max {args.max_pages} páginas)")
+    _progress(f"Crawl iniciado: {args.url}  (max {args.max_pages} paginas)")
+    if use_sitemap:
+        _progress("  Buscando sitemap.xml ...")
+
+    crawl = SiteCrawl(args.url, args.max_pages, use_sitemap=use_sitemap)
+
+    if use_sitemap:
+        if crawl.sitemap_urls_found:
+            _progress(f"  Sitemap encontrado: {crawl.sitemap_urls_found} URLs cargadas en cola")
+        else:
+            _progress("  Sitemap no encontrado, modo BFS puro")
+
+    kb_entities: list[Any] = load_kb(args.kb) if args.kb else []
+    pages_report: list[dict[str, Any]] = []
+    added_total = 0
+    enriched_total = 0
 
     for url in crawl:
         n = crawl.visited_count
