@@ -18,9 +18,11 @@ from .ground_truth import compare_entities, load_ground_truth
 from .image_ai import analyze_images_with_vision
 from .image_filters import is_image_url, is_noise_image
 from .images import enrich_entities_images
+from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
 from .knowledge_base import load_kb, save_kb, tag_sources_with_page_url
-from .web_extractor import extract_page
+from .report import count_by_type, to_markdown
+from .web_extractor import extract_page, fetch_html, parse_html
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -88,6 +90,23 @@ def build_parser() -> argparse.ArgumentParser:
         choices=["full", "clean", "golden"],
         default="full",
         help="Formato de salida. 'golden' emite una lista compatible con ground_truth.json.",
+    )
+    parser.add_argument(
+        "--crawl",
+        action="store_true",
+        help="Procesa el site completo a partir de la URL raiz, descubriendo enlaces internos.",
+    )
+    parser.add_argument(
+        "--max-pages",
+        type=int,
+        default=50,
+        metavar="N",
+        help="Numero maximo de paginas a procesar en modo --crawl (default: 50).",
+    )
+    parser.add_argument(
+        "--output-md",
+        metavar="PATH",
+        help="Ruta para guardar el informe en formato Markdown.",
     )
     return parser
 
@@ -402,12 +421,92 @@ def _dedupe_urls(values: list[str]) -> list[str]:
     return result
 
 
+def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
+    load_dotenv()
+    if not args.url:
+        raise ValueError("--crawl requiere una URL raiz.")
+    model = args.model or configured_model()
+    threshold = getattr(args, "merge_threshold", 0.70)
+
+    crawl = SiteCrawl(args.url, args.max_pages)
+    kb_entities: list[Any] = load_kb(args.kb) if args.kb else []
+    pages_report: list[dict[str, Any]] = []
+    added_total = 0
+    enriched_total = 0
+
+    for url in crawl:
+        try:
+            html = fetch_html(url)
+            page = parse_html(html, url)
+            entities = extract_entities(page, use_ai=not args.no_ai, model=model)
+            entities = enrich_entities_images(entities, page)
+            if args.analyze_images:
+                entities, _ = analyze_images_with_vision(
+                    entities, page, model=model, strategy=args.image_strategy
+                )
+            entities = attach_block_evidence(entities, page)
+            entities = merge_entities(entities)
+            entities = enrich_entities_coordinates(entities, page, geocode=args.geocode)
+            if args.geocode:
+                entities = enrich_entities_wikidata_images(entities)
+                entities = enrich_entities_external_context(entities, page)
+            entities = _consolidate_entity_evidence(entities)
+            entities = _sanitize_entity_images(entities)
+            tag_sources_with_page_url(entities, url)
+            kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
+            kb_entities = _sanitize_entity_images(kb_entities)
+            if args.kb:
+                save_kb(args.kb, kb_entities)
+            added_total += kb_report["added"]
+            enriched_total += kb_report["enriched"]
+            pages_report.append({
+                "url": url,
+                "status": "ok",
+                "added": kb_report["added"],
+                "enriched": kb_report["enriched"],
+            })
+            crawl.feed(html, url)
+        except Exception as exc:
+            pages_report.append({
+                "url": url,
+                "status": "error",
+                "error": f"{exc.__class__.__name__}: {exc}",
+            })
+
+    crawl_report = {
+        "extracted_at": datetime.now(timezone.utc).isoformat(),
+        "model": None if args.no_ai else model,
+        "pages_processed": sum(1 for p in pages_report if p["status"] == "ok"),
+        "pages_error": sum(1 for p in pages_report if p["status"] == "error"),
+        "added_total": added_total,
+        "enriched_total": enriched_total,
+        "kb_total": len(kb_entities),
+        "pages": pages_report,
+    }
+
+    output_format = getattr(args, "format", "full")
+    if output_format == "golden":
+        return {"crawl_report": crawl_report, "entities": _build_golden_result(kb_entities)}
+    elif output_format == "clean":
+        result = _build_clean_result(args.url, kb_entities)
+        result["crawl_report"] = crawl_report
+        return result
+    else:
+        return {**crawl_report, "entities": _build_golden_result(kb_entities)}
+
+
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
 
+    is_crawl = getattr(args, "crawl", False)
     is_batch = bool(getattr(args, "urls", None) or getattr(args, "urls_file", None))
-    if is_batch:
+
+    if is_crawl:
+        if not args.url:
+            parser.error("--crawl requiere una URL raiz.")
+        result = run_crawl(args)
+    elif is_batch:
         result = run_batch(args)
     else:
         if not args.url:
@@ -418,6 +517,23 @@ def main() -> None:
     if args.output:
         Path(args.output).parent.mkdir(parents=True, exist_ok=True)
         Path(args.output).write_text(output, encoding="utf-8")
+
+    output_md = getattr(args, "output_md", None)
+    if output_md:
+        entities_for_md = result.get("entities", [])
+        crawl_report = result.get("crawl_report") or result.get("batch_report") or {}
+        from urllib.parse import urlparse as _urlparse
+        source_url = getattr(args, "url", "") or ""
+        domain = _urlparse(source_url).netloc.removeprefix("www.") if source_url else ""
+        md_content = to_markdown(
+            entities_for_md,
+            domain=domain,
+            pages_processed=crawl_report.get("pages_processed", 0),
+            extracted_at=result.get("extracted_at", ""),
+        )
+        Path(output_md).parent.mkdir(parents=True, exist_ok=True)
+        Path(output_md).write_text(md_content, encoding="utf-8")
+
     if not args.quiet:
         _print_output(output)
 
