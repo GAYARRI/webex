@@ -26,6 +26,15 @@ _SKIP_SEGMENTS = {
     "cart", "checkout", "account", "password",
 }
 
+# ISO 639-1 codes used as URL path prefixes for multilingual sites
+_LANG_CODES = {
+    "af", "ar", "bg", "bn", "ca", "cs", "cy", "da", "de", "el",
+    "en", "es", "et", "eu", "fi", "fr", "gl", "he", "hr", "hu",
+    "hy", "id", "it", "ja", "ka", "ko", "lt", "lv", "mk", "ml",
+    "mt", "nl", "no", "pl", "pt", "ro", "ru", "sk", "sl", "sq",
+    "sr", "sv", "sw", "th", "tr", "uk", "ur", "vi", "zh",
+}
+
 _SITEMAP_TIMEOUT = 10
 _SITEMAP_CANDIDATES = ["/sitemap.xml", "/sitemap_index.xml", "/sitemap/sitemap.xml"]
 
@@ -34,7 +43,7 @@ _SITEMAP_CANDIDATES = ["/sitemap.xml", "/sitemap_index.xml", "/sitemap/sitemap.x
 # Sitemap discovery
 # ---------------------------------------------------------------------------
 
-def fetch_sitemap_urls(home_url: str) -> list[str]:
+def fetch_sitemap_urls(home_url: str, lang: str = "") -> list[str]:
     """Try standard sitemap paths and return filtered internal URLs."""
     if _requests is None:
         return []
@@ -45,7 +54,7 @@ def fetch_sitemap_urls(home_url: str) -> list[str]:
         if resp is None:
             continue
         if resp.status_code == 200 and _looks_like_sitemap(resp.text):
-            urls = _parse_sitemap_xml(resp.text, home_url)
+            urls = _parse_sitemap_xml(resp.text, home_url, lang=lang)
             if urls:
                 return urls
     return []
@@ -72,7 +81,7 @@ def _get(url: str, **kwargs) -> "object | None":
         return None
 
 
-def _parse_sitemap_xml(xml_text: str, home_url: str, _depth: int = 0) -> list[str]:
+def _parse_sitemap_xml(xml_text: str, home_url: str, _depth: int = 0, lang: str = "") -> list[str]:
     """Parse sitemap XML (urlset or sitemapindex). Recurses into index sitemaps."""
     if _depth > 3:
         return []
@@ -91,7 +100,7 @@ def _parse_sitemap_xml(xml_text: str, home_url: str, _depth: int = 0) -> list[st
                 continue
             resp = _get(loc)
             if resp is not None and resp.status_code == 200 and _looks_like_sitemap(resp.text):
-                urls.extend(_parse_sitemap_xml(resp.text, home_url, _depth + 1))
+                urls.extend(_parse_sitemap_xml(resp.text, home_url, _depth + 1, lang))
     else:
         home_domain = _domain(home_url)
         for child in root:
@@ -105,9 +114,19 @@ def _parse_sitemap_xml(xml_text: str, home_url: str, _depth: int = 0) -> list[st
                 continue
             if _should_skip(norm):
                 continue
+            if _is_foreign_lang(norm, lang):
+                continue
             urls.append(norm)
 
     return urls
+
+
+def _is_foreign_lang(url: str, lang: str) -> bool:
+    """Return True if the URL's first path segment is a language code other than lang."""
+    if not lang:
+        return False
+    first_seg = urlparse(url).path.strip("/").split("/")[0].lower()
+    return first_seg in _LANG_CODES and first_seg != lang.lower()
 
 
 def _looks_like_sitemap(text: str) -> bool:
@@ -125,7 +144,7 @@ def _loc(elem: ET.Element) -> str:
 # BFS link discovery from HTML
 # ---------------------------------------------------------------------------
 
-def discover_links(html: str, base_url: str, home_url: str) -> list[str]:
+def discover_links(html: str, base_url: str, home_url: str, lang: str = "") -> list[str]:
     """Return internal links found in html, normalized and filtered."""
     home_domain = _domain(home_url)
     found: set[str] = set()
@@ -141,6 +160,8 @@ def discover_links(html: str, base_url: str, home_url: str) -> list[str]:
             continue
         if _should_skip(norm):
             continue
+        if _is_foreign_lang(norm, lang):
+            continue
         found.add(norm)
     return sorted(found)
 
@@ -149,22 +170,23 @@ def discover_links(html: str, base_url: str, home_url: str) -> list[str]:
 # SiteCrawl iterator
 # ---------------------------------------------------------------------------
 
-def crawl_urls(home_url: str, max_pages: int, use_sitemap: bool = True) -> "SiteCrawl":
-    return SiteCrawl(home_url, max_pages, use_sitemap=use_sitemap)
+def crawl_urls(home_url: str, max_pages: int, use_sitemap: bool = True, lang: str = "") -> "SiteCrawl":
+    return SiteCrawl(home_url, max_pages, use_sitemap=use_sitemap, lang=lang)
 
 
 class SiteCrawl:
     """BFS iterator seeded with sitemap URLs (when available) + HTML link discovery."""
 
-    def __init__(self, home_url: str, max_pages: int, use_sitemap: bool = True) -> None:
+    def __init__(self, home_url: str, max_pages: int, use_sitemap: bool = True, lang: str = "") -> None:
         self.home_url = home_url
         self.max_pages = max_pages
+        self.lang = lang
         self._visited: set[str] = set()
         self._queue: deque[str] = deque([_normalize(home_url) or home_url])
         self.sitemap_urls_found = 0
 
         if use_sitemap:
-            sitemap_urls = fetch_sitemap_urls(home_url)
+            sitemap_urls = fetch_sitemap_urls(home_url, lang=lang)
             self.sitemap_urls_found = len(sitemap_urls)
             for url in sitemap_urls:
                 if url not in self._visited:
@@ -186,7 +208,7 @@ class SiteCrawl:
 
     def feed(self, html: str, page_url: str) -> None:
         """Enqueue newly discovered links from a processed page."""
-        for link in discover_links(html, page_url, self.home_url):
+        for link in discover_links(html, page_url, self.home_url, lang=self.lang):
             if link not in self._visited:
                 self._queue.append(link)
 

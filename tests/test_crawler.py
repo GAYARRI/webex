@@ -131,7 +131,7 @@ class SitemapParseTests(unittest.TestCase):
         import src.crawler as _crawler
         original = _crawler.fetch_sitemap_urls
         try:
-            _crawler.fetch_sitemap_urls = lambda _: [
+            _crawler.fetch_sitemap_urls = lambda *a, **kw: [
                 "https://example.com/p1",
                 "https://example.com/p2",
             ]

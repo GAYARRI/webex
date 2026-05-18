@@ -113,6 +113,12 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Desactiva la descubrimiento de URLs via sitemap.xml en modo --crawl.",
     )
+    parser.add_argument(
+        "--lang",
+        default="",
+        metavar="CODE",
+        help="Filtra URLs por idioma en modo --crawl (ej: es, en, fr). Descarta paginas con prefijo de otro idioma.",
+    )
     return parser
 
 
@@ -444,7 +450,8 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
     if use_sitemap:
         _progress("  Buscando sitemap.xml ...")
 
-    crawl = SiteCrawl(args.url, args.max_pages, use_sitemap=use_sitemap)
+    lang = getattr(args, "lang", "") or ""
+    crawl = SiteCrawl(args.url, args.max_pages, use_sitemap=use_sitemap, lang=lang)
 
     if use_sitemap:
         if crawl.sitemap_urls_found:
