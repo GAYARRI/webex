@@ -158,7 +158,10 @@ def print_type_counts(report_path: str) -> None:
     print()
     page_counts = count_by_page(entities)
     print("=== Entidades por pagina de origen ===")
-    if not page_counts:
+    has_sources = any(e.get("sources") for e in entities)
+    if not has_sources and entities:
+        print("  (fichero sin campo 'sources' -- usa el KB, no el output)")
+    elif not page_counts:
         print("  (sin datos de pagina)")
     else:
         max_url = max(len(u) for u in page_counts)
