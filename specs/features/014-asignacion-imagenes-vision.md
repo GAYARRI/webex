@@ -23,6 +23,7 @@ El heurístico de imágenes basa el emparejamiento en el nombre de la entidad, e
 - Con `--analyze-images`: se usa la estrategia indicada en `--image-strategy`.
 - El fallback **no actúa** si todas las entidades ya tienen imágenes (retorna `status: skipped`).
 - El fallback **no actúa** si `OPENAI_API_KEY` no está configurada.
+- El fallback **no actúa** si se pasa `--no-vision` (desactiva el fallback automático sin afectar a `--analyze-images`).
 - Solo las entidades con `images == []` se pasan al modelo de visión; las que ya tienen imágenes no se tocan.
 
 ## Flujo técnico

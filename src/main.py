@@ -61,6 +61,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Usa IA visual para validar relacion entre imagenes candidatas y entidades.",
     )
     parser.add_argument(
+        "--no-vision",
+        action="store_true",
+        help="Desactiva el fallback automatico de vision por LLM para asignacion de imagenes.",
+    )
+    parser.add_argument(
         "--image-strategy",
         choices=["heuristic-first", "vision-first", "disambiguation", "fallback"],
         default="heuristic-first",
@@ -148,10 +153,7 @@ def _process_page(
             model=model,
             strategy=args.image_strategy,
         )
-    else:
-        # Automatic vision fallback: for entities that got 0 images from the heuristic,
-        # ask the vision model to assign images from the page. No flag required —
-        # only activates when OPENAI_API_KEY is set and there are unresolved entities.
+    elif not args.no_vision:
         entities, _ = analyze_images_with_vision(
             entities, page, model=model, strategy="fallback"
         )
@@ -536,6 +538,10 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
             if args.analyze_images:
                 entities, _ = analyze_images_with_vision(
                     entities, page, model=model, strategy=args.image_strategy
+                )
+            elif not args.no_vision:
+                entities, _ = analyze_images_with_vision(
+                    entities, page, model=model, strategy="fallback"
                 )
             entities = attach_block_evidence(entities, page)
             entities = merge_entities(entities)
