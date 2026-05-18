@@ -189,7 +189,7 @@ class SiteCrawl:
         self.max_pages = max_pages  # None means unlimited
         self.lang = lang
         self._visited: set[str] = set(already_visited or [])
-        self._queue: deque[str] = deque([_normalize(home_url) or home_url])
+        self._queue: deque[str] = deque()
         self.sitemap_urls_found = 0
 
         if use_sitemap:
@@ -198,6 +198,12 @@ class SiteCrawl:
             for url in sitemap_urls:
                 if url not in self._visited:
                     self._queue.append(url)
+
+        # Fall back to home URL only when sitemap is unavailable
+        if not self.sitemap_urls_found:
+            seed = _normalize(home_url) or home_url
+            if seed not in self._visited:
+                self._queue.appendleft(seed)
 
     def __iter__(self):
         return self
