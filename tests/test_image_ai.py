@@ -102,6 +102,27 @@ class FallbackStrategyTests(unittest.TestCase):
         self.assertIn("Con imagen", names_with_images)
         self.assertEqual(result_entities[0].images, ["https://example.com/img.jpg"])
 
+    def test_fallback_creates_evidence_with_page_url(self):
+        entity = Entity(name="Sin imagen")
+        assigned_url = "https://example.com/found.jpg"
+        page = _page(images=[{"url": assigned_url, "alt": "Found", "source": "page"}])
+
+        def fake_classify(images, entity_index, model):
+            return [{"image_url": assigned_url, "entity": "Sin imagen", "reason": "matches"}], None
+
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}, clear=False):
+            with patch("src.image_ai._classify_image_batch", side_effect=fake_classify):
+                result_entities, _ = analyze_images_with_vision(
+                    [entity], page, model="gpt-5.4-mini", strategy="fallback"
+                )
+
+        e = result_entities[0]
+        self.assertEqual(len(e.sources), 1)
+        src = e.sources[0]
+        self.assertEqual(src.source_type, "vision_fallback")
+        self.assertEqual(src.page_url, page.url)
+        self.assertIn(assigned_url, src.images)
+
     def test_fallback_report_strategy_field(self):
         with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}, clear=False):
             _, report = analyze_images_with_vision(

@@ -50,6 +50,7 @@ Para cada imagen de la página, el modelo responde: *¿qué entidad de la lista 
 - Output: `{"assignments":[{"image_url":"...","entity":"nombre","reason":"..."}]}`.
 - Las asignaciones se resuelven con `_resolve_entity_name` (tolerante a variaciones menores de nombre).
 - Cada imagen se asigna a **una sola** entidad.
+- Por cada entidad que recibe imágenes se crea un `Evidence` con `source_type="vision_fallback"` y `page_url` con la URL de la página del crawl. Esto garantiza trazabilidad completa: se sabe desde qué página llegó cada imagen asignada por visión.
 
 ## Coste y límites
 
@@ -64,4 +65,5 @@ Para cada imagen de la página, el modelo responde: *¿qué entidad de la lista 
 - `test_fallback_skipped_when_all_entities_have_images` — no llama al modelo si todas ya tienen imagen.
 - `test_fallback_skipped_when_no_api_key` — sin clave API retorna `skipped`.
 - `test_fallback_only_processes_entities_without_images` — solo las entidades sin imagen reciben asignación; las que ya tenían imagen no cambian.
+- `test_fallback_creates_evidence_with_page_url` — verifica que se crea un `Evidence` con `source_type="vision_fallback"`, `page_url` correcto y la imagen asignada en `images`.
 - `test_fallback_report_strategy_field` — el campo `strategy` del report refleja `"fallback"`.

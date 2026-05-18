@@ -13,7 +13,7 @@ from requests.exceptions import SSLError
 from .ai_client import _parse_response_text, configured_model
 from .image_filters import is_noise_image
 from .images import match_images_for_entity
-from .models import Entity, PageExtraction
+from .models import Entity, Evidence, PageExtraction
 
 
 VISION_BATCH_SIZE = 8
@@ -193,6 +193,14 @@ def _run_disambiguation(
     for entity in entities:
         urls = _dedupe(assignments.get(entity.name, []))
         entity.images = urls
+        if urls:
+            entity.sources.append(Evidence(
+                url=page.url,
+                block_id=f"vision_fallback:{entity.name}",
+                source_type="vision_fallback",
+                images=urls,
+                page_url=page.url,
+            ))
         for url in urls:
             accepted_items.append({"entity": entity.name, "image_url": url})
 
