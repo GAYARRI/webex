@@ -499,7 +499,10 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
         _progress("  Buscando sitemap.xml ...")
 
     lang = getattr(args, "lang", "") or ""
-    crawled_urls: set[str] = load_crawled_urls(args.kb) if args.kb else set()
+    # In crawl mode, --output acts as the KB file when --kb is not specified.
+    # This enables incremental saving and resumable crawl without extra flags.
+    kb_path = args.kb or getattr(args, "output", None)
+    crawled_urls: set[str] = load_crawled_urls(kb_path) if kb_path else set()
     if crawled_urls:
         _progress(f"  Retomando crawl: {len(crawled_urls)} paginas ya procesadas, saltando...")
 
@@ -515,7 +518,7 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
         else:
             _progress("  Sitemap no encontrado, modo BFS puro")
 
-    kb_entities: list[Any] = load_kb(args.kb) if args.kb else []
+    kb_entities: list[Any] = load_kb(kb_path) if kb_path else []
     pages_report: list[dict[str, Any]] = []
     added_total = 0
     enriched_total = 0
@@ -548,8 +551,8 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
             kb_entities = _sanitize_entity_images(kb_entities)
             crawled_urls.add(url)
-            if args.kb:
-                save_kb(args.kb, kb_entities, crawled_urls=crawled_urls)
+            if kb_path:
+                save_kb(kb_path, kb_entities, crawled_urls=crawled_urls)
             added_total += kb_report["added"]
             enriched_total += kb_report["enriched"]
             pages_report.append({
@@ -577,8 +580,8 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
 
     # Final classification once, after all evidence is accumulated
     kb_entities = classify_entities(kb_entities)
-    if args.kb:
-        save_kb(args.kb, kb_entities, crawled_urls=crawled_urls)
+    if kb_path:
+        save_kb(kb_path, kb_entities, crawled_urls=crawled_urls)
 
     ok_count = sum(1 for p in pages_report if p["status"] == "ok")
     err_count = sum(1 for p in pages_report if p["status"] == "error")
