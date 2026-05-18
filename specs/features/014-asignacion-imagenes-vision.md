@@ -1,70 +1,101 @@
-# Feature 014 — Asignación de imágenes mediante visión artificial
+# Feature 014: Asignacion de imagenes mediante vision artificial
+
+## Estado
+
+Implementado, desactivado por defecto
 
 ## Objetivo
 
-Mejorar la cobertura de imágenes para entidades turísticas cuando el heurístico de emparejamiento no puede asignar imágenes (p.ej. slugs opacos, imágenes sin atributo `alt`). Se usa un LLM multimodal como fallback automático, sin necesidad de activarlo manualmente.
+Mejorar la cobertura de imagenes para entidades turisticas cuando el heuristico
+de emparejamiento no puede asignar imagenes con suficiente confianza. La vision
+por LLM queda disponible como herramienta opcional, pero no se ejecuta
+automaticamente.
 
-## Motivación
+## Motivacion
 
-El heurístico de imágenes basa el emparejamiento en el nombre de la entidad, el texto `alt` y la URL de la imagen. Cuando estas señales están ausentes o son opacas, la entidad queda con `images: []`. Las imágenes son un campo clave en el output (`images: [...]`); las entidades sin imagen tienen menor calidad percibida.
+El analisis visual mejora casos con slugs opacos, imagenes sin `alt` o paginas con
+asociaciones ambiguas. Sin embargo, en crawl completo puede multiplicar mucho el
+tiempo de ejecucion y el coste porque requiere llamadas externas al modelo.
 
-## Estrategias disponibles (`--image-strategy`)
+Por defecto, el pipeline usa solo:
 
-| Estrategia | Descripción |
+- emparejamiento heuristico de imagenes;
+- filtros de ruido/iconos/logos;
+- evidencias de imagenes desde fuentes externas como Wikidata/Commons cuando
+  `--geocode` esta activo.
+
+La vision por LLM se activa solo si el operador lo pide explicitamente.
+
+## Interfaz
+
+```bash
+# Sin vision LLM, comportamiento por defecto
+python -m src.main https://visitaburgosciudad.es/ --crawl --max-pages 10
+
+# Vision LLM explicita
+python -m src.main https://visitaburgosciudad.es/ \
+    --crawl \
+    --max-pages 10 \
+    --analyze-images \
+    --image-strategy vision-first
+
+# Compatibilidad: --no-vision se acepta, pero no es necesario
+python -m src.main https://visitaburgosciudad.es/ --crawl --no-vision
+```
+
+## Estrategias disponibles
+
+| Estrategia | Descripcion |
 |---|---|
-| `heuristic-first` (defecto) | Visión valida y complementa las imágenes del heurístico. |
-| `vision-first` | Visión reemplaza completamente las imágenes del heurístico. |
-| `disambiguation` | Visión evalúa TODAS las imágenes de la página; cada imagen se asigna a una sola entidad. Máxima cobertura, mayor coste. |
-| `fallback` | Visión sólo actúa para las entidades que quedaron con 0 imágenes tras el heurístico. Coste mínimo. |
+| `heuristic-first` | Vision valida y complementa las imagenes del heuristico. |
+| `vision-first` | Vision reemplaza completamente las imagenes del heuristico. |
+| `disambiguation` | Vision evalua todas las imagenes de la pagina y asigna cada imagen a una entidad. Mayor cobertura y mayor coste. |
+| `fallback` | Vision actua solo para entidades que quedaron con `images == []` tras el heuristico. |
 
-## Comportamiento del fallback automático
+## Comportamiento actual
 
-- Sin `--analyze-images`: el fallback se activa automáticamente en cada página si `OPENAI_API_KEY` está configurada.
-- Con `--analyze-images`: se usa la estrategia indicada en `--image-strategy`.
-- El fallback **no actúa** si todas las entidades ya tienen imágenes (retorna `status: skipped`).
-- El fallback **no actúa** si `OPENAI_API_KEY` no está configurada.
-- El fallback **no actúa** si se pasa `--no-vision` (desactiva el fallback automático sin afectar a `--analyze-images`).
-- Solo las entidades con `images == []` se pasan al modelo de visión; las que ya tienen imágenes no se tocan.
+- Sin `--analyze-images`, no se llama al modelo de vision.
+- Con `--analyze-images`, se usa la estrategia indicada en `--image-strategy`.
+- `--no-vision` queda como flag de compatibilidad; no cambia el comportamiento por
+  defecto porque la vision ya esta apagada.
+- Si se usa estrategia `fallback`, solo las entidades sin imagen se pasan al modelo.
+- Si no hay `OPENAI_API_KEY`, la llamada visual se omite y el reporte indica
+  `status: skipped`.
 
-## Flujo técnico
+## Flujo tecnico
 
-```
+```text
 _process_page()
-  └─ enrich_entities_images()         # heurístico de emparejamiento
-  └─ [--analyze-images]
-       ├─ True  → analyze_images_with_vision(strategy=args.image_strategy)
-       └─ False → analyze_images_with_vision(strategy="fallback")  # automático
+  -> enrich_entities_images()                    # heuristico
+  -> si --analyze-images:
+       analyze_images_with_vision(strategy=args.image_strategy)
+  -> si no:
+       continuar sin vision LLM
 ```
 
-### `_run_fallback(entities, page, report)`
+El mismo criterio aplica en `run_crawl()`.
 
-1. Filtra `without_images = [e for e in entities if not e.images]`.
-2. Si no hay ninguna → `status: skipped`.
-3. Si hay → delega en `_run_disambiguation(without_images, page, report)`.
-4. Las entidades con imágenes previas NO se modifican.
+## Evidencias
 
-### `_run_disambiguation(entities, page, report)`
+Cuando la vision asigna imagenes, se crea una evidencia con:
 
-Para cada imagen de la página, el modelo responde: *¿qué entidad de la lista representa mejor esta imagen?*
+- `source_type="vision_fallback"` para estrategia `fallback`;
+- `page_url` con la pagina procesada;
+- lista de imagenes asignadas;
+- texto/metadata de razonamiento cuando el analizador lo proporcione.
 
-- Input: lista de imágenes de la página (filtradas por `is_noise_image`) + índice de entidades (nombre + descripción).
-- Output: `{"assignments":[{"image_url":"...","entity":"nombre","reason":"..."}]}`.
-- Las asignaciones se resuelven con `_resolve_entity_name` (tolerante a variaciones menores de nombre).
-- Cada imagen se asigna a **una sola** entidad.
-- Por cada entidad que recibe imágenes se crea un `Evidence` con `source_type="vision_fallback"` y `page_url` con la URL de la página del crawl. Esto garantiza trazabilidad completa: se sabe desde qué página llegó cada imagen asignada por visión.
+Estas evidencias se usan internamente para trazabilidad y consolidacion, pero la
+lista final `images` debe contener solo URLs relevantes y no redundantes.
 
-## Coste y límites
+## Coste y limites
 
-- `VISION_BATCH_SIZE = 8` imágenes por llamada al LLM.
-- `MAX_IMAGE_BYTES = 4 MB` por imagen (las más grandes se envían por URL, no en base64).
-- Solo se procesan imágenes que pasan el filtro `is_noise_image` (excluye logos, iconos, etc.).
+- `VISION_BATCH_SIZE = 8` imagenes por llamada al LLM.
+- `MAX_IMAGE_BYTES = 4 MB` por imagen; imagenes mayores se envian por URL.
+- Se filtran logos, iconos y recursos de ruido antes de llamar al modelo.
+- En crawl completo, se recomienda activar vision solo en pruebas acotadas con
+  `--max-pages` o sobre URLs seleccionadas.
 
 ## Tests
 
-`tests/test_image_ai.py :: FallbackStrategyTests`
-
-- `test_fallback_skipped_when_all_entities_have_images` — no llama al modelo si todas ya tienen imagen.
-- `test_fallback_skipped_when_no_api_key` — sin clave API retorna `skipped`.
-- `test_fallback_only_processes_entities_without_images` — solo las entidades sin imagen reciben asignación; las que ya tenían imagen no cambian.
-- `test_fallback_creates_evidence_with_page_url` — verifica que se crea un `Evidence` con `source_type="vision_fallback"`, `page_url` correcto y la imagen asignada en `images`.
-- `test_fallback_report_strategy_field` — el campo `strategy` del report refleja `"fallback"`.
+`tests/test_image_ai.py :: FallbackStrategyTests` cubre el comportamiento de la
+estrategia `fallback` cuando se invoca explicitamente.

@@ -63,7 +63,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--no-vision",
         action="store_true",
-        help="Desactiva el fallback automatico de vision por LLM para asignacion de imagenes.",
+        help="Compatibilidad: la vision por LLM ya esta desactivada por defecto.",
     )
     parser.add_argument(
         "--image-strategy",
@@ -152,10 +152,6 @@ def _process_page(
             page,
             model=model,
             strategy=args.image_strategy,
-        )
-    elif not args.no_vision:
-        entities, _ = analyze_images_with_vision(
-            entities, page, model=model, strategy="fallback"
         )
     entities = attach_block_evidence(entities, page)
     entities = merge_entities(entities)
@@ -538,10 +534,6 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
             if args.analyze_images:
                 entities, _ = analyze_images_with_vision(
                     entities, page, model=model, strategy=args.image_strategy
-                )
-            elif not args.no_vision:
-                entities, _ = analyze_images_with_vision(
-                    entities, page, model=model, strategy="fallback"
                 )
             entities = attach_block_evidence(entities, page)
             entities = merge_entities(entities)
