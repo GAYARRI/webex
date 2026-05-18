@@ -67,15 +67,11 @@ def merge_into_kb(
 
 
 def _enrich(base: Entity, incoming: Entity) -> None:
-    # Descriptions: keep the longer version
-    if len(incoming.shortDescription) > len(base.shortDescription):
-        base.shortDescription = incoming.shortDescription
-    if len(incoming.longDescription) > len(base.longDescription):
-        base.longDescription = incoming.longDescription
-    if len(incoming.sourceText) > len(base.sourceText):
-        base.sourceText = incoming.sourceText
-    if len(incoming.description) > len(base.description):
-        base.description = incoming.description
+    # Descriptions: accumulate non-redundant content; clones are discarded
+    base.shortDescription = _merge_text(base.shortDescription, incoming.shortDescription)
+    base.longDescription = _merge_text(base.longDescription, incoming.longDescription)
+    base.sourceText = _merge_text(base.sourceText, incoming.sourceText)
+    base.description = _merge_text(base.description, incoming.description)
 
     # Images: accumulate without duplicates
     seen = set(base.images)
@@ -107,7 +103,7 @@ def _enrich(base: Entity, incoming: Entity) -> None:
     if not base.wikidataId and incoming.wikidataId:
         base.wikidataId = incoming.wikidataId
 
-    # Sources: accumulate without duplicates
+    # Sources: accumulate without exact duplicates; page_url traceability is always kept
     seen_sources = {(s.url, s.block_id, s.source_type) for s in base.sources}
     for source in incoming.sources:
         if (source.url, source.block_id, source.source_type) not in seen_sources:
@@ -119,3 +115,18 @@ def _enrich(base: Entity, incoming: Entity) -> None:
         base.score is None or incoming.score > base.score
     ):
         base.score = incoming.score
+
+
+def _merge_text(current: str, incoming: str) -> str:
+    """Accumulate two text fields, discarding clones and subsets."""
+    current = (current or "").strip()
+    incoming = (incoming or "").strip()
+    if not incoming:
+        return current
+    if not current:
+        return incoming
+    if incoming in current:   # incoming is a clone or subset
+        return current
+    if current in incoming:   # current is a subset of incoming
+        return incoming
+    return f"{current} {incoming}"

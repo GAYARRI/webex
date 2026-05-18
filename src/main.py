@@ -18,7 +18,8 @@ from .ground_truth import compare_entities, load_ground_truth
 from .image_ai import analyze_images_with_vision
 from .image_filters import is_image_url, is_noise_image
 from .images import enrich_entities_images
-from .knowledge_base import load_kb, merge_into_kb, save_kb, tag_sources_with_page_url
+from .entity_resolver import resolve_into_kb
+from .knowledge_base import load_kb, save_kb, tag_sources_with_page_url
 from .web_extractor import extract_page
 
 
@@ -76,6 +77,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Ruta al fichero JSON de base de conocimiento acumulativa.",
     )
     parser.add_argument(
+        "--merge-threshold",
+        type=float,
+        default=0.70,
+        metavar="FLOAT",
+        help="Umbral de similitud para fusionar entidades entre paginas (0-1, default 0.70).",
+    )
+    parser.add_argument(
         "--format",
         choices=["full", "clean", "golden"],
         default="full",
@@ -128,12 +136,13 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     use_clean = output_format == "clean"
     use_golden = output_format == "golden"
 
-    # Knowledge base: load → tag → merge → save
+    # Knowledge base: load → tag → resolve → save
     kb_report: dict[str, Any] | None = None
     if args.kb:
         kb_entities = load_kb(args.kb)
         tag_sources_with_page_url(entities, args.url)
-        kb_entities, kb_report = merge_into_kb(kb_entities, entities)
+        threshold = getattr(args, "merge_threshold", 0.70)
+        kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
         kb_entities = _sanitize_entity_images(kb_entities)
         save_kb(args.kb, kb_entities)
         if use_clean or use_golden:
@@ -191,11 +200,12 @@ def run_batch(args: argparse.Namespace) -> dict[str, Any]:
     added_total = 0
     enriched_total = 0
 
+    threshold = getattr(args, "merge_threshold", 0.70)
     for url in urls:
         try:
             entities, _page, _img_report = _process_page(url, args)
             tag_sources_with_page_url(entities, url)
-            kb_entities, kb_report = merge_into_kb(kb_entities, entities)
+            kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
             kb_entities = _sanitize_entity_images(kb_entities)
             if args.kb:
                 save_kb(args.kb, kb_entities)
