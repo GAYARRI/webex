@@ -402,13 +402,13 @@ def _normalize_types(types: list[str], entity: Entity, final: bool = False) -> l
 
 
 def _infer_type(entity: Entity) -> tuple[str, int]:
+    # Only name and external source titles/texts are used for type inference.
+    # Page-scraped description fields (shortDescription, description, etc.) are
+    # excluded because they reflect page context, not the entity itself — causing
+    # false Monastery/Cathedral assignments when an entity is extracted from a
+    # page that discusses a monastery but is not a monastery itself.
     contexts = [
         (entity.name, 100),
-        (entity.shortDescription, 35),
-        (entity.sourceText, 30),
-        (entity.evidence, 25),
-        (entity.longDescription, 15),
-        (entity.description, 15),
     ]
     for source in entity.sources:
         contexts.append((source.title, 40))

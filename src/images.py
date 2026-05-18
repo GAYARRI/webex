@@ -131,11 +131,10 @@ def _score_context(image: dict[str, str], keywords: set[str]) -> int:
 
 
 def _has_strong_enough_signal(context_score: int, metadata_score: int, url: str = "") -> bool:
-    # Guest images have opaque slugs: require context_score >= 2 to reduce
-    # false positives from Liferay "related content" widgets.
-    if _GUEST_IMAGE_PATH in url:
-        return metadata_score > 0 or context_score >= 2
-    return metadata_score > 0 or context_score >= 2
+    # Only accept images whose URL path or alt text mentions the entity.
+    # Context proximity alone is not sufficient — it causes false associations
+    # from shared page layouts, menus and related-content widgets.
+    return metadata_score > 0
 
 
 def _is_generic_image(haystack: str) -> bool:

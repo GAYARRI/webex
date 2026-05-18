@@ -94,7 +94,8 @@ class ImageTests(unittest.TestCase):
 
         self.assertEqual(matches, [])
 
-    def test_context_proximity_is_prioritized_over_url_slug(self):
+    def test_context_only_match_is_rejected(self):
+        """Images matched only by context proximity (no URL/alt signal) are rejected."""
         page = _page(
             [
                 {
@@ -104,20 +105,13 @@ class ImageTests(unittest.TestCase):
                     "index": "1",
                     "context": "La Catedral de Burgos es el principal monumento gotico de la ciudad.",
                 },
-                {
-                    "url": "https://example.com/catedral-lejana.jpg",
-                    "alt": "",
-                    "source": "page",
-                    "index": "2",
-                    "context": "Otra seccion sin relacion directa.",
-                },
             ]
         )
         entity = Entity(name="Catedral de Burgos", types=["monumento"])
 
         matches = match_images_for_entity(entity, page)
 
-        self.assertEqual(matches[0], "https://example.com/imagen-generica.jpg")
+        self.assertEqual(matches, [])
 
     def test_single_context_keyword_is_not_enough(self):
         page = _page(
