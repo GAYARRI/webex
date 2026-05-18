@@ -100,9 +100,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--max-pages",
         type=int,
-        default=50,
+        default=None,
         metavar="N",
-        help="Numero maximo de paginas a procesar en modo --crawl (default: 50).",
+        help="Numero maximo de paginas a procesar en modo --crawl. Sin limite por defecto.",
     )
     parser.add_argument(
         "--output-md",
@@ -467,7 +467,8 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
         if not quiet:
             print(msg, file=sys.stderr, flush=True)
 
-    _progress(f"Crawl iniciado: {args.url}  (max {args.max_pages} paginas)")
+    limit_str = f"max {args.max_pages} paginas" if args.max_pages else "sin limite de paginas"
+    _progress(f"Crawl iniciado: {args.url}  ({limit_str})")
     if use_sitemap:
         _progress("  Buscando sitemap.xml ...")
 
@@ -487,7 +488,8 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
 
     for url in crawl:
         n = crawl.visited_count
-        _progress(f"[{n}/{args.max_pages}] {url}")
+        cap = str(args.max_pages) if args.max_pages else "?"
+        _progress(f"[{n}/{cap}] {url}")
         try:
             resolved_url, html, fetch_warnings = fetch_html(url)
             page = parse_html(resolved_url, html, errors=fetch_warnings)

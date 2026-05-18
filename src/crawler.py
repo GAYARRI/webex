@@ -170,16 +170,16 @@ def discover_links(html: str, base_url: str, home_url: str, lang: str = "") -> l
 # SiteCrawl iterator
 # ---------------------------------------------------------------------------
 
-def crawl_urls(home_url: str, max_pages: int, use_sitemap: bool = True, lang: str = "") -> "SiteCrawl":
+def crawl_urls(home_url: str, max_pages: int | None = None, use_sitemap: bool = True, lang: str = "") -> "SiteCrawl":
     return SiteCrawl(home_url, max_pages, use_sitemap=use_sitemap, lang=lang)
 
 
 class SiteCrawl:
     """BFS iterator seeded with sitemap URLs (when available) + HTML link discovery."""
 
-    def __init__(self, home_url: str, max_pages: int, use_sitemap: bool = True, lang: str = "") -> None:
+    def __init__(self, home_url: str, max_pages: int | None = None, use_sitemap: bool = True, lang: str = "") -> None:
         self.home_url = home_url
-        self.max_pages = max_pages
+        self.max_pages = max_pages  # None means unlimited
         self.lang = lang
         self._visited: set[str] = set()
         self._queue: deque[str] = deque([_normalize(home_url) or home_url])
@@ -200,7 +200,7 @@ class SiteCrawl:
             url = self._queue.popleft()
             if url in self._visited:
                 continue
-            if len(self._visited) >= self.max_pages:
+            if self.max_pages is not None and len(self._visited) >= self.max_pages:
                 raise StopIteration
             self._visited.add(url)
             return url
