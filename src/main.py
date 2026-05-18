@@ -468,8 +468,8 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
         n = crawl.visited_count
         _progress(f"[{n}/{args.max_pages}] {url}")
         try:
-            html = fetch_html(url)
-            page = parse_html(html, url)
+            resolved_url, html, fetch_warnings = fetch_html(url)
+            page = parse_html(resolved_url, html, errors=fetch_warnings)
             entities = extract_entities(page, use_ai=not args.no_ai, model=model)
             entities = enrich_entities_images(entities, page)
             if args.analyze_images:
