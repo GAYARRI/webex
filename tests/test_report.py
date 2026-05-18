@@ -1,6 +1,6 @@
 import unittest
 
-from src.report import count_by_type, to_markdown
+from src.report import count_by_type, count_by_page, to_markdown
 
 
 def _entity(name, types=None, *, lat=None, lng=None, desc="", address="", images=None, wikidata=""):
@@ -44,6 +44,43 @@ class CountByTypeTests(unittest.TestCase):
 
     def test_empty_list(self):
         self.assertEqual(count_by_type([]), {})
+
+
+class CountByPageTests(unittest.TestCase):
+    def _entity_with_sources(self, pages):
+        return {
+            "name": "X", "types": [],
+            "sources": [{"metadata": {"page_url": p}} for p in pages],
+        }
+
+    def test_counts_entity_once_per_page(self):
+        entity = self._entity_with_sources(["https://a.com", "https://a.com"])
+        counts = count_by_page([entity])
+        self.assertEqual(counts["https://a.com"], 1)
+
+    def test_two_entities_same_page(self):
+        e1 = self._entity_with_sources(["https://a.com"])
+        e2 = self._entity_with_sources(["https://a.com"])
+        counts = count_by_page([e1, e2])
+        self.assertEqual(counts["https://a.com"], 2)
+
+    def test_entity_in_multiple_pages(self):
+        entity = self._entity_with_sources(["https://a.com", "https://b.com"])
+        counts = count_by_page([entity])
+        self.assertEqual(counts["https://a.com"], 1)
+        self.assertEqual(counts["https://b.com"], 1)
+
+    def test_empty_sources(self):
+        entity = {"name": "X", "types": [], "sources": []}
+        counts = count_by_page([entity])
+        self.assertEqual(counts, {})
+
+    def test_ordered_by_frequency(self):
+        e1 = self._entity_with_sources(["https://a.com"])
+        e2 = self._entity_with_sources(["https://a.com"])
+        e3 = self._entity_with_sources(["https://b.com"])
+        counts = count_by_page([e1, e2, e3])
+        self.assertEqual(list(counts.keys())[0], "https://a.com")
 
 
 class ToMarkdownTests(unittest.TestCase):

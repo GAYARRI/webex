@@ -105,6 +105,21 @@ def to_markdown(
     return "\n".join(lines)
 
 
+def count_by_page(entities: list[dict[str, Any]]) -> dict[str, int]:
+    """Return number of entities that have at least one source from each page URL."""
+    counts: Counter[str] = Counter()
+    for entity in entities:
+        seen_pages: set[str] = set()
+        for source in entity.get("sources") or []:
+            if not isinstance(source, dict):
+                continue
+            page_url = source.get("metadata", {}).get("page_url", "")
+            if page_url and page_url not in seen_pages:
+                seen_pages.add(page_url)
+                counts[page_url] += 1
+    return dict(counts.most_common())
+
+
 def print_type_counts(kb_path: str) -> None:
     path = Path(kb_path)
     if not path.exists():
@@ -112,15 +127,27 @@ def print_type_counts(kb_path: str) -> None:
         sys.exit(1)
     data = json.loads(path.read_text(encoding="utf-8"))
     entities = data.get("entities", [])
+
     counts = count_by_type(entities)
+    print("=== Entidades por clase ===")
     if not counts:
-        print("No hay entidades con tipo en la KB.")
-        return
-    max_len = max(len(t) for t in counts)
-    for type_name, count in counts.items():
-        print(f"{type_name:<{max_len + 2}} {count}")
-    print(f"{'─' * (max_len + 8)}")
-    print(f"{'Total':<{max_len + 2}} {len(entities)}")
+        print("  (sin datos)")
+    else:
+        max_len = max(len(t) for t in counts)
+        for type_name, count in counts.items():
+            print(f"{type_name:<{max_len + 2}} {count}")
+        print(f"{'─' * (max_len + 8)}")
+        print(f"{'Total':<{max_len + 2}} {len(entities)}")
+
+    print()
+    page_counts = count_by_page(entities)
+    print("=== Entidades por página de origen ===")
+    if not page_counts:
+        print("  (sin datos de página)")
+    else:
+        max_url = max(len(u) for u in page_counts)
+        for page_url, count in page_counts.items():
+            print(f"{page_url:<{max_url + 2}} {count}")
 
 
 if __name__ == "__main__":

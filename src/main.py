@@ -433,8 +433,17 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
     pages_report: list[dict[str, Any]] = []
     added_total = 0
     enriched_total = 0
+    quiet = getattr(args, "quiet", False)
+
+    def _progress(msg: str) -> None:
+        if not quiet:
+            print(msg, file=sys.stderr, flush=True)
+
+    _progress(f"Crawl iniciado: {args.url}  (max {args.max_pages} páginas)")
 
     for url in crawl:
+        n = crawl.visited_count
+        _progress(f"[{n}/{args.max_pages}] {url}")
         try:
             html = fetch_html(url)
             page = parse_html(html, url)
@@ -465,6 +474,11 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
                 "added": kb_report["added"],
                 "enriched": kb_report["enriched"],
             })
+            _progress(
+                f"       +{kb_report['added']} nuevas  "
+                f"~{kb_report['enriched']} enriquecidas  "
+                f"KB total: {len(kb_entities)}"
+            )
             crawl.feed(html, url)
         except Exception as exc:
             pages_report.append({
@@ -472,12 +486,21 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
                 "status": "error",
                 "error": f"{exc.__class__.__name__}: {exc}",
             })
+            _progress(f"       ERROR: {exc.__class__.__name__}: {exc}")
+
+    ok_count = sum(1 for p in pages_report if p["status"] == "ok")
+    err_count = sum(1 for p in pages_report if p["status"] == "error")
+    _progress(
+        f"\nCrawl completado: {ok_count} páginas OK · {err_count} errores · "
+        f"{len(kb_entities)} entidades en KB  "
+        f"(+{added_total} nuevas, ~{enriched_total} enriquecidas)"
+    )
 
     crawl_report = {
         "extracted_at": datetime.now(timezone.utc).isoformat(),
         "model": None if args.no_ai else model,
-        "pages_processed": sum(1 for p in pages_report if p["status"] == "ok"),
-        "pages_error": sum(1 for p in pages_report if p["status"] == "error"),
+        "pages_processed": ok_count,
+        "pages_error": err_count,
         "added_total": added_total,
         "enriched_total": enriched_total,
         "kb_total": len(kb_entities),
