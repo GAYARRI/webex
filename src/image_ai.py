@@ -53,6 +53,8 @@ def analyze_images_with_vision(
       disambiguation   — one question per image: "which entity best represents this?".
                          Guarantees every entity and every image gets evaluated regardless
                          of heuristic signal. Each image is assigned to at most one entity.
+      fallback         — runs disambiguation only for entities that ended up with 0 images
+                         after heuristic matching. Cost-efficient: activates only when needed.
     """
     report = {
         "enabled": True,
@@ -71,6 +73,9 @@ def analyze_images_with_vision(
         report["status"] = "skipped"
         report["errors"].append("OPENAI_API_KEY no esta configurada.")
         return entities, report
+
+    if strategy == "fallback":
+        return _run_fallback(entities, page, report)
 
     if strategy == "disambiguation":
         return _run_disambiguation(entities, page, report)
@@ -114,6 +119,28 @@ def analyze_images_with_vision(
     report["rejected"] = rejected_items
     report["rejected_count"] = len(rejected_items)
     return entities, report
+
+
+# ---------------------------------------------------------------------------
+# Fallback: vision only for entities with 0 images after heuristic
+# ---------------------------------------------------------------------------
+
+def _run_fallback(
+    entities: list[Entity],
+    page: PageExtraction,
+    report: dict,
+) -> tuple[list[Entity], dict]:
+    """Run disambiguation restricted to entities that have no images yet."""
+    without_images = [e for e in entities if not e.images]
+    if not without_images:
+        report["status"] = "skipped"
+        report["errors"].append("Todas las entidades ya tienen imágenes del heurístico.")
+        return entities, report
+    report["errors"].append(
+        f"Fallback vision activado para {len(without_images)} entidades sin imagen."
+    )
+    _, sub_report = _run_disambiguation(without_images, page, report)
+    return entities, sub_report
 
 
 # ---------------------------------------------------------------------------

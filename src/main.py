@@ -62,14 +62,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--image-strategy",
-        choices=["heuristic-first", "vision-first", "disambiguation"],
+        choices=["heuristic-first", "vision-first", "disambiguation", "fallback"],
         default="heuristic-first",
         help=(
             "Estrategia de imagenes. "
             "heuristic-first: vision valida y complementa las imagenes del heurístico. "
             "vision-first: vision reemplaza las imagenes del heurístico. "
             "disambiguation: vision evalua TODAS las imagenes de la pagina para resolver "
-            "casos donde el heuristico no puede emparejar (slugs opacos, contextos ambiguos)."
+            "casos donde el heuristico no puede emparejar (slugs opacos, contextos ambiguos). "
+            "fallback: vision solo actua para entidades sin imagen tras el heuristico."
         ),
     )
     parser.add_argument("--model", default=None, help="Modelo OpenAI. Por defecto usa OPENAI_MODEL.")
@@ -146,6 +147,13 @@ def _process_page(
             page,
             model=model,
             strategy=args.image_strategy,
+        )
+    else:
+        # Automatic vision fallback: for entities that got 0 images from the heuristic,
+        # ask the vision model to assign images from the page. No flag required —
+        # only activates when OPENAI_API_KEY is set and there are unresolved entities.
+        entities, _ = analyze_images_with_vision(
+            entities, page, model=model, strategy="fallback"
         )
     entities = attach_block_evidence(entities, page)
     entities = merge_entities(entities)
