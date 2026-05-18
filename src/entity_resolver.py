@@ -10,7 +10,7 @@ from .models import Entity
 from .text_utils import normalize_key
 
 
-_DEFAULT_THRESHOLD = 0.70
+_DEFAULT_THRESHOLD = 0.75   # raised from 0.70 to reduce spurious enrichments
 _BARRIER_KM = 5.0
 _PROXIMITY_KM = 0.15   # 150 m
 
@@ -20,6 +20,10 @@ _NAME_STOPWORDS = {
     "de", "del", "la", "las", "los", "el", "en", "por", "the", "of",
     "para", "con", "que", "sus", "una", "uno",
 }
+
+# If there is zero name overlap between candidate and incoming entity, cap the
+# score at this value so that coordinates/address alone cannot trigger a match.
+_NO_NAME_OVERLAP_CAP = 0.50
 
 
 def resolve_into_kb(
@@ -124,22 +128,32 @@ def _resolution_score(base: Entity, incoming: Entity) -> tuple[float, list[str]]
     base_tokens = _significant_tokens(base.name)
     inc_tokens = _significant_tokens(incoming.name)
 
+    has_name_overlap = False
     if base_tokens and inc_tokens:
         longer = base_tokens if len(base_tokens) >= len(inc_tokens) else inc_tokens
         shorter = inc_tokens if longer is base_tokens else base_tokens
+        shared = base_tokens & inc_tokens
 
-        # Containment: shorter is a subset of longer, and longer has ≥ 2 tokens
-        if len(longer) >= 2 and shorter <= longer:
+        if shared:
+            has_name_overlap = True
+
+        # Containment: shorter must have ≥ 2 tokens and be fully contained in longer.
+        # A single shared token (e.g. "catedral") is too weak to confirm identity.
+        if len(shorter) >= 2 and len(longer) >= 2 and shorter <= longer:
             score += 0.30
             signals.append("name_containment")
-        else:
+        elif shared:
             # Jaccard similarity
             union = base_tokens | inc_tokens
-            if union:
-                jaccard = len(base_tokens & inc_tokens) / len(union)
-                if jaccard >= 0.50:
-                    score += 0.20
-                    signals.append(f"name_jaccard_{jaccard:.2f}")
+            jaccard = len(shared) / len(union)
+            if jaccard >= 0.50:
+                score += 0.20
+                signals.append(f"name_jaccard_{jaccard:.2f}")
+
+    # Barrier: no name overlap → cap score so that coordinates/address alone
+    # cannot merge two entities with completely different names.
+    if not has_name_overlap and score > _NO_NAME_OVERLAP_CAP:
+        return _NO_NAME_OVERLAP_CAP, signals + ["capped_no_name_overlap"]
 
     # Shared primary type
     if base.types and incoming.types and base.types[0] == incoming.types[0]:

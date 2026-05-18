@@ -82,9 +82,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--merge-threshold",
         type=float,
-        default=0.70,
+        default=0.75,
         metavar="FLOAT",
-        help="Umbral de similitud para fusionar entidades entre paginas (0-1, default 0.70).",
+        help="Umbral de similitud para fusionar entidades entre paginas (0-1, default 0.75).",
     )
     parser.add_argument(
         "--format",
