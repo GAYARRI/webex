@@ -488,7 +488,7 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
 
     for url in crawl:
         n = crawl.visited_count
-        cap = str(args.max_pages) if args.max_pages else "?"
+        cap = str(args.max_pages) if args.max_pages else str(crawl.total_known)
         _progress(f"[{n}/{cap}] {url}")
         try:
             resolved_url, html, fetch_warnings = fetch_html(url)

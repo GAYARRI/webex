@@ -213,6 +213,11 @@ class SiteCrawl:
                 self._queue.append(link)
 
     @property
+    def total_known(self) -> int:
+        """Pages already visited + pages still queued (grows as BFS discovers links)."""
+        return len(self._visited) + len(self._queue)
+
+    @property
     def visited_count(self) -> int:
         return len(self._visited)
 
