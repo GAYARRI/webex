@@ -9,6 +9,28 @@ from .text_utils import is_boilerplate_text
 
 _MAX_KB_IMAGES = 10
 
+# Entities whose name is this long without a geographic/structural anchor are
+# almost certainly blog article titles or sentence fragments, not tourist places.
+_MAX_NAME_WORDS_WITHOUT_ANCHOR = 7
+
+
+def filter_low_quality_entities(entities: list[Entity]) -> list[Entity]:
+    """Discard entities that lack sufficient context to be useful KB entries."""
+    result = []
+    for entity in entities:
+        name_words = entity.name.split()
+        if len(name_words) > _MAX_NAME_WORDS_WITHOUT_ANCHOR:
+            has_anchor = (
+                entity.coordinates.lat is not None
+                or bool(entity.wikidataId)
+                or bool(entity.url and entity.url != entity.sourceUrl)
+                or (entity.score is not None and entity.score >= 0.9 and bool(entity.types))
+            )
+            if not has_anchor:
+                continue
+        result.append(entity)
+    return result
+
 
 def tag_sources_with_page_url(entities: list[Entity], page_url: str) -> None:
     """Stamp page_url on every source that doesn't already have one."""

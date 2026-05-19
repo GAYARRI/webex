@@ -20,7 +20,7 @@ from .image_filters import is_image_url, is_noise_image
 from .images import enrich_entities_images
 from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
-from .knowledge_base import load_crawled_urls, load_kb, save_kb, tag_sources_with_page_url
+from .knowledge_base import filter_low_quality_entities, load_crawled_urls, load_kb, save_kb, tag_sources_with_page_url
 from .report import count_by_type, to_markdown
 from .text_utils import is_boilerplate_text, normalize_key
 from .web_extractor import extract_page, fetch_html, parse_html
@@ -547,6 +547,7 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
             entities = _consolidate_entity_evidence(entities)
             entities = classify_entities(entities)
             entities = _sanitize_entity_images(entities)
+            entities = filter_low_quality_entities(entities)
             tag_sources_with_page_url(entities, url)
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
             kb_entities = _sanitize_entity_images(kb_entities)

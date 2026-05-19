@@ -238,6 +238,14 @@ NAVIGATION_NAMES = {
     "sumergete",
     "profesionales",
     "servicios",
+    "blog",
+    "noticias",
+    "novedades",
+    "informacion practica",
+    "alojamientos",
+    "area de profesionales",
+    "noticias del sector",
+    "datos api",
 }
 
 

@@ -137,9 +137,17 @@ def _resolution_score(base: Entity, incoming: Entity) -> tuple[float, list[str]]
         if shared:
             has_name_overlap = True
 
-        # Containment: shorter must have ≥ 2 tokens and be fully contained in longer.
-        # A single shared token (e.g. "catedral") is too weak to confirm identity.
-        if len(shorter) >= 2 and len(longer) >= 2 and shorter <= longer:
+        if len(shorter) == 1 and shorter <= longer:
+            # Single-token abbreviation (e.g. "La Catedral" → "Catedral de Burgos").
+            # Strong signal only when both entities share the same primary type;
+            # without type agreement the token alone is too ambiguous.
+            types_agree = (
+                bool(base.types) and bool(incoming.types)
+                and base.types[0] == incoming.types[0]
+            )
+            score += 0.65 if types_agree else 0.30
+            signals.append("single_token_containment" + ("_type_match" if types_agree else ""))
+        elif len(shorter) >= 2 and len(longer) >= 2 and shorter <= longer:
             score += 0.30
             signals.append("name_containment")
         elif shared:
