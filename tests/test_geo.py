@@ -154,6 +154,21 @@ class GeoTests(unittest.TestCase):
         self.assertIn("wikidata", source_types)
         self.assertIn("wikipedia", source_types)
 
+    def test_external_context_does_not_query_osm_by_default(self):
+        entity = Entity(
+            name="Castillo de Burgos",
+            wikidataId="Q4099435",
+            coordinates=Coordinates(lat=42.3428, lng=-3.70722, source="wikidata"),
+        )
+
+        with (
+            patch("src.geo._fetch_wikidata_entity", return_value={"sitelinks": {}}),
+            patch("src.geo.geocode_entity") as geocode,
+        ):
+            enrich_entities_external_context([entity], _page())
+
+        geocode.assert_not_called()
+
 
 def _page(geo_candidates=None):
     return PageExtraction(
