@@ -119,6 +119,11 @@ El modelo de IA por defecto se lee de `.env` mediante `OPENAI_MODEL`. Para este 
 python -m unittest discover -s tests
 ```
 
+## Contributors
+
+- Jose R. Martinez: direccion del producto, criterios de extraccion y validacion funcional.
+- Codex (OpenAI): asistencia tecnica en especificacion, implementacion, pruebas y refactorizacion.
+
 ## Principio del proyecto
 
 Si una funcionalidad no tiene spec, todavia no se implementa.
