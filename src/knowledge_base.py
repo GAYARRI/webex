@@ -34,6 +34,14 @@ def filter_low_quality_entities(entities: list[Entity]) -> list[Entity]:
         # article titles or snippets, not tourist places.
         if not has_anchor and _is_listing_page(entity.sourceUrl):
             continue
+        # Heuristic-only entities (score < 0.5) with no type and no geographic
+        # anchor are navigation items or section headings, not real entities.
+        if (
+            not entity.types
+            and entity.coordinates.lat is None
+            and (entity.score is None or entity.score < 0.5)
+        ):
+            continue
         name_words = entity.name.split()
         if len(name_words) > _MAX_NAME_WORDS_WITHOUT_ANCHOR and not has_anchor:
             continue
@@ -138,15 +146,24 @@ def _enrich(base: Entity, incoming: Entity) -> None:
             base.images.append(img)
             seen.add(img)
 
-    # Types: merge then re-normalize so a specific inferred type (e.g. Cathedral)
-    # wins over accumulated generic types (e.g. Monument + Church).
-    combined_types = list(base.types)
-    for t in incoming.types:
-        if t not in combined_types:
-            combined_types.append(t)
-    if combined_types:
-        from .entity_extractor import _normalize_types  # lazy import avoids circular dep
-        base.types = _normalize_types(combined_types, base)
+    # Types: name-based inference wins when the entity name clearly identifies
+    # the type (confidence >= 80). Otherwise the base entity's established
+    # classification is preserved — only invalid/unknown types are replaced.
+    # This prevents a wrongly-classified duplicate from overwriting the correct
+    # type of the canonical entity, while still fixing stale generic types when
+    # the name makes the correct classification unambiguous.
+    from .ai_client import TOURIST_TYPES
+    from .entity_extractor import _infer_type  # lazy import avoids circular dep
+    allowed = set(TOURIST_TYPES)
+    valid_base = [t for t in base.types if t in allowed]
+    valid_incoming = [t for t in incoming.types if t in allowed]
+    name_inferred, name_confidence = _infer_type(base, name_only=True)
+    if name_inferred and name_confidence >= 80:
+        base.types = [name_inferred]
+    elif not valid_base:
+        base.types = valid_incoming
+    else:
+        base.types = valid_base
 
     # Coordinates: keep the one with higher confidence
     incoming_conf = incoming.coordinates.confidence or 0.0
