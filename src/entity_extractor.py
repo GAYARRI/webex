@@ -401,15 +401,17 @@ def _normalize_types(types: list[str], entity: Entity, final: bool = False) -> l
     allowed = set(TOURIST_TYPES)
     normalized = [item for item in _dedupe(types) if item in allowed]
     inferred, confidence = _infer_type(entity)
-    if final:
-        # Post-enrichment pass: types are frozen.
-        # If extraction already assigned a type, keep it — external sources (Wikipedia,
-        # Wikidata) only add evidence and must not reclassify the entity.
-        # If no type was assigned during extraction, infer from the entity name only.
-        if normalized:
+    if final and inferred:
+        # Very high confidence (name-based, >= 90): cleans up accumulated generic types.
+        if confidence >= 90:
+            return [inferred]
+        if inferred in normalized:
             return normalized
-        name_inferred, name_confidence = _infer_type(entity, name_only=True)
-        return [name_inferred] if name_inferred and name_confidence >= 80 else []
+        # Override requires confidence >= 60 (title + text from sources, not just
+        # a single Wikipedia title). For entities with no type yet, a single strong
+        # source title (>= 40) is enough to fill the gap.
+        if confidence >= 60 or (not normalized and confidence >= 40):
+            return [inferred]
     if normalized and inferred:
         if confidence >= 90:
             # Strong name-based inference wins: drop generic co-types (e.g. Monument+Church

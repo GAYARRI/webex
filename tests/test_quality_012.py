@@ -55,10 +55,13 @@ class MergeTextBoilerplateTests(unittest.TestCase):
 
 class KBTypeMergeTests(unittest.TestCase):
     def test_specific_type_replaces_generic_on_enrich(self):
-        """Cathedral must win over Monument+Church accumulated in a stale KB."""
+        """Cathedral must win over Monument+Church after final classify resolves the merged types."""
+        from src.entity_extractor import classify_entities
         base = Entity(name="Catedral de Burgos", types=["Monument", "Church"])
         incoming = Entity(name="Catedral de Burgos", types=["Cathedral"])
         kb, _ = merge_into_kb([base], [incoming])
+        # merge accumulates all valid types; classify_entities resolves by name inference
+        classify_entities(kb)
         self.assertEqual(kb[0].types, ["Cathedral"])
 
     def test_unknown_types_filtered_out_on_enrich(self):

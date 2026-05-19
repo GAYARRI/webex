@@ -450,8 +450,8 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         self.assertEqual(cleaned[0].types, ["Castle"])
 
-    def test_final_classification_does_not_override_extracted_type(self):
-        """Enrichment sources must not reclassify an entity whose type was set during extraction."""
+    def test_final_classification_corrects_wrong_extracted_type(self):
+        """Strong Wikipedia evidence (title + text, confidence >= 60) overrides a wrong initial type."""
         entity = Entity(
             name="San Nicolas de Bari",
             types=["Event"],
@@ -469,8 +469,8 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         classify_entities([entity])
 
-        # Type from extraction is preserved; Wikipedia sources only add evidence.
-        self.assertEqual(entity.types, ["Event"])
+        # Wikipedia title (40) + text (20) = confidence 60 → Church overrides the wrong Event type.
+        self.assertEqual(entity.types, ["Church"])
 
     def test_final_classification_assigns_from_name_when_no_type(self):
         """Entities with no type after extraction get a type from the name, not from sources."""

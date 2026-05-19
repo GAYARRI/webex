@@ -146,24 +146,18 @@ def _enrich(base: Entity, incoming: Entity) -> None:
             base.images.append(img)
             seen.add(img)
 
-    # Types: name-based inference wins when the entity name clearly identifies
-    # the type (confidence >= 80). Otherwise the base entity's established
-    # classification is preserved — only invalid/unknown types are replaced.
-    # This prevents a wrongly-classified duplicate from overwriting the correct
-    # type of the canonical entity, while still fixing stale generic types when
-    # the name makes the correct classification unambiguous.
+    # Types: accumulate all valid types from both entities. The final
+    # classify_entities() pass will resolve conflicts using all accumulated
+    # evidence — the classification with the strongest combined evidence wins.
     from .ai_client import TOURIST_TYPES
-    from .entity_extractor import _infer_type  # lazy import avoids circular dep
     allowed = set(TOURIST_TYPES)
-    valid_base = [t for t in base.types if t in allowed]
-    valid_incoming = [t for t in incoming.types if t in allowed]
-    name_inferred, name_confidence = _infer_type(base, name_only=True)
-    if name_inferred and name_confidence >= 80:
-        base.types = [name_inferred]
-    elif not valid_base:
-        base.types = valid_incoming
-    else:
-        base.types = valid_base
+    seen = set(base.types)
+    for t in incoming.types:
+        if t in allowed and t not in seen:
+            base.types.append(t)
+            seen.add(t)
+    # Drop any invalid types that slipped in
+    base.types = [t for t in base.types if t in allowed]
 
     # Coordinates: keep the one with higher confidence
     incoming_conf = incoming.coordinates.confidence or 0.0
