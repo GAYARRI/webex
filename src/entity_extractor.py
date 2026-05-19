@@ -430,8 +430,9 @@ def _infer_type(entity: Entity, name_only: bool = False) -> tuple[str, int]:
     contexts: list[tuple[str, int]] = [(entity.name, 100)]
     if not name_only:
         for source in entity.sources:
-            contexts.append((source.title, 40))
-            contexts.append((source.text, 20))
+            if source.source_type in {"wikidata", "wikipedia"}:
+                contexts.append((source.title, 40))
+                contexts.append((source.text, 20))
     scores: dict[str, int] = {}
     first_seen: dict[str, int] = {}
     for order, (keyword, tourist_type) in enumerate(TYPE_KEYWORDS):
