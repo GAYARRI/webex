@@ -88,6 +88,7 @@ class Coordinates:
 @dataclass
 class Entity:
     name: str
+    type: str = ""
     types: list[str] = field(default_factory=list)
     score: float | None = None
     sourceUrl: str = ""
@@ -105,12 +106,14 @@ class Entity:
     wikidataId: str = ""
     evidence: str = ""
     sources: list[Evidence] = field(default_factory=list)
+    classificationEvidence: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, value: dict[str, Any]) -> "Entity":
         long_description = value.get("longDescription", value.get("longDescriptionb", ""))
         return cls(
             name=str(value.get("name", "")).strip(),
+            type=str(value.get("type", "") or ""),
             types=[str(item).strip() for item in as_list(value.get("types")) if str(item).strip()],
             score=value.get("score"),
             sourceUrl=str(value.get("sourceUrl", "") or ""),
@@ -132,6 +135,9 @@ class Entity:
                 for item in as_list(value.get("sources"))
                 if isinstance(item, dict)
             ],
+            classificationEvidence=value.get("classificationEvidence")
+            if isinstance(value.get("classificationEvidence"), dict)
+            else {},
         )
 
     def to_dict(self) -> dict[str, Any]:

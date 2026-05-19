@@ -470,7 +470,9 @@ class BlocksAndMergerTests(unittest.TestCase):
         classify_entities([entity])
 
         # Wikipedia title (40) + text (20) = confidence 60 → Church overrides the wrong Event type.
-        self.assertEqual(entity.types, ["Church"])
+        self.assertEqual(entity.type, "Church")
+        self.assertEqual(entity.types, ["Church", "Event"])
+        self.assertEqual(entity.classificationEvidence["selected"], "Church")
 
     def test_final_classification_assigns_from_name_when_no_type(self):
         """Entities with no type after extraction get a type from the name, not from sources."""
@@ -490,7 +492,27 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         classify_entities([entity])
 
+        self.assertEqual(entity.type, "Cathedral")
         self.assertEqual(entity.types, ["Cathedral"])
+
+    def test_cathedral_keyword_does_not_override_route_or_viewpoint_name(self):
+        entities = [
+            Entity(name="Ruta de los miradores de la Catedral de Burgos", types=["Cathedral"]),
+            Entity(name="Miradores de la Catedral", types=["Cathedral"]),
+            Entity(name="La Catedral y su entorno", types=["Cathedral"]),
+            Entity(name="Conjunto Catedralicio de Burgos", types=["Cathedral"]),
+        ]
+
+        classify_entities(entities)
+
+        self.assertEqual(entities[0].type, "Route")
+        self.assertEqual(entities[1].type, "UrbanViewPoint")
+        self.assertEqual(entities[2].type, "Route")
+        self.assertEqual(entities[3].type, "TouristAttractionSite")
+        self.assertEqual(entities[0].types, ["Route", "Cathedral"])
+        self.assertEqual(entities[1].types, ["UrbanViewPoint", "Cathedral"])
+        self.assertEqual(entities[2].types, ["Route", "Cathedral"])
+        self.assertEqual(entities[3].types, ["TouristAttractionSite", "Cathedral"])
 
     def test_clean_entities_moves_image_urls_out_of_related_urls(self):
         page = PageExtraction(

@@ -16,6 +16,7 @@ class OutputFormatTests(unittest.TestCase):
     def test_golden_format_matches_ground_truth_entity_shape(self):
         entity = Entity(
             name="Catedral de Burgos",
+            type="TouristAttractionSite",
             types=["TouristAttraction"],
             score=0.9,
             sourceUrl="https://example.com/source",
@@ -31,6 +32,7 @@ class OutputFormatTests(unittest.TestCase):
             description="Contexto",
             images=["https://example.com/catedral.jpg"],
             wikidataId="Q1",
+            classificationEvidence={"selected": "TouristAttractionSite", "confidence": 90},
         )
 
         _sanitize_entity_images([entity])
@@ -41,6 +43,7 @@ class OutputFormatTests(unittest.TestCase):
             set(result[0]),
             {
                 "name",
+                "type",
                 "types",
                 "score",
                 "sourceUrl",
@@ -57,6 +60,7 @@ class OutputFormatTests(unittest.TestCase):
                 "images",
                 "wikidataId",
                 "evidence",
+                "classificationEvidence",
                 "sources",
             },
         )
@@ -70,6 +74,8 @@ class OutputFormatTests(unittest.TestCase):
         self.assertIn("https://example.com/image.jpg", result[0]["images"])
         self.assertIsInstance(result[0]["sources"], list)
         self.assertIn("evidence", result[0])
+        self.assertEqual(result[0]["type"], "TouristAttractionSite")
+        self.assertEqual(result[0]["classificationEvidence"]["selected"], "TouristAttractionSite")
 
     def test_sanitize_entity_images_removes_icons(self):
         entity = Entity(

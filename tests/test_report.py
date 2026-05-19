@@ -3,9 +3,10 @@ import unittest
 from src.report import count_by_type, count_by_page, to_markdown, zero_contribution_pages
 
 
-def _entity(name, types=None, *, lat=None, lng=None, desc="", address="", images=None, wikidata=""):
+def _entity(name, types=None, *, type=None, lat=None, lng=None, desc="", address="", images=None, wikidata=""):
     return {
         "name": name,
+        "type": type if type is not None else ((types or [""])[0] if types else ""),
         "types": types or [],
         "shortDescription": desc,
         "coordinates": {"lat": lat, "lng": lng, "confidence": 0.9} if lat is not None else {},
@@ -22,11 +23,16 @@ class CountByTypeTests(unittest.TestCase):
         counts = count_by_type(entities)
         self.assertEqual(counts["Cathedral"], 2)
 
-    def test_entity_with_multiple_types_counts_in_each(self):
-        entities = [_entity("A", ["Cathedral", "Monument"])]
+    def test_entity_with_multiple_types_counts_primary_only(self):
+        entities = [_entity("A", ["Cathedral", "Monument"], type="Cathedral")]
         counts = count_by_type(entities)
         self.assertEqual(counts["Cathedral"], 1)
-        self.assertEqual(counts["Monument"], 1)
+        self.assertNotIn("Monument", counts)
+
+    def test_legacy_entity_without_type_counts_first_type(self):
+        entities = [_entity("A", ["Cathedral", "Monument"], type="")]
+        counts = count_by_type(entities)
+        self.assertEqual(counts, {"Cathedral": 1})
 
     def test_returns_empty_for_no_types(self):
         entities = [_entity("A", [])]
@@ -121,6 +127,13 @@ class ToMarkdownTests(unittest.TestCase):
         md = to_markdown(entities)
         self.assertIn("Resumen por tipo", md)
         self.assertIn("Cathedral", md)
+
+    def test_contains_related_types_without_counting_them_as_primary(self):
+        entities = [_entity("Ruta", ["Route", "Cathedral"], type="Route")]
+        md = to_markdown(entities)
+        self.assertIn("**Tipo:** Route", md)
+        self.assertIn("**Tipos relacionados:** Cathedral", md)
+        self.assertNotIn("| Cathedral |", md)
 
     def test_contains_domain_in_header(self):
         entities = []

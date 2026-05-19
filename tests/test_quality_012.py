@@ -62,7 +62,9 @@ class KBTypeMergeTests(unittest.TestCase):
         kb, _ = merge_into_kb([base], [incoming])
         # merge accumulates all valid types; classify_entities resolves by name inference
         classify_entities(kb)
-        self.assertEqual(kb[0].types, ["Cathedral"])
+        self.assertEqual(kb[0].type, "Cathedral")
+        self.assertEqual(kb[0].types, ["Cathedral", "Monument", "Church"])
+        self.assertEqual(kb[0].classificationEvidence["selected"], "Cathedral")
 
     def test_unknown_types_filtered_out_on_enrich(self):
         """HistoricalSite and TouristAttraction are not in the ontology — must be dropped."""

@@ -303,6 +303,7 @@ def _build_clean_result(url: str, entities: Any) -> dict[str, Any]:
         clean_entities.append(
             {
                 "name": entity.name,
+                "type": entity.type,
                 "sourceUrl": entity.sourceUrl or url,
                 "types": entity.types,
                 "shortDescription": entity.shortDescription,
@@ -357,6 +358,7 @@ def _build_golden_result(entities: Any) -> list[dict[str, Any]]:
 def _golden_entity(entity) -> dict[str, Any]:
     return {
         "name": entity.name,
+        "type": entity.type,
         "types": entity.types,
         "score": entity.score,
         "sourceUrl": entity.sourceUrl,
@@ -378,6 +380,7 @@ def _golden_entity(entity) -> dict[str, Any]:
         "images": entity.images,
         "wikidataId": entity.wikidataId,
         "evidence": entity.evidence,
+        "classificationEvidence": entity.classificationEvidence,
         "sources": [_source_dict(s) for s in entity.sources],
     }
 

@@ -23,11 +23,31 @@ class ModelTests(unittest.TestCase):
         )
 
         self.assertEqual(entity.name, "Real Alcazar")
+        self.assertEqual(entity.type, "")
         self.assertEqual(entity.relatedUrls, ["https://example.com/related"])
         self.assertEqual(entity.images, ["https://example.com/image.jpg"])
         self.assertEqual(entity.coordinates.lat, 1.0)
         self.assertEqual(entity.coordinates.lng, 2.0)
         self.assertEqual(entity.sourceText, "Texto del bloque")
+
+    def test_entity_accepts_primary_type_and_classification_evidence(self):
+        entity = Entity.from_dict(
+            {
+                "name": "Ruta de la Catedral",
+                "type": "Route",
+                "types": ["Route", "Cathedral"],
+                "classificationEvidence": {
+                    "selected": "Route",
+                    "confidence": 110,
+                    "signals": ["name_primary:Route"],
+                },
+            }
+        )
+
+        self.assertEqual(entity.type, "Route")
+        self.assertEqual(entity.types, ["Route", "Cathedral"])
+        self.assertEqual(entity.classificationEvidence["selected"], "Route")
+        self.assertEqual(entity.to_dict()["classificationEvidence"]["confidence"], 110)
 
     def test_entity_accepts_long_description_typo(self):
         entity = Entity.from_dict({"name": "X", "longDescriptionb": "texto"})

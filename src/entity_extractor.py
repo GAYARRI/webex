@@ -77,7 +77,10 @@ def clean_entities(entities: list[Entity], page: PageExtraction) -> list[Entity]
 def classify_entities(entities: list[Entity]) -> list[Entity]:
     """Final ontology classification after all evidence has been accumulated."""
     for entity in entities:
-        entity.types = _normalize_types(entity.types, entity, final=True)
+        primary, types, evidence = _classify_entity(entity)
+        entity.type = primary
+        entity.types = types
+        entity.classificationEvidence = evidence
     return entities
 
 
@@ -400,7 +403,7 @@ def _name_after_date(text: str) -> str:
 def _normalize_types(types: list[str], entity: Entity, final: bool = False) -> list[str]:
     allowed = set(TOURIST_TYPES)
     normalized = [item for item in _dedupe(types) if item in allowed]
-    inferred, confidence = _infer_type(entity)
+    inferred, confidence = _infer_type(entity)[:2]
     if final and inferred:
         # Very high confidence (name-based, >= 90): cleans up accumulated generic types.
         if confidence >= 90:
@@ -424,9 +427,43 @@ def _normalize_types(types: list[str], entity: Entity, final: bool = False) -> l
     return [inferred] if inferred else []
 
 
-def _infer_type(entity: Entity, name_only: bool = False) -> tuple[str, int]:
+def _classify_entity(entity: Entity) -> tuple[str, list[str], dict[str, Any]]:
+    allowed = set(TOURIST_TYPES)
+    existing = [item for item in _dedupe(entity.types) if item in allowed]
+    inferred, confidence, signals = _infer_type(entity)
+    primary = _select_primary_type(existing, inferred, confidence)
+    related = _related_types(existing, primary, inferred)
+    evidence = {
+        "selected": primary,
+        "confidence": confidence,
+        "signals": signals,
+        "candidates": related,
+    }
+    return primary, related, evidence
+
+
+def _select_primary_type(existing: list[str], inferred: str, confidence: int) -> str:
+    if inferred:
+        if confidence >= 60 or not existing or inferred in existing:
+            return inferred
+    return existing[0] if existing else inferred
+
+
+def _related_types(existing: list[str], primary: str, inferred: str) -> list[str]:
+    result: list[str] = []
+    for item in [primary, inferred, *existing]:
+        if item and item not in result:
+            result.append(item)
+    return result
+
+
+def _infer_type(entity: Entity, name_only: bool = False) -> tuple[str, int, list[str]]:
     # Page-scraped description fields (shortDescription, description, etc.) are excluded
     # because they reflect page context, not the entity itself.
+    override = _name_primary_type(entity.name)
+    if override:
+        return override, 110, [f"name_primary:{override}"]
+
     contexts: list[tuple[str, int]] = [(entity.name, 100)]
     if not name_only:
         for source in entity.sources:
@@ -435,19 +472,44 @@ def _infer_type(entity: Entity, name_only: bool = False) -> tuple[str, int]:
                 contexts.append((source.text, 20))
     scores: dict[str, int] = {}
     first_seen: dict[str, int] = {}
+    signals_by_type: dict[str, list[str]] = {}
     for order, (keyword, tourist_type) in enumerate(TYPE_KEYWORDS):
         keyword_key = normalize_key(keyword)
         for text, weight in contexts:
             if _contains_keyword(normalize_key(text), keyword_key):
                 scores[tourist_type] = scores.get(tourist_type, 0) + weight
                 first_seen.setdefault(tourist_type, order)
+                signals_by_type.setdefault(tourist_type, []).append(
+                    f"{tourist_type}: keyword '{keyword}' (+{weight})"
+                )
     if not scores:
-        return "", 0
+        return "", 0, []
     best_type = max(
         scores,
         key=lambda tourist_type: (scores[tourist_type], -first_seen.get(tourist_type, 0)),
     )
-    return best_type, scores[best_type]
+    return best_type, scores[best_type], signals_by_type.get(best_type, [])
+
+
+def _name_primary_type(name: str) -> str:
+    name_key = normalize_key(name)
+    if not name_key:
+        return ""
+    if _contains_keyword(name_key, "ruta"):
+        return "Route"
+    if "museo de " in name_key:
+        return "Museum"
+    if "centro de interpretacion" in name_key:
+        return "TouristAttractionSite"
+    if _contains_keyword(name_key, "festival") or _contains_keyword(name_key, "fiesta"):
+        return "Event"
+    if _contains_keyword(name_key, "mirador") or _contains_keyword(name_key, "miradores"):
+        return "UrbanViewPoint"
+    if "conjunto catedralicio" in name_key:
+        return "TouristAttractionSite"
+    if "catedral y su entorno" in name_key or "catedral de burgos y su entorno" in name_key:
+        return "Route"
+    return ""
 
 
 def _contains_keyword(text_key: str, keyword_key: str) -> bool:
