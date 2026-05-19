@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from urllib.parse import urlparse
 
 from .entity_merger import entity_key
 from .models import Entity
@@ -13,23 +14,38 @@ _MAX_KB_IMAGES = 10
 # almost certainly blog article titles or sentence fragments, not tourist places.
 _MAX_NAME_WORDS_WITHOUT_ANCHOR = 7
 
+# URL path segments that indicate a listing/aggregation page rather than a
+# dedicated place description. Entities from these pages are discarded unless
+# they have a geographic anchor.
+_LISTING_PAGE_SEGMENTS = {"blog", "noticias", "actualidad", "novedades", "agenda"}
+
 
 def filter_low_quality_entities(entities: list[Entity]) -> list[Entity]:
     """Discard entities that lack sufficient context to be useful KB entries."""
     result = []
     for entity in entities:
+        has_anchor = (
+            entity.coordinates.lat is not None
+            or bool(entity.wikidataId)
+            or bool(entity.url and entity.url != entity.sourceUrl)
+            or (entity.score is not None and entity.score >= 0.9 and bool(entity.types))
+        )
+        # Entities from listing/blog pages without a geographic anchor are
+        # article titles or snippets, not tourist places.
+        if not has_anchor and _is_listing_page(entity.sourceUrl):
+            continue
         name_words = entity.name.split()
-        if len(name_words) > _MAX_NAME_WORDS_WITHOUT_ANCHOR:
-            has_anchor = (
-                entity.coordinates.lat is not None
-                or bool(entity.wikidataId)
-                or bool(entity.url and entity.url != entity.sourceUrl)
-                or (entity.score is not None and entity.score >= 0.9 and bool(entity.types))
-            )
-            if not has_anchor:
-                continue
+        if len(name_words) > _MAX_NAME_WORDS_WITHOUT_ANCHOR and not has_anchor:
+            continue
         result.append(entity)
     return result
+
+
+def _is_listing_page(url: str) -> bool:
+    if not url:
+        return False
+    path_segments = set(urlparse(url).path.strip("/").split("/"))
+    return bool(path_segments & _LISTING_PAGE_SEGMENTS)
 
 
 def tag_sources_with_page_url(entities: list[Entity], page_url: str) -> None:
