@@ -1,0 +1,31 @@
+{
+  "entities": [
+    {
+      "name": "Catedral de Burgos",
+      "type": "",
+      "types": [],
+      "score": null,
+      "sourceUrl": "",
+      "url": "",
+      "relatedUrls": [],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": null,
+        "lng": null,
+        "source": "",
+        "confidence": null
+      },
+      "shortDescription": "",
+      "longDescription": "",
+      "sourceText": "",
+      "description": "",
+      "images": [],
+      "wikidataId": "",
+      "evidence": "",
+      "sources": [],
+      "classificationEvidence": {}
+    }
+  ]
+}
