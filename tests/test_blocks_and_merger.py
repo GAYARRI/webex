@@ -450,15 +450,14 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         self.assertEqual(cleaned[0].types, ["Castle"])
 
-    def test_final_classification_uses_accumulated_sources(self):
+    def test_final_classification_does_not_override_extracted_type(self):
+        """Enrichment sources must not reclassify an entity whose type was set during extraction."""
         entity = Entity(
             name="San Nicolas de Bari",
             types=["Event"],
             shortDescription="Recurso turistico de Burgos.",
         )
         entity.sources = [
-            # Simulates accumulated Wikipedia/Wikidata evidence arriving after extraction.
-            # The final classifier must use it before deciding the ontology class.
             Evidence(
                 url="https://es.wikipedia.org/wiki/Iglesia_de_San_Nicolas_de_Bari",
                 block_id="Q5910998",
@@ -470,7 +469,28 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         classify_entities([entity])
 
-        self.assertEqual(entity.types, ["Church"])
+        # Type from extraction is preserved; Wikipedia sources only add evidence.
+        self.assertEqual(entity.types, ["Event"])
+
+    def test_final_classification_assigns_from_name_when_no_type(self):
+        """Entities with no type after extraction get a type from the name, not from sources."""
+        entity = Entity(
+            name="Catedral de Burgos",
+            types=[],
+        )
+        entity.sources = [
+            Evidence(
+                url="https://es.wikipedia.org/wiki/Catedral_de_Burgos",
+                block_id="Q190732",
+                source_type="wikipedia",
+                title="Catedral de Burgos",
+                text="La catedral gotica de Burgos.",
+            )
+        ]
+
+        classify_entities([entity])
+
+        self.assertEqual(entity.types, ["Cathedral"])
 
     def test_clean_entities_moves_image_urls_out_of_related_urls(self):
         page = PageExtraction(

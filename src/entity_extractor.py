@@ -393,11 +393,15 @@ def _normalize_types(types: list[str], entity: Entity, final: bool = False) -> l
     allowed = set(TOURIST_TYPES)
     normalized = [item for item in _dedupe(types) if item in allowed]
     inferred, confidence = _infer_type(entity)
-    if final and inferred:
-        if inferred in normalized:
+    if final:
+        # Post-enrichment pass: types are frozen.
+        # If extraction already assigned a type, keep it — external sources (Wikipedia,
+        # Wikidata) only add evidence and must not reclassify the entity.
+        # If no type was assigned during extraction, infer from the entity name only.
+        if normalized:
             return normalized
-        if confidence >= 30 or not normalized:
-            return [inferred]
+        name_inferred, name_confidence = _infer_type(entity, name_only=True)
+        return [name_inferred] if name_inferred and name_confidence >= 80 else []
     if normalized and inferred:
         if confidence >= 90:
             # Strong name-based inference wins: drop generic co-types (e.g. Monument+Church
@@ -410,18 +414,14 @@ def _normalize_types(types: list[str], entity: Entity, final: bool = False) -> l
     return [inferred] if inferred else []
 
 
-def _infer_type(entity: Entity) -> tuple[str, int]:
-    # Only name and external source titles/texts are used for type inference.
-    # Page-scraped description fields (shortDescription, description, etc.) are
-    # excluded because they reflect page context, not the entity itself — causing
-    # false Monastery/Cathedral assignments when an entity is extracted from a
-    # page that discusses a monastery but is not a monastery itself.
-    contexts = [
-        (entity.name, 100),
-    ]
-    for source in entity.sources:
-        contexts.append((source.title, 40))
-        contexts.append((source.text, 20))
+def _infer_type(entity: Entity, name_only: bool = False) -> tuple[str, int]:
+    # Page-scraped description fields (shortDescription, description, etc.) are excluded
+    # because they reflect page context, not the entity itself.
+    contexts: list[tuple[str, int]] = [(entity.name, 100)]
+    if not name_only:
+        for source in entity.sources:
+            contexts.append((source.title, 40))
+            contexts.append((source.text, 20))
     scores: dict[str, int] = {}
     first_seen: dict[str, int] = {}
     for order, (keyword, tourist_type) in enumerate(TYPE_KEYWORDS):

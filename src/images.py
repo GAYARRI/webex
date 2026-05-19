@@ -64,7 +64,8 @@ def enrich_entities_images(entities: list[Entity], page: PageExtraction, max_ima
 
 def match_images_for_entity(entity: Entity, page: PageExtraction) -> list[str]:
     keywords = _entity_keywords(entity)
-    if not keywords:
+    name_keywords = _entity_name_keywords(entity)
+    if not name_keywords:
         return []
     scored: list[tuple[int, int, str]] = []
     for image in page.images:
@@ -74,7 +75,10 @@ def match_images_for_entity(entity: Entity, page: PageExtraction) -> list[str]:
             continue
         context_score = _score_context(image, keywords)
         metadata_score = _score_text(haystack, keywords)
-        if not _has_strong_enough_signal(context_score, metadata_score, url):
+        name_context_score = _score_context(image, name_keywords)
+        name_metadata_score = _score_text(haystack, name_keywords)
+        # Accept only if the entity name appears in the image URL/alt or in the surrounding text.
+        if not (name_metadata_score > 0 or name_context_score > 0):
             continue
         score = (context_score * 1000) + metadata_score
         if score:
@@ -95,6 +99,16 @@ def _entity_keywords(entity: Entity) -> set[str]:
     words = set(re.findall(r"[a-z0-9]+", text))
     words = {word for word in words if len(word) >= 4 and word not in STOPWORDS}
     compound = normalize_key(entity.name).replace(" ", "-")
+    if compound:
+        words.add(compound)
+    return words
+
+
+def _entity_name_keywords(entity: Entity) -> set[str]:
+    text = normalize_key(entity.name)
+    words = set(re.findall(r"[a-z0-9]+", text))
+    words = {word for word in words if len(word) >= 4 and word not in STOPWORDS}
+    compound = text.replace(" ", "-")
     if compound:
         words.add(compound)
     return words
@@ -131,9 +145,6 @@ def _score_context(image: dict[str, str], keywords: set[str]) -> int:
 
 
 def _has_strong_enough_signal(context_score: int, metadata_score: int, url: str = "") -> bool:
-    # Only accept images whose URL path or alt text mentions the entity.
-    # Context proximity alone is not sufficient — it causes false associations
-    # from shared page layouts, menus and related-content widgets.
     return metadata_score > 0
 
 

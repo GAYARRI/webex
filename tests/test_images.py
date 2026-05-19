@@ -60,7 +60,8 @@ class ImageTests(unittest.TestCase):
         self.assertEqual(matches, [])
 
     def test_ignores_oversized_global_context(self):
-        long_context = " ".join(["Catedral de Burgos"] + ["ruido"] * 90)
+        # Context longer than _CONTEXT_MAX_WORDS words is treated as global noise and scored 0.
+        long_context = " ".join(["Catedral de Burgos"] + ["ruido"] * 210)
         page = _page(
             [
                 {
@@ -94,8 +95,8 @@ class ImageTests(unittest.TestCase):
 
         self.assertEqual(matches, [])
 
-    def test_context_only_match_is_rejected(self):
-        """Images matched only by context proximity (no URL/alt signal) are rejected."""
+    def test_context_with_entity_name_is_accepted(self):
+        """Images with no URL/alt signal are accepted when surrounding text mentions the entity name."""
         page = _page(
             [
                 {
@@ -111,16 +112,17 @@ class ImageTests(unittest.TestCase):
 
         matches = match_images_for_entity(entity, page)
 
-        self.assertEqual(matches, [])
+        self.assertEqual(len(matches), 1)
 
-    def test_single_context_keyword_is_not_enough(self):
+    def test_context_without_entity_name_is_rejected(self):
+        """Images whose context does not mention any name keyword are rejected."""
         page = _page(
             [
                 {
                     "url": "https://example.com/imagen-generica.jpg",
                     "alt": "",
                     "source": "page",
-                    "context": "Catedral",
+                    "context": "Visita el centro historico",
                 },
             ]
         )
