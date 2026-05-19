@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .contact_extractor import extract_contact_info
 from .entity_text import relevant_text_for_entity
+from .images import is_image_relevant_to_entity_url
 from .models import Entity, Evidence, PageExtraction
 from .text_utils import compact_text, normalize_key
 
@@ -28,7 +29,11 @@ def attach_block_evidence(entities: list[Entity], page: PageExtraction) -> list[
                 source_type="page_block",
                 title=block.title,
                 text=relevant_text,
-                images=[image.get("url", "") for image in block.images if image.get("url")],
+                images=[
+                    image.get("url", "")
+                    for image in block.images
+                    if image.get("url") and is_image_relevant_to_entity_url(image.get("url", ""), entity)
+                ],
                 metadata={k: v for k, v in contact.items() if v},
             )
             entity.sources = _merge_sources(entity.sources, [evidence])

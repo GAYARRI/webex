@@ -4,6 +4,29 @@
 
 Borrador
 
+## Contrato vigente de precision
+
+Dos entidades solo pueden enriquecerse entre si cuando exista coincidencia
+explicita o indubitable entre sus nombres, o cuando compartan una identidad externa
+inequivoca como el mismo `wikidataId`.
+
+Reglas obligatorias:
+
+- El mismo `wikidataId` no vacio es definitivo.
+- El nombre exacto normalizado, retirando articulos iniciales, es definitivo.
+- La contencion nominal solo es valida si el nombre contenido aporta al menos dos
+  tokens distintivos. Ejemplo valido: "Camino de Santiago" frente a "Camino de
+  Santiago por Burgos".
+- Las abreviaturas de un solo token no bastan para enriquecer otra entidad.
+  Ejemplo no valido sin ID externo compartido: "La Catedral" frente a "Catedral
+  de Burgos".
+- Coordenadas, direccion, tipo principal o contexto textual solo son senales de
+  apoyo despues de superar la barrera nominal anterior. No autorizan fusion ni
+  traspaso de evidencias por si solas.
+- Las imagenes procedentes de otra entidad, bloque, fuente externa o analisis
+  visual solo se acumulan si la URL de la imagen mantiene coincidencia explicita
+  o indubitable con el nombre de la entidad resultante.
+
 ## Contexto
 
 El merge entre entidades de distintas páginas usa hoy `entity_key()`, que solo

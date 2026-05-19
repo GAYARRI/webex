@@ -10,20 +10,15 @@ from .models import Entity
 from .text_utils import normalize_key
 
 
-_DEFAULT_THRESHOLD = 0.75   # raised from 0.70 to reduce spurious enrichments
+_DEFAULT_THRESHOLD = 0.75
 _BARRIER_KM = 5.0
-_PROXIMITY_KM = 0.15   # 150 m
+_PROXIMITY_KM = 0.15
 
-# Tokens shorter than this or in the stoplist are not significant for name matching
 _MIN_TOKEN_LEN = 4
 _NAME_STOPWORDS = {
     "de", "del", "la", "las", "los", "el", "en", "por", "the", "of",
     "para", "con", "que", "sus", "una", "uno",
 }
-
-# If there is zero name overlap between candidate and incoming entity, cap the
-# score at this value so that coordinates/address alone cannot trigger a match.
-_NO_NAME_OVERLAP_CAP = 0.50
 
 
 def resolve_into_kb(
@@ -31,11 +26,7 @@ def resolve_into_kb(
     new_entities: list[Entity],
     threshold: float = _DEFAULT_THRESHOLD,
 ) -> tuple[list[Entity], dict]:
-    """Cross-page entity resolution with fuzzy matching.
-
-    Replaces merge_into_kb for multi-page pipelines. Uses exact-key fast path
-    first, then scores against all KB candidates using contextual signals.
-    """
+    """Resolve incoming entities against the KB using strict identity signals."""
     kb_list: list[Entity] = list(kb_entities)
     kb_index: dict[str, Entity] = {entity_key(e): e for e in kb_list}
 
@@ -45,7 +36,7 @@ def resolve_into_kb(
     for entity in new_entities:
         key = entity_key(entity)
 
-        # Fast path: exact key (wikidataId or exact normalized name)
+        # Fast path: exact key means same wikidataId or exact normalized name.
         if key in kb_index:
             _enrich(kb_index[key], entity)
             resolved_pairs.append({
@@ -56,7 +47,6 @@ def resolve_into_kb(
             })
             continue
 
-        # Slow path: score against all KB candidates
         best_score = 0.0
         best_candidate: Entity | None = None
         best_signals: list[str] = []
@@ -93,19 +83,18 @@ def resolve_into_kb(
     return kb_list, report
 
 
-# ---------------------------------------------------------------------------
-# Scoring
-# ---------------------------------------------------------------------------
-
 def _resolution_score(base: Entity, incoming: Entity) -> tuple[float, list[str]]:
-    # Definitive: same non-empty wikidataId
     if base.wikidataId and incoming.wikidataId and base.wikidataId == incoming.wikidataId:
         return 1.0, ["wikidata_id"]
+    if base.wikidataId and incoming.wikidataId and base.wikidataId != incoming.wikidataId:
+        return 0.0, ["barrier_different_wikidata_id"]
+
+    if not _has_indubitable_name_match(base.name, incoming.name):
+        return 0.0, ["barrier_name_not_indubitable"]
 
     score = 0.0
-    signals: list[str] = []
+    signals: list[str] = ["indubitable_name_match"]
 
-    # Barrier: both have coordinates and they are far apart
     if _both_have_coords(base, incoming):
         dist = _distance_km(
             base.coordinates.lat, base.coordinates.lng,
@@ -117,58 +106,56 @@ def _resolution_score(base: Entity, incoming: Entity) -> tuple[float, list[str]]
             score += 0.55
             signals.append("coordinates_proximity")
 
-    # Address match
     base_addr = _normalize_address(base.address)
     inc_addr = _normalize_address(incoming.address)
     if base_addr and inc_addr and base_addr == inc_addr:
         score += 0.35
         signals.append("address_match")
 
-    # Name signals
     base_tokens = _significant_tokens(base.name)
     inc_tokens = _significant_tokens(incoming.name)
-
-    has_name_overlap = False
     if base_tokens and inc_tokens:
         longer = base_tokens if len(base_tokens) >= len(inc_tokens) else inc_tokens
         shorter = inc_tokens if longer is base_tokens else base_tokens
         shared = base_tokens & inc_tokens
 
-        if shared:
-            has_name_overlap = True
-
-        if len(shorter) == 1 and shorter <= longer:
-            # Single-token abbreviation (e.g. "La Catedral" → "Catedral de Burgos").
-            # Strong signal only when both entities share the same primary type;
-            # without type agreement the token alone is too ambiguous.
-            types_agree = (
-                bool(base.types) and bool(incoming.types)
-                and base.types[0] == incoming.types[0]
-            )
-            score += 0.65 if types_agree else 0.30
-            signals.append("single_token_containment" + ("_type_match" if types_agree else ""))
-        elif len(shorter) >= 2 and len(longer) >= 2 and shorter <= longer:
+        if len(shorter) >= 2 and shorter <= longer:
             score += 0.30
             signals.append("name_containment")
         elif shared:
-            # Jaccard similarity
             union = base_tokens | inc_tokens
             jaccard = len(shared) / len(union)
             if jaccard >= 0.50:
                 score += 0.20
                 signals.append(f"name_jaccard_{jaccard:.2f}")
 
-    # Barrier: no name overlap → cap score so that coordinates/address alone
-    # cannot merge two entities with completely different names.
-    if not has_name_overlap and score > _NO_NAME_OVERLAP_CAP:
-        return _NO_NAME_OVERLAP_CAP, signals + ["capped_no_name_overlap"]
-
-    # Shared primary type
     if base.types and incoming.types and base.types[0] == incoming.types[0]:
         score += 0.10
         signals.append("type_match")
 
     return score, signals
+
+
+def _has_indubitable_name_match(base_name: str, incoming_name: str) -> bool:
+    base_key = _strip_articles(normalize_key(base_name or ""))
+    incoming_key = _strip_articles(normalize_key(incoming_name or ""))
+    if not base_key or not incoming_key:
+        return False
+    if base_key == incoming_key:
+        return True
+
+    base_tokens = _significant_tokens(base_key)
+    incoming_tokens = _significant_tokens(incoming_key)
+    if not base_tokens or not incoming_tokens:
+        return False
+    longer = base_tokens if len(base_tokens) >= len(incoming_tokens) else incoming_tokens
+    shorter = incoming_tokens if longer is base_tokens else base_tokens
+
+    # A single-token alias such as "La Catedral" is not enough to enrich an
+    # existing entity unless a shared external ID proves identity.
+    if len(shorter) < 2:
+        return False
+    return shorter <= longer
 
 
 def _both_have_coords(a: Entity, b: Entity) -> bool:
@@ -179,16 +166,23 @@ def _both_have_coords(a: Entity, b: Entity) -> bool:
 
 
 def _distance_km(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
-    R = 6371.0
+    r = 6371.0
     phi1, phi2 = math.radians(lat1), math.radians(lat2)
     dphi = math.radians(lat2 - lat1)
     dlambda = math.radians(lng2 - lng1)
     a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2) ** 2
-    return R * 2 * math.asin(math.sqrt(a))
+    return r * 2 * math.asin(math.sqrt(a))
 
 
 def _normalize_address(address: str) -> str:
     return normalize_key(address or "").strip()
+
+
+def _strip_articles(text: str) -> str:
+    words = text.split()
+    while words and words[0] in {"el", "la", "los", "las", "un", "una", "the", "a", "an"}:
+        words = words[1:]
+    return " ".join(words)
 
 
 def _significant_tokens(text: str) -> frozenset[str]:

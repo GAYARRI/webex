@@ -46,7 +46,7 @@ Antes de extraer entidades de un bloque de pagina, el sistema debe:
    - IA;
    - reglas y heuristicas locales.
 5. Extraer solo entidades con valor semantico real para el dominio turistico, cultural, territorial, patrimonial, de eventos o servicios.
-6. Asociar imagenes a entidades solo cuando exista relacion por proximidad, contexto textual, contenido visible o evidencia fuerte.
+6. Asociar imagenes a entidades solo cuando el texto de la URL de la imagen tenga una coincidencia explicita o indubitable con el nombre de la entidad. La proximidad, el contexto textual, el `alt` o el contenido visible de la imagen pueden servir como apoyo de revision, pero no bastan por si solos para incluir la URL en `images`.
 
 El objetivo no es extraer todos los nombres mencionados, sino las entidades que representan conocimiento util y clasificable.
 
@@ -120,9 +120,9 @@ El archivo `ground_truth.json`, ubicado en la raiz del proyecto, actua como refe
 - Dado contenido con una entidad clara, cuando se procesa la pagina, entonces la salida incluye al menos `nombre_entidad`, `clasificacion_entidad`, `informacion_resumida`, `source_url` y `confidence`.
 - Dada una entidad detectada con apoyo de IA, cuando se devuelve la salida, entonces debe conservarse la URL de origen y, cuando sea posible, evidencia textual que justifique la deteccion.
 - Dado contenido con imagenes asociadas, cuando se procesa la pagina, entonces se incluyen las imagenes relevantes disponibles.
-- Dadas imagenes candidatas de la pagina, cuando se asocian a entidades, entonces el primer criterio debe ser la proximidad entre la imagen y el contexto textual de la entidad en la pagina.
+- Dadas imagenes candidatas de la pagina, cuando se asocian a entidades, entonces solo se incluyen si la URL de la imagen contiene tokens distintivos del nombre de la entidad o una forma compuesta equivalente.
 - Dada una entidad con varias imagenes relevantes, cuando se devuelve la salida, entonces puede incluir varias imagenes sin duplicados.
-- Dadas imagenes candidatas ambiguas, cuando se habilita analisis visual, entonces el sistema debe analizar el contenido de la imagen y su contexto para inferir si hay relacion con la entidad.
+- Dadas imagenes candidatas ambiguas, cuando se habilita analisis visual, entonces el sistema puede analizar el contenido de la imagen y su contexto para informar la decision, pero la salida final solo conserva imagenes cuya URL tambien cumpla la regla de coincidencia explicita o indubitable con el nombre de la entidad.
 - Dadas imagenes repetidas para una entidad, cuando se devuelve la salida, entonces deben aparecer una sola vez.
 - Dado contenido con direccion, telefono u horarios, cuando se procesa la pagina, entonces esos datos se agrupan en `informacion_contexto`.
 - Dado contenido con coordenadas explicitas, cuando se procesa la pagina, entonces se informan `lat` y `long`.

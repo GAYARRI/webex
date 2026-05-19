@@ -55,14 +55,14 @@ class ResolutionScoreTests(unittest.TestCase):
         b = _entity("Catedral de Madrid",  lat=40.416, lng=-3.703)
         score, signals = _resolution_score(a, b)
         self.assertEqual(score, 0.0)
-        self.assertIn("barrier_distance", signals)
+        self.assertIn("barrier_name_not_indubitable", signals)
 
-    def test_coordinates_proximity_adds_signal(self):
+    def test_coordinates_proximity_does_not_override_ambiguous_single_token_alias(self):
         a = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997, types=["Cathedral"])
         b = _entity("La Catedral",        lat=42.3409, lng=-3.6998, types=["Cathedral"])
         score, signals = _resolution_score(a, b)
-        self.assertIn("coordinates_proximity", signals)
-        self.assertGreaterEqual(score, 0.70)
+        self.assertEqual(score, 0.0)
+        self.assertIn("barrier_name_not_indubitable", signals)
 
     def test_name_containment_with_proximity_merges(self):
         a = _entity("Camino de Santiago por Burgos", lat=42.3408, lng=-3.6997, types=["Route"])
@@ -71,11 +71,12 @@ class ResolutionScoreTests(unittest.TestCase):
         self.assertIn("name_containment", signals)
         self.assertGreaterEqual(score, 0.70)
 
-    def test_address_match_adds_signal(self):
+    def test_address_match_does_not_override_ambiguous_name(self):
         a = _entity("Catedral de Burgos", address="Plaza de Santa Maria, Burgos")
         b = _entity("La Catedral",        address="Plaza de Santa Maria, Burgos")
         score, signals = _resolution_score(a, b)
-        self.assertIn("address_match", signals)
+        self.assertEqual(score, 0.0)
+        self.assertIn("barrier_name_not_indubitable", signals)
 
     def test_single_token_name_below_threshold_without_location(self):
         a = _entity("Museo")
@@ -93,12 +94,19 @@ class ResolveIntoKbTests(unittest.TestCase):
         self.assertEqual(report["enriched"], 1)
         self.assertEqual(report["added"], 0)
 
-    def test_fuzzy_name_with_coords_merges(self):
-        base     = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997, types=["Cathedral"])
-        incoming = _entity("La Catedral",        lat=42.3409, lng=-3.6998, types=["Cathedral"])
+    def test_contained_name_with_coords_merges(self):
+        base = _entity("Camino de Santiago por Burgos", lat=42.3408, lng=-3.6997, types=["Route"])
+        incoming = _entity("Camino de Santiago", lat=42.3409, lng=-3.6998, types=["Route"])
         kb, report = resolve_into_kb([base], [incoming])
         self.assertEqual(len(kb), 1)
         self.assertEqual(report["enriched"], 1)
+
+    def test_ambiguous_single_token_alias_creates_new_even_with_coords(self):
+        base = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997, types=["Cathedral"])
+        incoming = _entity("La Catedral", lat=42.3409, lng=-3.6998, types=["Cathedral"])
+        kb, report = resolve_into_kb([base], [incoming])
+        self.assertEqual(len(kb), 2)
+        self.assertEqual(report["enriched"], 0)
 
     def test_different_entities_create_new(self):
         base     = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997)
@@ -109,7 +117,7 @@ class ResolveIntoKbTests(unittest.TestCase):
 
     def test_wikidata_propagates_to_incoming(self):
         base     = _entity("Catedral de Burgos", wikidata="Q123", lat=42.3408, lng=-3.6997, types=["Cathedral"])
-        incoming = _entity("La Catedral",                         lat=42.3409, lng=-3.6998, types=["Cathedral"])
+        incoming = _entity("Catedral de Burgos",                  lat=42.3409, lng=-3.6998, types=["Cathedral"])
         kb, _ = resolve_into_kb([base], [incoming])
         # Only one entity in KB, base still has wikidataId
         self.assertEqual(kb[0].wikidataId, "Q123")
@@ -117,7 +125,7 @@ class ResolveIntoKbTests(unittest.TestCase):
     def test_descriptions_accumulate_not_replace(self):
         base     = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997,
                            types=["Cathedral"], desc="Descripcion original completa.")
-        incoming = _entity("La Catedral",        lat=42.3409, lng=-3.6998,
+        incoming = _entity("Catedral de Burgos", lat=42.3409, lng=-3.6998,
                            types=["Cathedral"], desc="Informacion adicional nueva.")
         kb, _ = resolve_into_kb([base], [incoming])
         self.assertIn("Descripcion original completa.", kb[0].longDescription)
@@ -127,7 +135,7 @@ class ResolveIntoKbTests(unittest.TestCase):
         text = "La catedral es un recurso patrimonial."
         base     = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997,
                            types=["Cathedral"], desc=text)
-        incoming = _entity("La Catedral",        lat=42.3409, lng=-3.6998,
+        incoming = _entity("Catedral de Burgos", lat=42.3409, lng=-3.6998,
                            types=["Cathedral"], desc=text)
         kb, _ = resolve_into_kb([base], [incoming])
         self.assertEqual(kb[0].longDescription.count(text), 1)
@@ -139,7 +147,7 @@ class ResolveIntoKbTests(unittest.TestCase):
                         metadata={"page_url": "https://b.com"})
         base     = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997, types=["Cathedral"])
         base.sources = [src_a]
-        incoming = _entity("La Catedral",        lat=42.3409, lng=-3.6998, types=["Cathedral"])
+        incoming = _entity("Catedral de Burgos", lat=42.3409, lng=-3.6998, types=["Cathedral"])
         incoming.sources = [src_b]
         kb, _ = resolve_into_kb([base], [incoming])
         page_urls = {s.metadata.get("page_url") for s in kb[0].sources}
@@ -147,8 +155,8 @@ class ResolveIntoKbTests(unittest.TestCase):
         self.assertIn("https://b.com", page_urls)
 
     def test_report_includes_resolved_pairs(self):
-        base     = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997, types=["Cathedral"])
-        incoming = _entity("La Catedral",        lat=42.3409, lng=-3.6998, types=["Cathedral"])
+        base = _entity("Camino de Santiago por Burgos", lat=42.3408, lng=-3.6997, types=["Route"])
+        incoming = _entity("Camino de Santiago", lat=42.3409, lng=-3.6998, types=["Route"])
         _, report = resolve_into_kb([base], [incoming])
         self.assertEqual(len(report["resolved_pairs"]), 1)
         pair = report["resolved_pairs"][0]
@@ -157,12 +165,12 @@ class ResolveIntoKbTests(unittest.TestCase):
 
     def test_threshold_respected(self):
         # proximity(0.55) + containment(0.30) = 0.85 → merges at 0.70, not at 0.90
-        base     = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997, types=["Cathedral"])
-        incoming = _entity("La Catedral",        lat=42.3409, lng=-3.6998, types=["Monument"])
+        base = _entity("Camino de Santiago por Burgos", lat=42.3408, lng=-3.6997, types=["Route"])
+        incoming = _entity("Camino de Santiago", lat=42.3409, lng=-3.6998, types=["Monument"])
         kb_low,  _ = resolve_into_kb([base], [incoming], threshold=0.70)
         self.assertEqual(len(kb_low), 1)   # merges at 0.70
-        base2    = _entity("Catedral de Burgos", lat=42.3408, lng=-3.6997, types=["Cathedral"])
-        incoming2= _entity("La Catedral",        lat=42.3409, lng=-3.6998, types=["Monument"])
+        base2 = _entity("Camino de Santiago por Burgos", lat=42.3408, lng=-3.6997, types=["Route"])
+        incoming2 = _entity("Camino de Santiago", lat=42.3409, lng=-3.6998, types=["Monument"])
         kb_high, _ = resolve_into_kb([base2], [incoming2], threshold=0.90)
         self.assertEqual(len(kb_high), 2)  # does not merge at 0.90
 

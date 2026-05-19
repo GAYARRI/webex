@@ -7,6 +7,7 @@ from typing import Any
 from .ai_client import TOURIST_TYPES, ai_available, extract_entities_with_ai
 from .entity_text import relevant_text_for_entity
 from .image_filters import is_image_url
+from .images import is_image_relevant_to_entity_url
 from .models import Coordinates, Entity, PageExtraction
 from .text_utils import normalize_key
 
@@ -109,9 +110,14 @@ def entities_from_blocks(page: PageExtraction) -> list[Entity]:
             longDescription=relevant_text[:1200],
             sourceText=relevant_text,
             description=relevant_text[:1200],
-            images=[item["url"] for item in block.images if item.get("url")],
+            images=[],
             evidence=relevant_text[:300] or name,
         )
+        entity.images = [
+            item["url"]
+            for item in block.images
+            if item.get("url") and is_image_relevant_to_entity_url(item["url"], entity)
+        ]
         _normalize_entity(entity, page)
         if _is_valid_entity(entity, page):
             entities.append(entity)

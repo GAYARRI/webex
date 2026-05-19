@@ -34,7 +34,7 @@ class ImageTests(unittest.TestCase):
 
         self.assertEqual(matches, ["https://example.com/castillo-burgos.jpg"])
 
-    def test_enriches_entity_without_losing_existing_images(self):
+    def test_discards_existing_images_without_name_match_in_url(self):
         page = _page(
             [
                 {"url": "https://example.com/centro-biodiversidad-1", "alt": "", "source": "page"},
@@ -44,7 +44,7 @@ class ImageTests(unittest.TestCase):
 
         enrich_entities_images([entity], page)
 
-        self.assertEqual(entity.images[0], "https://example.com/manual.jpg")
+        self.assertNotIn("https://example.com/manual.jpg", entity.images)
         self.assertIn("https://example.com/centro-biodiversidad-1", entity.images)
 
     def test_does_not_match_only_generic_centro_word(self):
@@ -95,8 +95,8 @@ class ImageTests(unittest.TestCase):
 
         self.assertEqual(matches, [])
 
-    def test_context_with_entity_name_is_accepted(self):
-        """Images with no URL/alt signal are accepted when surrounding text mentions the entity name."""
+    def test_context_with_entity_name_is_not_enough_without_url_match(self):
+        """Image assignment requires an explicit entity-name signal in the image URL."""
         page = _page(
             [
                 {
@@ -112,7 +112,23 @@ class ImageTests(unittest.TestCase):
 
         matches = match_images_for_entity(entity, page)
 
-        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches, [])
+
+    def test_alt_text_is_not_enough_without_url_match(self):
+        page = _page(
+            [
+                {
+                    "url": "https://example.com/imagen-generica.jpg",
+                    "alt": "Catedral de Burgos",
+                    "source": "page",
+                },
+            ]
+        )
+        entity = Entity(name="Catedral de Burgos", types=["monumento"])
+
+        matches = match_images_for_entity(entity, page)
+
+        self.assertEqual(matches, [])
 
     def test_context_without_entity_name_is_rejected(self):
         """Images whose context does not mention any name keyword are rejected."""

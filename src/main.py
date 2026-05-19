@@ -17,7 +17,7 @@ from .geo import enrich_entities_coordinates, enrich_entities_external_context, 
 from .ground_truth import compare_entities, load_ground_truth
 from .image_ai import analyze_images_with_vision
 from .image_filters import is_image_url, is_noise_image
-from .images import enrich_entities_images
+from .images import enrich_entities_images, is_image_relevant_to_entity_url
 from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
 from .knowledge_base import filter_low_quality_entities, load_crawled_urls, load_kb, save_kb, tag_sources_with_page_url
@@ -415,7 +415,12 @@ def _sanitize_entity_images(entities: Any) -> Any:
             entity.images = [*entity.images, entity.url]
             entity.url = ""
         for image in entity.images:
-            if not image or image in seen or is_noise_image(image):
+            if (
+                not image
+                or image in seen
+                or is_noise_image(image)
+                or not is_image_relevant_to_entity_url(image, entity)
+            ):
                 continue
             seen.add(image)
             clean_images.append(image)
@@ -444,7 +449,14 @@ def _consolidate_entity_evidence(entities: Any) -> Any:
         for source in entity.sources:
             if source.url and source.source_type not in {"page_block", "page"}:
                 entity.relatedUrls = [*entity.relatedUrls, source.url]
-                entity.images = [*entity.images, *source.images]
+                entity.images = [
+                    *entity.images,
+                    *[
+                        image
+                        for image in source.images
+                        if is_image_relevant_to_entity_url(image, entity)
+                    ],
+                ]
                 if source.text:
                     entity.longDescription = _append_context(entity.longDescription, source.text)
                     entity.description = _append_context(entity.description, source.text)

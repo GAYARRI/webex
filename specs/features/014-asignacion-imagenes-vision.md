@@ -61,6 +61,10 @@ python -m src.main https://visitaburgosciudad.es/ --crawl --no-vision
 - Si se usa estrategia `fallback`, solo las entidades sin imagen se pasan al modelo.
 - Si no hay `OPENAI_API_KEY`, la llamada visual se omite y el reporte indica
   `status: skipped`.
+- La vision no puede saltarse el contrato final de asignacion: una imagen solo
+  queda en `images` si la URL de la imagen contiene una coincidencia explicita o
+  indubitable con el nombre de la entidad. El contenido visual, el contexto o el
+  `alt` pueden ayudar a diagnosticar, pero no bastan para persistir la imagen.
 
 ## Flujo tecnico
 

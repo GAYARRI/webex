@@ -21,7 +21,7 @@ class OutputFormatTests(unittest.TestCase):
             score=0.9,
             sourceUrl="https://example.com/source",
             url="https://example.com/entity",
-            relatedUrls=["https://example.com/related", "https://example.com/image.jpg"],
+            relatedUrls=["https://example.com/related", "https://example.com/catedral-burgos.jpg"],
             address="Plaza de Santa Maria",
             phone="947000000",
             email="info@example.com",
@@ -71,7 +71,7 @@ class OutputFormatTests(unittest.TestCase):
         self.assertIn("confidence", coords)
         self.assertEqual(result[0]["sourceText"], "Texto fuente del bloque")
         self.assertEqual(result[0]["relatedUrls"], ["https://example.com/related"])
-        self.assertIn("https://example.com/image.jpg", result[0]["images"])
+        self.assertIn("https://example.com/catedral-burgos.jpg", result[0]["images"])
         self.assertIsInstance(result[0]["sources"], list)
         self.assertIn("evidence", result[0])
         self.assertEqual(result[0]["type"], "TouristAttractionSite")
@@ -100,7 +100,7 @@ class OutputFormatTests(unittest.TestCase):
                     block_id="Q1",
                     source_type="wikidata",
                     text="Contexto externo de Wikidata.",
-                    images=["https://example.com/wikidata.jpg"],
+                    images=["https://example.com/catedral-wikidata.jpg"],
                     metadata={"address": "Plaza Mayor", "phone": "947 000 000"},
                 ),
                 Evidence(
@@ -118,7 +118,7 @@ class OutputFormatTests(unittest.TestCase):
 
         self.assertEqual(
             result[0]["images"],
-            ["https://example.com/wikidata.jpg"],
+            ["https://example.com/catedral-wikidata.jpg"],
         )
         self.assertEqual(result[0]["relatedUrls"], ["https://www.wikidata.org/wiki/Q1"])
         self.assertEqual(result[0]["address"], "Plaza Mayor")
