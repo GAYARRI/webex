@@ -27,6 +27,24 @@ def fetch_html(url: str, timeout: int = DEFAULT_TIMEOUT) -> tuple[str, str, list
     resolved_url = ensure_url(url)
     headers = {"User-Agent": "ExtraccionWebSemantica/0.1"}
     warnings: list[str] = []
+
+    # HEAD probe: detect broken links and non-HTML content without downloading the body.
+    # 405/501 means the server does not support HEAD — fall through to GET.
+    # SSL or network errors on HEAD are also ignored so the GET path can handle them.
+    try:
+        probe = requests.head(resolved_url, timeout=timeout, headers=headers, allow_redirects=True)
+        if probe.status_code not in (405, 501):
+            probe.raise_for_status()
+            content_type = probe.headers.get("Content-Type", "")
+            if content_type and not content_type.lower().startswith("text/html"):
+                raise ValueError(
+                    f"Contenido no-HTML omitido: {content_type.split(';')[0].strip()}"
+                )
+    except (ValueError, requests.HTTPError):
+        raise
+    except Exception:
+        pass  # HEAD no disponible o error de red — intentar GET
+
     try:
         response = requests.get(resolved_url, timeout=timeout, headers=headers)
     except SSLError:
