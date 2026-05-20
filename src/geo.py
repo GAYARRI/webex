@@ -352,6 +352,21 @@ def enrich_entities_external_context(
     return entities
 
 
+def _extract_p31_qids(data: dict | None) -> list[str]:
+    """Return Wikidata 'instance of' (P31) QIDs from a fetched entity dict."""
+    if not data:
+        return []
+    qids: list[str] = []
+    for claim in data.get("claims", {}).get("P31", []):
+        try:
+            qid = claim["mainsnak"]["datavalue"]["value"]["id"]
+            if qid:
+                qids.append(qid)
+        except (KeyError, TypeError):
+            continue
+    return qids
+
+
 def _add_wikidata_evidence(
     entity: Entity,
     qid: str,
@@ -361,6 +376,7 @@ def _add_wikidata_evidence(
 ) -> None:
     data = _fetch_wikidata_entity(qid, timeout=timeout)
     text = _wikidata_text(data) if data else ""
+    p31_qids = _extract_p31_qids(data)
     evidence = Evidence(
         url=f"https://www.wikidata.org/wiki/{qid}",
         block_id=qid,
@@ -369,7 +385,7 @@ def _add_wikidata_evidence(
         text=text,
         images=images or wikidata_images_for_entity(entity, timeout=timeout),
         coordinates=coordinates if coordinates and coordinates.lat is not None else None,
-        metadata={"wikidataId": qid},
+        metadata={"wikidataId": qid, "p31_qids": p31_qids},
     )
     _append_evidence(entity, evidence)
 

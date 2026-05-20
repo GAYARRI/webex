@@ -222,7 +222,11 @@ def flatten_entities(
 ) -> list[dict[str, Any]]:
     """Flatten a list of serialised entity dicts: build summary, filter images."""
     result = []
+    skipped = 0
     for i, entity in enumerate(entities, 1):
+        if not entity.get("type"):
+            skipped += 1
+            continue
         if not quiet:
             print(
                 f"  [{i}/{len(entities)}] Aplanando: {entity.get('name', '?')}",
@@ -230,6 +234,8 @@ def flatten_entities(
                 flush=True,
             )
         result.append(flatten_entity(entity, use_ai=use_ai, model=model, quiet=quiet))
+    if skipped and not quiet:
+        print(f"  {skipped} entidades sin tipo descartadas.", file=sys.stderr, flush=True)
     return result
 
 
