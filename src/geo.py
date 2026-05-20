@@ -282,6 +282,58 @@ def enrich_entities_wikidata_images(
     return entities
 
 
+WIKIMEDIA_COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php"
+_COMMONS_GEOSEARCH_CACHE: dict[tuple[float, float], list[str]] = {}
+
+
+def _wikimedia_commons_geosearch(lat: float, lng: float, radius_m: int = 200, limit: int = 5, timeout: int = 10) -> list[str]:
+    cache_key = (round(lat, 5), round(lng, 5))
+    if cache_key in _COMMONS_GEOSEARCH_CACHE:
+        return _COMMONS_GEOSEARCH_CACHE[cache_key]
+    params = {
+        "action": "query",
+        "list": "geosearch",
+        "gscoord": f"{lat}|{lng}",
+        "gsradius": radius_m,
+        "gslimit": limit,
+        "gsnamespace": 6,
+        "format": "json",
+    }
+    try:
+        resp = requests.get(
+            WIKIMEDIA_COMMONS_API_URL,
+            params=params,
+            timeout=timeout,
+            headers={"User-Agent": "ExtraccionWeb/1.0 (tourism-kb)"},
+        )
+        resp.raise_for_status()
+        results = resp.json().get("query", {}).get("geosearch", [])
+        urls: list[str] = []
+        for item in results:
+            title = item.get("title", "")
+            if title.startswith("File:"):
+                filename = quote(title[5:].replace(" ", "_"), safe="")
+                urls.append(WIKIMEDIA_FILE_URL.format(filename=filename))
+        _COMMONS_GEOSEARCH_CACHE[cache_key] = urls
+        return urls
+    except Exception:
+        _COMMONS_GEOSEARCH_CACHE[cache_key] = []
+        return []
+
+
+def enrich_entities_geosearch_images(entities: list[Entity], timeout: int = 10) -> list[Entity]:
+    """Level-3 fallback: assign Wikimedia Commons images by coordinates for entities still without images."""
+    for entity in entities:
+        if entity.images:
+            continue
+        if entity.coordinates.lat is None or entity.coordinates.lng is None:
+            continue
+        urls = _wikimedia_commons_geosearch(entity.coordinates.lat, entity.coordinates.lng, timeout=timeout)
+        if urls:
+            entity.images = urls
+    return entities
+
+
 def enrich_entities_external_context(
     entities: list[Entity],
     page: PageExtraction,

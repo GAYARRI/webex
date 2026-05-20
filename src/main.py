@@ -10,13 +10,14 @@ from typing import Any
 from dotenv import load_dotenv
 
 from .ai_client import configured_model
+from .flattener import flatten_entities
 from .content_coverage import analyze_content_coverage
 from .entity_extractor import classify_entities, extract_entities
 from .entity_merger import attach_block_evidence, merge_entities
-from .geo import enrich_entities_coordinates, enrich_entities_external_context, enrich_entities_wikidata_images
+from .geo import enrich_entities_coordinates, enrich_entities_external_context, enrich_entities_geosearch_images, enrich_entities_wikidata_images
 from .ground_truth import compare_entities, load_ground_truth
 from .image_ai import analyze_images_with_vision
-from .image_filters import is_image_url, is_noise_image
+from .image_filters import is_image_url, is_noise_image, is_trusted_image_source
 from .images import enrich_entities_images, is_image_relevant_to_entity_url
 from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
@@ -126,6 +127,13 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="CODE",
         help="Filtra URLs por idioma en modo --crawl (ej: es, en, fr). Descarta paginas con prefijo de otro idioma.",
     )
+    parser.add_argument(
+        "--no-flatten",
+        action="store_false",
+        dest="flatten",
+        default=True,
+        help="Desactiva el post-proceso de aplanado (summary unificado + verificación de imágenes rotas).",
+    )
     return parser
 
 
@@ -158,6 +166,7 @@ def _process_page(
     entities = enrich_entities_coordinates(entities, page, geocode=args.geocode)
     if args.geocode:
         entities = enrich_entities_wikidata_images(entities)
+        entities = enrich_entities_geosearch_images(entities)
         entities = enrich_entities_external_context(entities, page)
     entities = _consolidate_entity_evidence(entities)
     entities = classify_entities(entities)
@@ -215,7 +224,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             scope=args.ground_truth_scope,
         )
 
-    return result
+    return _apply_flatten(result, args)
 
 
 def _collect_urls(args: argparse.Namespace) -> list[str]:
@@ -279,14 +288,14 @@ def run_batch(args: argparse.Namespace) -> dict[str, Any]:
 
     output_format = getattr(args, "format", "full")
     if output_format == "golden":
-        return {"batch_report": batch_report, "entities": _build_golden_result(kb_entities)}
+        result = {"batch_report": batch_report, "entities": _build_golden_result(kb_entities)}
     elif output_format == "clean":
         first_url = urls[0] if urls else ""
         result = _build_clean_result(first_url, kb_entities)
         result["batch_report"] = batch_report
-        return result
     else:
-        return {**batch_report, "entities": _build_golden_result(kb_entities)}
+        result = {**batch_report, "entities": _build_golden_result(kb_entities)}
+    return _apply_flatten(result, args)
 
 
 CLEAN_COORDS_MIN_CONFIDENCE = 0.3
@@ -419,7 +428,7 @@ def _sanitize_entity_images(entities: Any) -> Any:
                 not image
                 or image in seen
                 or is_noise_image(image)
-                or not is_image_relevant_to_entity_url(image, entity)
+                or (not is_trusted_image_source(image) and not is_image_relevant_to_entity_url(image, entity))
             ):
                 continue
             seen.add(image)
@@ -454,7 +463,7 @@ def _consolidate_entity_evidence(entities: Any) -> Any:
                     *[
                         image
                         for image in source.images
-                        if is_image_relevant_to_entity_url(image, entity)
+                        if is_trusted_image_source(image) or is_image_relevant_to_entity_url(image, entity)
                     ],
                 ]
                 if source.text:
@@ -538,12 +547,12 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
     added_total = 0
     enriched_total = 0
 
-    # Snapshot total before the loop so the denominator stays stable.
-    initial_total = args.max_pages or crawl.total_known
-
     for url in crawl:
         n = crawl.visited_count
-        _progress(f"[{n}/{initial_total}] {url}")
+        # With sitemap: total is known upfront and stable.
+        # With BFS: total grows as links are discovered; show current known total.
+        total = args.max_pages or crawl.total_known
+        _progress(f"[{n}/{total}] {url}")
         try:
             resolved_url, html, fetch_warnings = fetch_html(url)
             page = parse_html(resolved_url, html, errors=fetch_warnings)
@@ -558,6 +567,7 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
             entities = enrich_entities_coordinates(entities, page, geocode=args.geocode)
             if args.geocode:
                 entities = enrich_entities_wikidata_images(entities)
+                entities = enrich_entities_geosearch_images(entities)
                 entities = enrich_entities_external_context(entities, page)
             entities = _consolidate_entity_evidence(entities)
             entities = classify_entities(entities)
@@ -620,13 +630,13 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
 
     output_format = getattr(args, "format", "full")
     if output_format == "golden":
-        return {"crawl_report": crawl_report, "entities": _build_golden_result(kb_entities)}
+        result = {"crawl_report": crawl_report, "entities": _build_golden_result(kb_entities)}
     elif output_format == "clean":
         result = _build_clean_result(args.url, kb_entities)
         result["crawl_report"] = crawl_report
-        return result
     else:
-        return {**crawl_report, "entities": _build_golden_result(kb_entities)}
+        result = {**crawl_report, "entities": _build_golden_result(kb_entities)}
+    return _apply_flatten(result, args)
 
 
 def main() -> None:
@@ -670,6 +680,25 @@ def main() -> None:
 
     if not args.quiet:
         _print_output(output)
+
+
+def _apply_flatten(result: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
+    if not getattr(args, "flatten", False):
+        return result
+    entities = result.get("entities", [])
+    if not entities:
+        return result
+    model = args.model or configured_model()
+    quiet = getattr(args, "quiet", False)
+    use_ai = not getattr(args, "no_ai", False)
+    if not quiet:
+        print(
+            f"\nAplanando {len(entities)} entidades (summary + verificación de imágenes)...",
+            file=sys.stderr,
+            flush=True,
+        )
+    result["entities"] = flatten_entities(entities, use_ai=use_ai, model=model, quiet=quiet)
+    return result
 
 
 def _print_output(output: str) -> None:

@@ -10,7 +10,7 @@ from .models import Entity
 from .text_utils import normalize_key
 
 
-_DEFAULT_THRESHOLD = 0.75
+_DEFAULT_THRESHOLD = 0.90
 _BARRIER_KM = 5.0
 _PROXIMITY_KM = 0.15
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from urllib.parse import unquote, urlparse
 
+from .image_filters import is_noise_image
 from .models import Entity, PageExtraction
 from .text_utils import normalize_key
 
@@ -52,6 +53,7 @@ GENERIC_IMAGE_TOKENS = {
 
 
 def enrich_entities_images(entities: list[Entity], page: PageExtraction, max_images: int = 8) -> list[Entity]:
+    is_detail_page = len(entities) == 1
     for entity in entities:
         existing = [
             url
@@ -60,8 +62,46 @@ def enrich_entities_images(entities: list[Entity], page: PageExtraction, max_ima
         ]
         matches = match_images_for_entity(entity, page)
         merged = _dedupe([*existing, *matches])
+
+        # Level 2a: context proximity — image's surrounding text mentions the entity
+        if not merged:
+            merged = _dedupe(match_images_by_context(entity, page))
+
+        # Level 2b: position proximity — only on single-entity detail pages
+        if not merged and is_detail_page:
+            merged = _dedupe(_page_images_by_position(page))
+
         entity.images = merged[:max_images]
     return entities
+
+
+def match_images_by_context(entity: Entity, page: PageExtraction) -> list[str]:
+    """Level-2 fallback: images whose surrounding DOM text mentions the entity."""
+    keywords = _entity_name_keywords(entity)
+    if not keywords:
+        return []
+    scored: list[tuple[int, int, str]] = []
+    for image in page.images:
+        url = image.get("url", "")
+        if not url or _is_generic_image(_url_haystack(url)) or is_noise_image(url):
+            continue
+        ctx_score = _score_context(image, keywords)
+        if ctx_score <= 0:
+            continue
+        index = int(image.get("index", "999999") or "999999")
+        scored.append((ctx_score, -index, url))
+    scored.sort(key=lambda item: (item[0], item[1]), reverse=True)
+    return [url for _, _, url in scored]
+
+
+def _page_images_by_position(page: PageExtraction) -> list[str]:
+    """Level-2b fallback: all non-noise page images in DOM order (detail pages only)."""
+    sorted_imgs = sorted(page.images, key=lambda i: int(i.get("index", "999999") or "999999"))
+    return [
+        img["url"]
+        for img in sorted_imgs
+        if img.get("url") and not _is_generic_image(_url_haystack(img.get("url", ""))) and not is_noise_image(img.get("url", ""))
+    ]
 
 
 def match_images_for_entity(entity: Entity, page: PageExtraction) -> list[str]:

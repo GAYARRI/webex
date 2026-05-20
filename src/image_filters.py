@@ -99,6 +99,21 @@ def is_noise_image(url: str, alt: str = "", metadata: str = "") -> bool:
     return False
 
 
+_TRUSTED_IMAGE_DOMAINS = {
+    "commons.wikimedia.org",
+    "upload.wikimedia.org",
+}
+
+
+def is_trusted_image_source(url: str) -> bool:
+    """Images from curated encyclopedic sources bypass URL-name relevance checks."""
+    try:
+        host = urlparse(url).netloc.lower()
+        return host in _TRUSTED_IMAGE_DOMAINS
+    except Exception:
+        return False
+
+
 def is_image_url(url: str) -> bool:
     parsed = urlparse(unquote(url or ""))
     path = parsed.path.lower()
