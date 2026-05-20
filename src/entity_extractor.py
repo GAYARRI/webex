@@ -62,8 +62,11 @@ def extract_entities(page: PageExtraction, use_ai: bool = True, model: str | Non
     else:
         ai_entities = heuristic_entities(page)
 
-    # Structured data entities go first: merge_entities() will deduplicate by key
-    return clean_entities([*structured_entities, *block_entities, *ai_entities], page)
+    # Page-meta entity goes first so merge_entities() uses it as the anchor
+    # when the block extractor picks up a section heading instead of the entity name.
+    meta = entity_from_page_meta(page)
+    page_meta = [meta] if meta else []
+    return clean_entities([*page_meta, *structured_entities, *block_entities, *ai_entities], page)
 
 
 def clean_entities(entities: list[Entity], page: PageExtraction) -> list[Entity]:
@@ -83,6 +86,56 @@ def classify_entities(entities: list[Entity]) -> list[Entity]:
         entity.types = types
         entity.classificationEvidence = evidence
     return entities
+
+
+def _clean_page_title(title: str) -> str:
+    """Return the entity name from a page title like 'Entity Name - Site Name'.
+
+    Takes the first segment (the entity) rather than the shortest (usually the
+    site name), which is what _clean_name does for block titles.
+    """
+    title = (title or "").strip()
+    for sep in (" | ", " - ", " – ", " — "):
+        if sep in title:
+            first = title.split(sep, 1)[0].strip()
+            if first:
+                return first
+    return title
+
+
+def entity_from_page_meta(page: PageExtraction) -> Entity | None:
+    """Create an entity from the page <title> and meta description.
+
+    Only fires when the page title clearly names a single tourist resource
+    (type inference confidence >= 40).  Score 0.9 so filter_low_quality_entities
+    treats it as an anchor-quality entity on par with structured-data entries.
+    """
+    name = _clean_page_title(page.title)
+    if not name:
+        return None
+    name_key = normalize_key(name)
+    if not name_key or name_key in NAVIGATION_NAMES:
+        return None
+
+    # Reuse _infer_type on a temporary entity to check tourist keyword confidence.
+    probe = Entity(name=name, score=0.9, sourceUrl=page.url, url="")
+    inferred, confidence, _ = _infer_type(probe)
+    if not inferred or confidence < 40:
+        return None
+
+    description = (page.description or "").strip()
+    return Entity(
+        name=name,
+        types=[inferred],
+        score=0.9,
+        sourceUrl=page.url,
+        url="",
+        shortDescription=description[:300],
+        longDescription=description,
+        description=description,
+        images=[],
+        evidence=f"page_title:{name}",
+    )
 
 
 def entities_from_structured_data(page: PageExtraction) -> list[Entity]:
