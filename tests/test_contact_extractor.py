@@ -21,6 +21,28 @@ class ContactExtractorTests(unittest.TestCase):
 
         self.assertEqual(info["address"], "")
 
+    def test_trims_address_before_schedule_noise(self):
+        info = extract_contact_info(
+            "Triana-Castillo de San Jorge. Plaza del Altozano s/n De lunes a domingo: 09:30-14:30h"
+        )
+
+        self.assertEqual(info["address"], "Plaza del Altozano s/n")
+
+    def test_rejects_narrative_street_sentence(self):
+        info = extract_contact_info(
+            "La calle Betis se llena de casetas al mas puro estilo feria de Sevilla."
+        )
+
+        self.assertEqual(info["address"], "")
+
+    def test_rejects_long_route_context_as_address(self):
+        info = extract_contact_info(
+            "Ruta. Plaza de la Encarnacion y calle Larana sirven como escenario principal "
+            "de una ruta audiovisual por la ciudad."
+        )
+
+        self.assertEqual(info["address"], "")
+
 
 if __name__ == "__main__":
     unittest.main()

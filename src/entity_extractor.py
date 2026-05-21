@@ -9,7 +9,7 @@ from .entity_text import relevant_text_for_entity
 from .image_filters import is_image_url
 from .images import is_image_relevant_to_entity_url
 from .models import Coordinates, Entity, PageExtraction
-from .text_utils import normalize_key
+from .text_utils import clean_content_text, normalize_key
 
 
 SCHEMA_TO_TOURIST_TYPE: dict[str, str] = {
@@ -566,6 +566,11 @@ def _is_valid_address(address: str) -> bool:
 def _normalize_entity(entity: Entity, page: PageExtraction) -> None:
     entity.name = _clean_name(entity.name)
     entity.sourceUrl = entity.sourceUrl or page.url
+    entity.shortDescription = clean_content_text(entity.shortDescription)
+    entity.longDescription = clean_content_text(entity.longDescription)
+    entity.description = clean_content_text(entity.description)
+    entity.sourceText = clean_content_text(entity.sourceText)
+    entity.evidence = clean_content_text(entity.evidence)
     if not _is_valid_address(entity.address):
         entity.address = ""
     if entity.url and is_image_url(entity.url):
@@ -807,6 +812,8 @@ def _is_valid_entity(entity: Entity, page: PageExtraction) -> bool:
     name_key = normalize_key(entity.name)
     if len(name_key) < 3:
         return False
+    if _is_editorial_title(entity.name, entity.sourceUrl or page.url, entity.types):
+        return False
     if _is_url_like_name(entity.name, page.url):
         return False
     if name_key in NAVIGATION_NAMES:
@@ -817,6 +824,38 @@ def _is_valid_entity(entity: Entity, page: PageExtraction) -> bool:
     if not entity.types and not _has_substantive_evidence(entity):
         return False
     return True
+
+
+EDITORIAL_NAME_PREFIXES = (
+    "sabias que",
+    "conoces",
+    "curiosidades",
+    "redescubre",
+    "descubre esta",
+    "disfruta de",
+    "consejos para",
+    "opciones unicas",
+    "una ruta por",
+    "la unica",
+)
+
+
+def _is_editorial_title(name: str, source_url: str, types: list[str]) -> bool:
+    """Reject article-style headlines unless they are explicit event pages."""
+    name_key = normalize_key(name)
+    if not name_key:
+        return False
+    path_segments = set(urlparse(source_url or "").path.strip("/").split("/"))
+    if "evento" in path_segments and "Event" in types:
+        return False
+    if any(name_key.startswith(prefix) for prefix in EDITORIAL_NAME_PREFIXES):
+        return True
+    word_count = len(name_key.split())
+    if word_count > 14 and "evento" not in path_segments:
+        return True
+    if " se encuentra " in f" {name_key} " and "evento" not in path_segments:
+        return True
+    return False
 
 
 def _is_url_like_name(name: str, page_url: str) -> bool:

@@ -29,3 +29,36 @@ def normalize_key(value: str) -> str:
 def is_boilerplate_text(text: str) -> bool:
     """Return True if text contains CMS/navigation boilerplate patterns."""
     return bool(_BOILERPLATE_RE.search(text or ""))
+
+
+_TEXT_PREFIX_RE = re.compile(
+    r"^(?:"
+    r"mas lugares de interes|"
+    r"m[a\u00e1]s lugares de inter[e\u00e9]s|"
+    r"lugares de interes|"
+    r"lugares de inter[e\u00e9]s|"
+    r"curiosidades|"
+    r"ficha"
+    r")\b[:\s-]*",
+    re.IGNORECASE,
+)
+
+_INLINE_NOISE_RE = re.compile(
+    r"\b(?:mas lugares de interes|m[a\u00e1]s lugares de inter[e\u00e9]s|lugares de interes|"
+    r"lugares de inter[e\u00e9]s|ver mapa|saber mas|saber m[a\u00e1]s|leer mas|leer m[a\u00e1]s|"
+    r"reserva ahora)\b",
+    re.IGNORECASE,
+)
+
+
+def clean_content_text(text: str) -> str:
+    """Remove repeated CMS labels and inline actions from extracted content text."""
+    cleaned = compact_text(text)
+    previous = None
+    while cleaned and cleaned != previous:
+        previous = cleaned
+        cleaned = _TEXT_PREFIX_RE.sub("", cleaned).strip()
+    cleaned = _INLINE_NOISE_RE.sub("", cleaned)
+    cleaned = re.sub(r"\s+([.,;:])", r"\1", cleaned)
+    cleaned = re.sub(r"(?:\.\s*){2,}", ". ", cleaned)
+    return compact_text(cleaned)

@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 from .image_filters import is_noise_image
 from .models import ContentBlock
-from .text_utils import compact_text
+from .text_utils import clean_content_text, compact_text
 
 
 BLOCK_TAGS = ["article", "section", "main"]
@@ -30,7 +30,7 @@ def extract_blocks(url: str, soup: BeautifulSoup, max_blocks: int = 80) -> list[
         candidates.extend(soup.select(selector))
 
     for position, tag in enumerate(candidates):
-        text = compact_text(tag.get_text(" "))
+        text = clean_content_text(tag.get_text(" "))
         if not _is_useful_block_text(text):
             continue
         text_key = text[:300]
@@ -53,7 +53,7 @@ def extract_blocks(url: str, soup: BeautifulSoup, max_blocks: int = 80) -> list[
             break
 
     if not blocks:
-        body_text = compact_text(soup.get_text(" "))
+        body_text = clean_content_text(soup.get_text(" "))
         if body_text:
             blocks.append(
                 ContentBlock(
@@ -85,7 +85,7 @@ def _is_useful_block_text(text: str) -> bool:
 def _block_title(tag) -> str:
     heading = tag.find(["h1", "h2", "h3", "h4"]) if hasattr(tag, "find") else None
     if heading:
-        return compact_text(heading.get_text(" "))
+        return clean_content_text(heading.get_text(" "))
     return ""
 
 
@@ -110,7 +110,7 @@ def _block_images(url: str, tag) -> list[dict[str, str]]:
                 "alt": alt,
                 "source": "block",
                 "index": str(index),
-                "context": compact_text(tag.get_text(" "))[:1000],
+                "context": clean_content_text(tag.get_text(" "))[:1000],
             }
         )
     return images[:20]

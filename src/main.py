@@ -698,6 +698,7 @@ def _apply_flatten(result: dict[str, Any], args: argparse.Namespace) -> dict[str
             flush=True,
         )
     result["entities"] = flatten_entities(entities, use_ai=use_ai, model=model, quiet=quiet)
+    result["entities_output_count"] = len(result["entities"])
     return result
 
 

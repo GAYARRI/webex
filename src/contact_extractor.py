@@ -19,6 +19,22 @@ ADDRESS_MARKERS = [
     "plaza",
 ]
 
+ADDRESS_STOP_RE = re.compile(
+    r"\b(?:ver mapa|horarios?|fecha|hora|precio|idiomas?|de lunes|lunes|martes|"
+    r"miercoles|mi\u00e9rcoles|jueves|viernes|sabado|s\u00e1bado|domingo|actividad|"
+    r"informacion|informaci\u00f3n|reserva|entrada|gratuito)\b",
+    re.IGNORECASE,
+)
+
+NARRATIVE_ADDRESS_RE = re.compile(
+    r"\b(?:se llena|se encuentran?|sirven?|disfrutar|recorrido|actividad|"
+    r"concierto|casetas?|escenario|temporada|prevision|previsi\u00f3n)\b",
+    re.IGNORECASE,
+)
+
+MAX_ADDRESS_WORDS = 14
+MAX_ADDRESS_LENGTH = 90
+
 
 def extract_contact_info(text: str) -> dict[str, str]:
     return {
@@ -59,4 +75,24 @@ def _trim_address(sentence: str) -> str:
     )
     if not match:
         return ""
-    return compact_text(match.group(1).strip(" ,.;"))
+    address = compact_text(match.group(1).strip(" ,.;"))
+    address = ADDRESS_STOP_RE.split(address, maxsplit=1)[0]
+    address = compact_text(address.strip(" ,.;:-"))
+    if not _is_plausible_address(address):
+        return ""
+    return address
+
+
+def _is_plausible_address(address: str) -> bool:
+    if not address:
+        return False
+    if len(address) > MAX_ADDRESS_LENGTH:
+        return False
+    if len(address.split()) > MAX_ADDRESS_WORDS:
+        return False
+    if NARRATIVE_ADDRESS_RE.search(address):
+        return False
+    lowered = address.casefold()
+    if lowered in {"calle", "plaza", "paseo", "avenida", "carretera", "c/"}:
+        return False
+    return True

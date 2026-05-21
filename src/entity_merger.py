@@ -4,7 +4,7 @@ from .contact_extractor import extract_contact_info
 from .entity_text import relevant_text_for_entity
 from .images import is_image_relevant_to_entity_url
 from .models import Entity, Evidence, PageExtraction
-from .text_utils import compact_text, normalize_key
+from .text_utils import clean_content_text, compact_text, normalize_key
 
 
 LEADING_ARTICLES = {"el", "la", "los", "las", "un", "una", "the", "a", "an", "le", "les"}
@@ -21,7 +21,7 @@ def attach_block_evidence(entities: list[Entity], page: PageExtraction) -> list[
     for entity in entities:
         matching_blocks = _matching_blocks(entity, page)
         for block in matching_blocks:
-            relevant_text = relevant_text_for_entity(entity.name, block.text)
+            relevant_text = clean_content_text(relevant_text_for_entity(entity.name, block.text))
             contact = extract_contact_info(relevant_text)
             evidence = Evidence(
                 url=page.url,

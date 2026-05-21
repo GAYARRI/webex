@@ -8,12 +8,14 @@ from typing import Any
 import urllib3
 import requests as _requests
 from dotenv import load_dotenv
+from .text_utils import clean_content_text
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 _IMAGE_CHECK_WORKERS = 20
 _IMAGE_CHECK_TIMEOUT = 5
 _IMAGE_CHECK_HEADERS = {"User-Agent": "ExtraccionWeb/1.0 (tourism-kb)"}
+_MAX_FLAT_IMAGES = 10
 
 
 def _check_image_url(url: str) -> bool:
@@ -68,7 +70,7 @@ def _collect_texts(entity: dict[str, Any]) -> list[str]:
     seen: set[str] = set()
     result: list[str] = []
     for text in candidates:
-        text = (text or "").strip()
+        text = clean_content_text(text or "")
         if not text or text in seen:
             continue
         # Skip if this text is a substring of one already collected
@@ -191,7 +193,7 @@ def flatten_entity(
         summary = _build_summary_no_ai(entity)
 
     all_images = _collect_all_images(entity)
-    clean_images = filter_broken_images(all_images, quiet=quiet)
+    clean_images = filter_broken_images(all_images, quiet=quiet)[:_MAX_FLAT_IMAGES]
     coordinates = _promote_coordinates(entity)
     wikidata_id = _promote_wikidata_id(entity)
     reference_urls = _collect_reference_urls(entity)

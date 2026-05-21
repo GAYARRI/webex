@@ -26,6 +26,23 @@ class BlocksAndMergerTests(unittest.TestCase):
         self.assertEqual(page.blocks[0].title, "Catedral de Burgos")
         self.assertEqual(page.blocks[0].images[0]["url"], "https://example.com/catedral.jpg")
 
+    def test_parse_html_cleans_common_content_prefixes(self):
+        page = parse_html(
+            "https://example.com",
+            """
+            <html><body>
+              <section>
+                <h2>Mas lugares de interes Convento del Santo Angel</h2>
+                <p>Mas lugares de interes Convento del Santo Angel. Ver mapa.</p>
+              </section>
+            </body></html>
+            """,
+        )
+
+        self.assertEqual(page.blocks[0].title, "Convento del Santo Angel")
+        self.assertNotIn("Mas lugares de interes", page.blocks[0].text)
+        self.assertNotIn("Ver mapa", page.blocks[0].text)
+
     def test_attach_block_evidence_and_merge_entities(self):
         page = PageExtraction(
             url="https://example.com",
@@ -259,6 +276,44 @@ class BlocksAndMergerTests(unittest.TestCase):
         entities = heuristic_entities(page)
 
         self.assertEqual(entities, [])
+
+    def test_clean_entities_rejects_editorial_article_titles(self):
+        page = PageExtraction(
+            url="https://visitasevilla.es/sabias-que-la-catedral",
+            title="Curiosidad",
+            description=None,
+            language="es",
+            main_text="",
+            raw_text="",
+            images=[],
+            status="ok",
+        )
+        entity = Entity(
+            name="Sabias que la Catedral de Sevilla es uno de los templos con mas campanas de Espana",
+            types=["Cathedral"],
+            evidence="Articulo de curiosidades sobre la Catedral.",
+        )
+
+        self.assertEqual(clean_entities([entity], page), [])
+
+    def test_clean_entities_keeps_event_page_with_long_event_title(self):
+        page = PageExtraction(
+            url="https://visitasevilla.es/evento/experiencia-inmersiva-titanic",
+            title="Evento",
+            description=None,
+            language="es",
+            main_text="",
+            raw_text="",
+            images=[],
+            status="ok",
+        )
+        entity = Entity(
+            name="Experiencia Inmersiva TITANIC Avenida Kansas City junto al Mercadona",
+            types=["Event"],
+            evidence="Evento turistico temporal en Sevilla.",
+        )
+
+        self.assertEqual(len(clean_entities([entity], page)), 1)
 
     def test_heuristic_entities_ignore_more_navigation_titles(self):
         page = PageExtraction(
