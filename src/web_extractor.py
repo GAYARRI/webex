@@ -151,7 +151,13 @@ def _images(url: str, soup: BeautifulSoup) -> list[dict[str, str]]:
     images: list[dict[str, str]] = []
     seen: set[str] = set()
     for index, img in enumerate(soup.find_all("img")):
-        src = img.get("src") or img.get("data-src")
+        src = (
+            img.get("src")
+            or img.get("data-src")
+            or img.get("data-lazy-src")
+            or img.get("data-lazy")
+            or img.get("data-original")
+        )
         if not src:
             continue
         absolute = urljoin(url, src)

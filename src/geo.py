@@ -87,14 +87,31 @@ def extract_geo_candidates(soup: BeautifulSoup, structured_data: list[dict[str, 
     candidates: list[Coordinates] = []
     candidates.extend(_geo_from_structured_data(structured_data))
     candidates.extend(_geo_from_meta(soup))
+    candidates.extend(_geo_from_iframes(soup))
     candidates.extend(_geo_from_text(str(soup)))
     return _unique_coordinates(candidates)
+
+
+def _geo_from_iframes(soup: BeautifulSoup) -> list[Coordinates]:
+    """Extract coordinates from Google Maps embed iframes (?q=lat,lng)."""
+    candidates: list[Coordinates] = []
+    for iframe in soup.find_all("iframe"):
+        src = str(iframe.get("src") or "")
+        if "maps.google" not in src and "google.com/maps" not in src:
+            continue
+        m = re.search(r"[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)", src)
+        if m:
+            coord = _coordinate_from_values(m.group(1), m.group(2), "google-maps-iframe", 0.85)
+            if coord:
+                candidates.append(coord)
+    return candidates
 
 
 def enrich_entity_coordinates(
     entity: Entity,
     page: PageExtraction,
     geocode: bool = False,
+    wikidata_coords: bool = False,
     timeout: int = 12,
 ) -> Entity:
     if entity.coordinates.lat is not None and entity.coordinates.lng is not None:
@@ -123,22 +140,38 @@ def enrich_entity_coordinates(
             )
             return entity
 
-    if geocode:
+    # Tier 1: wikidataId already known — fetch P625 directly, no search needed.
+    # Runs always (no flag required) since it reuses cached Wikidata data.
+    if entity.wikidataId:
+        city_context = _city_context(page)
+        candidate = _wikidata_entity_coordinates(
+            entity.wikidataId, city_context=city_context, timeout=timeout
+        )
+        if candidate:
+            entity.coordinates = candidate
+            _add_wikidata_evidence(entity, entity.wikidataId, candidate, timeout=timeout)
+            return entity
+
+    # Tier 2: Wikidata name search for entities without wikidataId.
+    # Activated by --wikidata-coords or --geocode.
+    if (geocode or wikidata_coords) and not entity.wikidataId:
         wikidata_candidate = wikidata_coordinates(entity, page, timeout=timeout)
         if wikidata_candidate:
             candidate, qid = wikidata_candidate
             entity.coordinates = candidate
-            if not entity.wikidataId:
-                entity.wikidataId = qid
+            entity.wikidataId = qid
             _add_wikidata_evidence(entity, qid, candidate, timeout=timeout)
-        else:
-            geocode_result = geocode_entity(entity, page, timeout=timeout)
-            if geocode_result:
-                candidate, metadata = geocode_result
-                entity.coordinates = candidate
-                if not entity.address and metadata.get("address"):
-                    entity.address = str(metadata["address"])
-                _add_openstreetmap_evidence(entity, candidate, page, metadata=metadata)
+
+    # Tier 3: OSM Nominatim — only with --geocode.
+    if geocode and entity.coordinates.lat is None:
+        geocode_result = geocode_entity(entity, page, timeout=timeout)
+        if geocode_result:
+            candidate, metadata = geocode_result
+            entity.coordinates = candidate
+            if not entity.address and metadata.get("address"):
+                entity.address = str(metadata["address"])
+            _add_openstreetmap_evidence(entity, candidate, page, metadata=metadata)
+
     return entity
 
 
@@ -544,8 +577,12 @@ def enrich_entities_coordinates(
     entities: list[Entity],
     page: PageExtraction,
     geocode: bool = False,
+    wikidata_coords: bool = False,
 ) -> list[Entity]:
-    return [enrich_entity_coordinates(entity, page, geocode=geocode) for entity in entities]
+    return [
+        enrich_entity_coordinates(entity, page, geocode=geocode, wikidata_coords=wikidata_coords)
+        for entity in entities
+    ]
 
 
 def _geocode_query(

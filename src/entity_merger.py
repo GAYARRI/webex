@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .contact_extractor import extract_contact_info
 from .entity_text import relevant_text_for_entity
+from .image_filters import is_noise_image
 from .images import is_image_relevant_to_entity_url
 from .models import Entity, Evidence, PageExtraction
 from .text_utils import clean_content_text, compact_text, normalize_key
@@ -23,6 +24,12 @@ def attach_block_evidence(entities: list[Entity], page: PageExtraction) -> list[
         for block in matching_blocks:
             relevant_text = clean_content_text(relevant_text_for_entity(entity.name, block.text))
             contact = extract_contact_info(relevant_text)
+            # When the block title names the entity directly, include all non-noise
+            # block images even if the URL slug doesn't contain the entity name
+            # (common with opaque CMS/CDN paths like Liferay /documents/d/guest/...).
+            block_title_key = normalize_key(block.title)
+            entity_name_key = normalize_key(entity.name)
+            title_names_entity = bool(entity_name_key and entity_name_key in block_title_key)
             evidence = Evidence(
                 url=page.url,
                 block_id=block.block_id,
@@ -32,7 +39,10 @@ def attach_block_evidence(entities: list[Entity], page: PageExtraction) -> list[
                 images=[
                     image.get("url", "")
                     for image in block.images
-                    if image.get("url") and is_image_relevant_to_entity_url(image.get("url", ""), entity)
+                    if image.get("url") and (
+                        is_image_relevant_to_entity_url(image.get("url", ""), entity)
+                        or (title_names_entity and not is_noise_image(image.get("url", "")))
+                    )
                 ],
                 metadata={k: v for k, v in contact.items() if v},
             )

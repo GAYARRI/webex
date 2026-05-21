@@ -134,6 +134,14 @@ def build_parser() -> argparse.ArgumentParser:
         default=True,
         help="Desactiva el post-proceso de aplanado (summary unificado + verificación de imágenes rotas).",
     )
+    parser.add_argument(
+        "--wikidata-coords",
+        action="store_true",
+        help=(
+            "Busca coordenadas en Wikidata para entidades sin wikidataId conocido "
+            "(sin OSM). Más rápido que --geocode."
+        ),
+    )
     return parser
 
 
@@ -163,11 +171,16 @@ def _process_page(
         )
     entities = attach_block_evidence(entities, page)
     entities = merge_entities(entities)
-    entities = enrich_entities_coordinates(entities, page, geocode=args.geocode)
+    wikidata_coords = getattr(args, "wikidata_coords", False)
+    entities = enrich_entities_coordinates(
+        entities, page, geocode=args.geocode, wikidata_coords=wikidata_coords
+    )
+    # Tier 1: always enrich images and external context for entities with known wikidataId.
+    # These calls are cheap (all data already cached from the coordinates fetch).
+    entities = enrich_entities_wikidata_images(entities)
+    entities = enrich_entities_external_context(entities, page)
     if args.geocode:
-        entities = enrich_entities_wikidata_images(entities)
         entities = enrich_entities_geosearch_images(entities)
-        entities = enrich_entities_external_context(entities, page)
     entities = _consolidate_entity_evidence(entities)
     entities = classify_entities(entities)
     entities = _sanitize_entity_images(entities)
@@ -523,6 +536,7 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
         _progress("  Buscando sitemap.xml ...")
 
     lang = getattr(args, "lang", "") or ""
+    wikidata_coords = getattr(args, "wikidata_coords", False)
     # In crawl mode, --output acts as the KB file when --kb is not specified.
     # This enables incremental saving and resumable crawl without extra flags.
     kb_path = args.kb or getattr(args, "output", None)
@@ -564,11 +578,13 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
                 )
             entities = attach_block_evidence(entities, page)
             entities = merge_entities(entities)
-            entities = enrich_entities_coordinates(entities, page, geocode=args.geocode)
+            entities = enrich_entities_coordinates(
+                entities, page, geocode=args.geocode, wikidata_coords=wikidata_coords
+            )
+            entities = enrich_entities_wikidata_images(entities)
+            entities = enrich_entities_external_context(entities, page)
             if args.geocode:
-                entities = enrich_entities_wikidata_images(entities)
                 entities = enrich_entities_geosearch_images(entities)
-                entities = enrich_entities_external_context(entities, page)
             entities = _consolidate_entity_evidence(entities)
             entities = classify_entities(entities)
             entities = _sanitize_entity_images(entities)
