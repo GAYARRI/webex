@@ -27,7 +27,19 @@ def _check_image_url(url: str) -> bool:
             verify=False,
             headers=_IMAGE_CHECK_HEADERS,
         )
-        return resp.status_code < 400
+        if resp.status_code == 405:
+            resp = _requests.get(
+                url,
+                timeout=_IMAGE_CHECK_TIMEOUT,
+                allow_redirects=True,
+                verify=False,
+                headers=_IMAGE_CHECK_HEADERS,
+                stream=True,
+            )
+        if resp.status_code >= 400:
+            return False
+        ct = resp.headers.get("Content-Type", "")
+        return ct.startswith("image/") or not ct
     except Exception:
         return False
 
@@ -66,6 +78,13 @@ def _collect_texts(entity: dict[str, Any]) -> list[str]:
         entity.get("description", ""),
         entity.get("shortDescription", ""),
         entity.get("sourceText", ""),
+        entity.get("evidence", ""),
+        # External sources (Wikidata/Wikipedia) as last resort when description fields are empty
+        *[
+            s.get("text", "")
+            for s in entity.get("sources", [])
+            if s.get("source_type") in {"wikidata", "wikipedia"} and s.get("text")
+        ],
     ]
     seen: set[str] = set()
     result: list[str] = []

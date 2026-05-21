@@ -29,6 +29,11 @@ def resolve_into_kb(
     """Resolve incoming entities against the KB using strict identity signals."""
     kb_list: list[Entity] = list(kb_entities)
     kb_index: dict[str, Entity] = {entity_key(e): e for e in kb_list}
+    # Secondary index by normalized name alone — catches cases where one copy
+    # has a wikidataId (key "wikidata:Q…") and the other doesn't (key "name:…").
+    kb_name_index: dict[str, Entity] = {
+        f"name:{_strip_articles(normalize_key(e.name))}": e for e in kb_list
+    }
 
     added: list[str] = []
     resolved_pairs: list[dict[str, Any]] = []
@@ -43,6 +48,21 @@ def resolve_into_kb(
                 "base": kb_index[key].name,
                 "incoming": entity.name,
                 "signals": ["exact_key"],
+                "score": 1.0,
+            })
+            continue
+
+        # Secondary fast path: same normalized name even when keys differ
+        # (e.g. one has wikidataId and the other doesn't).
+        name_key = f"name:{_strip_articles(normalize_key(entity.name))}"
+        if key != name_key and name_key in kb_name_index:
+            base = kb_name_index[name_key]
+            _propagate_wikidata(base, entity)
+            _enrich(base, entity)
+            resolved_pairs.append({
+                "base": base.name,
+                "incoming": entity.name,
+                "signals": ["name_key"],
                 "score": 1.0,
             })
             continue

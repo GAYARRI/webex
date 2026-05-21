@@ -584,7 +584,7 @@ def _geocode_query(
     try:
         response = requests.get(
             NOMINATIM_URL,
-            params={"q": query, "format": "jsonv2", "limit": 5},
+            params={"q": query, "format": "jsonv2", "limit": 5, "addressdetails": 1},
             headers={"User-Agent": "ExtraccionWebSemantica/0.1"},
             timeout=timeout,
         )
@@ -607,7 +607,8 @@ def _geocode_query(
         if confidence < NOMINATIM_MIN_CONFIDENCE:
             continue
         coord = Coordinates(lat=lat, lng=lng, source="openstreetmap", confidence=confidence)
-        metadata = _nominatim_metadata(item)
+        expected_city = str(city_context["name"]) if city_context else ""
+        metadata = _nominatim_metadata(item, expected_city=expected_city)
         _GEOCODE_CACHE[cache_key] = (coord, metadata)
         _disk_cache.setdefault("nominatim", {})[cache_key] = {"coord": asdict(coord), "metadata": metadata}
         return coord, metadata
@@ -616,7 +617,7 @@ def _geocode_query(
     return None
 
 
-def _nominatim_metadata(item: dict[str, Any]) -> dict[str, Any]:
+def _nominatim_metadata(item: dict[str, Any], expected_city: str = "") -> dict[str, Any]:
     metadata: dict[str, Any] = {}
     for key in ["osm_type", "osm_id", "category", "type", "display_name", "importance"]:
         if key in item and item[key] not in (None, ""):
@@ -624,7 +625,7 @@ def _nominatim_metadata(item: dict[str, Any]) -> dict[str, Any]:
     address = item.get("address")
     if isinstance(address, dict):
         metadata["address_parts"] = address
-        formatted = _format_nominatim_address(address)
+        formatted = _format_nominatim_address(address, expected_city=expected_city)
         if formatted:
             metadata["address"] = formatted
     elif item.get("display_name"):
@@ -632,11 +633,16 @@ def _nominatim_metadata(item: dict[str, Any]) -> dict[str, Any]:
     return metadata
 
 
-def _format_nominatim_address(address: dict[str, Any]) -> str:
+def _format_nominatim_address(address: dict[str, Any], expected_city: str = "") -> str:
     road = address.get("road") or address.get("pedestrian") or address.get("footway")
     house_number = address.get("house_number")
     city = address.get("city") or address.get("town") or address.get("village")
     postcode = address.get("postcode")
+    if expected_city and city:
+        expected_key = _ascii_query(expected_city.casefold())
+        city_key = _ascii_query(city.casefold())
+        if expected_key not in city_key and city_key not in expected_key:
+            return ""
     parts = [
         compact_text(" ".join(str(part) for part in [road, house_number] if part)),
         str(postcode or ""),

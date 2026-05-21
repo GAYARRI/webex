@@ -853,7 +853,22 @@ def _is_editorial_title(name: str, source_url: str, types: list[str]) -> bool:
     word_count = len(name_key.split())
     if word_count > 14 and "evento" not in path_segments:
         return True
-    if " se encuentra " in f" {name_key} " and "evento" not in path_segments:
+    if " se encuentra " in f" {name_key} ":
+        return True
+    # Name embeds schedule or price info after a period
+    # e.g. "Mercadillo ZOCO. Domingos por la mañana" / "Titanic. Desde 17 euros"
+    if re.search(r"\.\s+.{0,100}\b(domingo|sabado|lunes|martes|miercoles|jueves|viernes|euros?)\b", name_key):
+        return True
+    # Editorial headline structure: "Entidad, el/la [superlativo/descripcion]"
+    # e.g. "El Real Alcázar, el palacio más antiguo de Europa"
+    if re.search(r",\s+(el|la)\s+\w+.+\b(mas|mejor|unico|primero|antigua?|famoso|dedicad)", name_key):
+        return True
+    # Descriptive relative clause appended to entity name
+    # e.g. "La estatua … que representa el amor"
+    if re.search(r"\bque (representa|simboliza|alberga|esconde)\b", name_key):
+        return True
+    # Editorial relation clause: "X y su relación con Y"
+    if " y su relacion con " in name_key:
         return True
     return False
 

@@ -9,7 +9,8 @@ _BOILERPLATE_RE = re.compile(
     r"|\bsaber\s+m[aá]s\b"    # "Saber más"
     r"|\bir\s+a\s+\w"         # "Ir a Catedral"
     r"|\bver\s+m[aá]s\b"      # "Ver más"
-    r"|\bleer\s+m[aá]s\b",    # "Leer más"
+    r"|\bleer\s+m[aá]s\b"     # "Leer más"
+    r"|\bqu[eé]\s+ver\b",     # "Qué ver" / "Que ver" (Liferay nav label)
     re.IGNORECASE,
 )
 
@@ -46,7 +47,7 @@ _TEXT_PREFIX_RE = re.compile(
 _INLINE_NOISE_RE = re.compile(
     r"\b(?:mas lugares de interes|m[a\u00e1]s lugares de inter[e\u00e9]s|lugares de interes|"
     r"lugares de inter[e\u00e9]s|ver mapa|saber mas|saber m[a\u00e1]s|leer mas|leer m[a\u00e1]s|"
-    r"reserva ahora)\b",
+    r"reserva ahora|qu[e\u00e9]\s+ver)\b",
     re.IGNORECASE,
 )
 
