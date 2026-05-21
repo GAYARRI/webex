@@ -18,7 +18,8 @@ _IMAGE_CHECK_HEADERS = {"User-Agent": "ExtraccionWeb/1.0 (tourism-kb)"}
 _MAX_FLAT_IMAGES = 10
 
 
-def _check_image_url(url: str) -> bool:
+def _check_image_url(url: str) -> tuple[bool, str]:
+    """Return (is_valid, resolved_url). resolved_url is the final URL after redirects."""
     try:
         resp = _requests.head(
             url,
@@ -37,11 +38,13 @@ def _check_image_url(url: str) -> bool:
                 stream=True,
             )
         if resp.status_code >= 400:
-            return False
+            return False, url
         ct = resp.headers.get("Content-Type", "")
-        return ct.startswith("image/") or not ct
+        if not (ct.startswith("image/") or not ct):
+            return False, url
+        return True, resp.url
     except Exception:
-        return False
+        return False, url
 
 
 def _dedup_images(images: list[str]) -> list[str]:
@@ -55,15 +58,17 @@ def _dedup_images(images: list[str]) -> list[str]:
 
 
 def filter_broken_images(images: list[str], quiet: bool = False) -> list[str]:
-    """Deduplicate image URLs and remove those that return HTTP errors."""
+    """Deduplicate, remove broken URLs, and resolve redirects to final CDN URLs."""
     deduped = _dedup_images(images)
     if not deduped:
         return []
     if not quiet:
         print(f"  Verificando {len(deduped)} imágenes...", file=sys.stderr, flush=True)
     with concurrent.futures.ThreadPoolExecutor(max_workers=_IMAGE_CHECK_WORKERS) as pool:
-        ok_flags = list(pool.map(_check_image_url, deduped))
-    valid = [url for url, ok in zip(deduped, ok_flags) if ok]
+        results = list(pool.map(_check_image_url, deduped))
+    valid = [resolved for ok, resolved in results if ok]
+    # Deduplicate again since multiple redirect sources can resolve to the same CDN URL
+    valid = _dedup_images(valid)
     if not quiet:
         removed = len(deduped) - len(valid)
         if removed:

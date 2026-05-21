@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from urllib.parse import urljoin
+from urllib.parse import quote, urljoin, urlparse, urlunparse
 
 import requests
 import urllib3
@@ -147,6 +147,16 @@ def _main_text(soup: BeautifulSoup) -> str:
     return compact_text(best.get_text(" "))
 
 
+def _encode_url(url: str) -> str:
+    """Percent-encode any unencoded spaces or invalid characters in the URL path."""
+    try:
+        parsed = urlparse(url)
+        safe_path = quote(parsed.path, safe="/:@!$&'()*+,;=")
+        return urlunparse(parsed._replace(path=safe_path))
+    except Exception:
+        return url
+
+
 def _images(url: str, soup: BeautifulSoup) -> list[dict[str, str]]:
     images: list[dict[str, str]] = []
     seen: set[str] = set()
@@ -160,7 +170,7 @@ def _images(url: str, soup: BeautifulSoup) -> list[dict[str, str]]:
         )
         if not src:
             continue
-        absolute = urljoin(url, src)
+        absolute = _encode_url(urljoin(url, src))
         alt = compact_text(img.get("alt", ""))
         metadata = _image_metadata(img)
         if is_noise_image(absolute, alt, metadata) or _is_small_interface_image(img):

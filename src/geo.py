@@ -22,6 +22,7 @@ NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 WIKIDATA_SEARCH_URL = "https://www.wikidata.org/w/api.php"
 WIKIDATA_ENTITY_URL = "https://www.wikidata.org/wiki/Special:EntityData/{qid}.json"
 WIKIMEDIA_FILE_URL = "https://commons.wikimedia.org/wiki/Special:FilePath/{filename}"
+WIKIMEDIA_COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php"
 WIKIPEDIA_SUMMARY_URL = "https://{language}.wikipedia.org/api/rest_v1/page/summary/{title}"
 NOMINATIM_MIN_INTERVAL_SECONDS = 1.1
 NOMINATIM_MIN_CONFIDENCE = 0.05
@@ -286,17 +287,46 @@ def wikidata_images_for_entity(entity: Entity, timeout: int = 12) -> list[str]:
     data = _fetch_wikidata_entity(entity.wikidataId, timeout=timeout)
     if data is None:
         return []
-    urls: list[str] = []
+    filenames: list[str] = []
     for claim in data.get("claims", {}).get("P18", []):
         try:
             filename: str = claim["mainsnak"]["datavalue"]["value"]
         except (KeyError, TypeError):
             continue
-        if not filename:
-            continue
-        safe = quote(filename.replace(" ", "_"), safe="")
-        urls.append(WIKIMEDIA_FILE_URL.format(filename=safe))
-    return urls
+        if filename:
+            filenames.append(filename.replace(" ", "_"))
+    if not filenames:
+        return []
+    return _resolve_commons_image_urls(filenames, timeout=timeout)
+
+
+def _resolve_commons_image_urls(filenames: list[str], timeout: int = 12) -> list[str]:
+    """Resolve Wikimedia filenames to direct upload.wikimedia.org URLs via imageinfo API."""
+    titles = "|".join(f"File:{fn}" for fn in filenames[:50])
+    try:
+        resp = requests.get(
+            WIKIMEDIA_COMMONS_API_URL,
+            params={
+                "action": "query",
+                "titles": titles,
+                "prop": "imageinfo",
+                "iiprop": "url",
+                "format": "json",
+            },
+            timeout=timeout,
+            headers={"User-Agent": "ExtraccionWebSemantica/0.1"},
+        )
+        resp.raise_for_status()
+        pages = resp.json().get("query", {}).get("pages", {})
+        urls: list[str] = []
+        for page in pages.values():
+            for info in page.get("imageinfo", []):
+                url = info.get("url", "")
+                if url:
+                    urls.append(url)
+        return urls
+    except Exception:
+        return [WIKIMEDIA_FILE_URL.format(filename=quote(fn, safe="")) for fn in filenames]
 
 
 def enrich_entities_wikidata_images(
@@ -315,7 +345,6 @@ def enrich_entities_wikidata_images(
     return entities
 
 
-WIKIMEDIA_COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php"
 _COMMONS_GEOSEARCH_CACHE: dict[tuple[float, float], list[str]] = {}
 
 
