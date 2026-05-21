@@ -614,6 +614,27 @@ def enrich_entities_coordinates(
     ]
 
 
+def _revalidate_cached_address(metadata: dict[str, Any], city_context: dict | None) -> dict[str, Any]:
+    """Re-apply address formatting on cached metadata to fix stale entries."""
+    expected_city = str(city_context.get("name", "")) if city_context else ""
+    if not expected_city:
+        return metadata
+    if "address_parts" in metadata:
+        # address_parts available — re-format cleanly, overwriting any stale verbose address
+        formatted = _format_nominatim_address(metadata["address_parts"], expected_city=expected_city)
+        if formatted:
+            metadata["address"] = formatted
+        else:
+            metadata.pop("address", None)
+    elif "address" in metadata:
+        # No address_parts (old cache entry) — validate city appears in the address string
+        addr_key = _ascii_query(str(metadata["address"]).lower())
+        city_key = _ascii_query(expected_city.lower())
+        if city_key not in addr_key:
+            metadata.pop("address", None)
+    return metadata
+
+
 def _geocode_query(
     query: str,
     city_context: dict[str, float | str] | None = None,
@@ -640,8 +661,9 @@ def _geocode_query(
             _GEOCODE_CACHE[cache_key] = None
             return None
         coord = Coordinates(**entry["coord"])
-        _GEOCODE_CACHE[cache_key] = (coord, entry["metadata"])
-        return coord, dict(entry["metadata"])
+        metadata = _revalidate_cached_address(dict(entry["metadata"]), city_context)
+        _GEOCODE_CACHE[cache_key] = (coord, metadata)
+        return coord, dict(metadata)
 
     elapsed = time.monotonic() - _LAST_NOMINATIM_REQUEST
     if elapsed < NOMINATIM_MIN_INTERVAL_SECONDS:

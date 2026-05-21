@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from urllib.parse import urlparse
 from typing import Any
 
@@ -840,35 +841,51 @@ EDITORIAL_NAME_PREFIXES = (
 )
 
 
+def _plain_name(name: str) -> str:
+    """Lowercase + strip combining accents, keep punctuation (for regex patterns that need . or ,)."""
+    text = unicodedata.normalize("NFKD", name or "")
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    return text.casefold()
+
+
 def _is_editorial_title(name: str, source_url: str, types: list[str]) -> bool:
-    """Reject article-style headlines unless they are explicit event pages."""
+    """Reject article-style headlines unless they are explicit short event names."""
     name_key = normalize_key(name)
+    name_plain = _plain_name(name)  # keeps punctuation for period/comma patterns
     if not name_key:
         return False
+    word_count = len(name_key.split())
     path_segments = set(urlparse(source_url or "").path.strip("/").split("/"))
-    if "evento" in path_segments and "Event" in types:
+    is_event_url = "evento" in path_segments
+    # Allow only short event names on dedicated event pages
+    if is_event_url and "Event" in types and word_count <= 8:
         return False
     if any(name_key.startswith(prefix) for prefix in EDITORIAL_NAME_PREFIXES):
         return True
-    word_count = len(name_key.split())
-    if word_count > 14 and "evento" not in path_segments:
+    # "N consejos/razones/ideas..." — number-led article title
+    if re.match(r"^\d{1,2}\s+(consejos?|razones?|tips?|ideas?|secretos?)\b", name_key):
+        return True
+    if word_count > 14:
         return True
     if " se encuentra " in f" {name_key} ":
         return True
-    # Name embeds schedule or price info after a period
+    # Period followed by schedule or price info (uses name_plain, punctuation preserved)
     # e.g. "Mercadillo ZOCO. Domingos por la mañana" / "Titanic. Desde 17 euros"
-    if re.search(r"\.\s+.{0,100}\b(domingo|sabado|lunes|martes|miercoles|jueves|viernes|euros?)\b", name_key):
+    if re.search(r"\.\s+.{0,100}\b(domingos?|sabados?|lunes|martes|miercoles|jueves|viernes|euros?)\b", name_plain):
         return True
-    # Editorial headline structure: "Entidad, el/la [superlativo/descripcion]"
+    # "Entidad, el/la [superlativo]" editorial headline structure (needs comma)
     # e.g. "El Real Alcázar, el palacio más antiguo de Europa"
-    if re.search(r",\s+(el|la)\s+\w+.+\b(mas|mejor|unico|primero|antigua?|famoso|dedicad)", name_key):
+    if re.search(r",\s+(el|la)\s+\w+.+\b(mas|mejor|unico|primero|antigua?|famoso|dedicad)", name_plain):
         return True
-    # Descriptive relative clause appended to entity name
-    # e.g. "La estatua … que representa el amor"
+    # "X: Imperativo Y" — colon-separated article headline
+    # e.g. "Ruta Regionalista: Redescubre la ciudad"
+    if re.search(r":\s+\b(redescubre|descubre|conoce|visita|explora|disfruta|aprende|siente|vive)\b", name_plain):
+        return True
+    # Descriptive relative clause: "X que representa Y"
     if re.search(r"\bque (representa|simboliza|alberga|esconde)\b", name_key):
         return True
-    # Editorial relation clause: "X y su relación con Y"
-    if " y su relacion con " in name_key:
+    # "X y su relación/vínculo/conexión con Y"
+    if re.search(r"\by su \w+ con\b", name_key):
         return True
     return False
 
