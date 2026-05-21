@@ -44,9 +44,13 @@ _SITEMAP_CANDIDATES = ["/sitemap.xml", "/sitemap_index.xml", "/sitemap/sitemap.x
 # ---------------------------------------------------------------------------
 
 def fetch_sitemap_urls(home_url: str, lang: str = "") -> list[str]:
-    """Try standard sitemap paths and return filtered internal URLs."""
+    """Try robots.txt first, then standard sitemap paths. Return filtered internal URLs."""
     if _requests is None:
         return []
+    # robots.txt often declares Sitemap: URLs that differ from standard paths
+    urls = _sitemap_urls_from_robots(home_url, lang=lang)
+    if urls:
+        return urls
     base = home_url.rstrip("/")
     for path in _SITEMAP_CANDIDATES:
         url = base + path
@@ -58,6 +62,29 @@ def fetch_sitemap_urls(home_url: str, lang: str = "") -> list[str]:
             if urls:
                 return urls
     return []
+
+
+def _sitemap_urls_from_robots(home_url: str, lang: str = "") -> list[str]:
+    """Parse robots.txt for Sitemap: directives and return all discovered URLs."""
+    base = home_url.rstrip("/")
+    resp = _get(base + "/robots.txt")
+    if resp is None or resp.status_code != 200:
+        return []
+    sitemap_urls: list[str] = []
+    for line in resp.text.splitlines():
+        line = line.strip()
+        if line.lower().startswith("sitemap:"):
+            sitemap_url = line.split(":", 1)[1].strip()
+            if sitemap_url.startswith("http"):
+                sitemap_urls.append(sitemap_url)
+    found: list[str] = []
+    for sitemap_url in sitemap_urls:
+        resp = _get(sitemap_url)
+        if resp is None or resp.status_code != 200:
+            continue
+        if _looks_like_sitemap(resp.text):
+            found.extend(_parse_sitemap_xml(resp.text, home_url, lang=lang))
+    return found
 
 
 def _get(url: str, **kwargs) -> "object | None":
