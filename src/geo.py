@@ -741,8 +741,9 @@ def _format_nominatim_address(address: dict[str, Any], expected_city: str = "") 
 
 def _build_geocode_queries(entity: Entity, page: PageExtraction) -> list[str]:
     city_hint = _city_hint(page)
-    address = entity.address if entity.address and len(entity.address.split()) <= 10 else ""
+    address = _geocode_address(entity.address)
     queries = [
+        compact_text(", ".join(part for part in [address, city_hint, "Spain"] if part)),
         compact_text(", ".join(part for part in [entity.name, address] if part)),
         compact_text(", ".join(part for part in [entity.name, city_hint, "Spain"] if part)),
         compact_text(entity.name),
@@ -753,6 +754,24 @@ def _build_geocode_queries(entity: Entity, page: PageExtraction) -> list[str]:
         if query and query not in unique:
             unique.append(query)
     return unique
+
+
+def _geocode_address(address: str) -> str:
+    address = compact_text(address)
+    if not address:
+        return ""
+    address = re.split(
+        r"\b(?:horarios?|precio|fecha|reserva|ver mapa|saber mas|saber mas)\b",
+        address,
+        maxsplit=1,
+        flags=re.IGNORECASE,
+    )[0]
+    address = compact_text(address.strip(" ,.;:-"))
+    if len(address) > 160:
+        address = address[:160].rsplit(",", 1)[0] or address[:160]
+    if len(address.split()) > 24:
+        return ""
+    return address
 
 
 CITY_CENTERS: dict[str, dict[str, float | str]] = {

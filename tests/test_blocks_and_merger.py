@@ -296,6 +296,43 @@ class BlocksAndMergerTests(unittest.TestCase):
 
         self.assertEqual(clean_entities([entity], page), [])
 
+    def test_clean_entities_rejects_pamplona_editorial_titles(self):
+        page = PageExtraction(
+            url="https://visitpamplonairuna.com/catedral-historia-arte-arquitectura",
+            title="Catedral",
+            description=None,
+            language="es",
+            main_text="",
+            raw_text="",
+            images=[],
+            status="ok",
+        )
+        entities = [
+            Entity(
+                name="Visita a la Catedral de Pamplona: historia, arte y arquitectura",
+                types=["Cathedral"],
+                evidence="Articulo sobre la catedral.",
+            ),
+            Entity(
+                name="Breve historia de la Catedral de Pamplona",
+                types=["Cathedral"],
+                evidence="Articulo historico.",
+            ),
+            Entity(
+                name="Los tesoros de la catedral",
+                types=["Cathedral"],
+                evidence="Articulo divulgativo.",
+            ),
+            Entity(
+                name="Semana Santa en Pamplona: cultura, naturaleza y gastronomia",
+                types=["Event"],
+                evidence="Articulo de planes alrededor de Semana Santa.",
+                sourceUrl="https://visitpamplonairuna.com/evento/semana-santa",
+            ),
+        ]
+
+        self.assertEqual(clean_entities(entities, page), [])
+
     def test_clean_entities_keeps_event_page_with_long_event_title(self):
         page = PageExtraction(
             url="https://visitasevilla.es/evento/experiencia-inmersiva-titanic",

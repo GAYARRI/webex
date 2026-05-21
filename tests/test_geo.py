@@ -87,6 +87,26 @@ class GeoTests(unittest.TestCase):
         self.assertIn("Catedral de Burgos, Burgos, Spain", queries)
         self.assertIn("Catedral de Burgos", queries)
 
+    def test_build_geocode_queries_uses_plausible_long_address(self):
+        entity = Entity(
+            name="Plaza de toros",
+            address="Paseo de Hemingway, Segundo Ensanche, Pamplona, Navarra, 31002, Espana",
+        )
+        page = _page()
+        page.url = "https://visitpamplonairuna.com/"
+        page.title = "Pamplona Iruna"
+
+        queries = _build_geocode_queries(entity, page)
+
+        self.assertIn(
+            "Paseo de Hemingway, Segundo Ensanche, Pamplona, Navarra, 31002, Espana, Pamplona, Spain",
+            queries,
+        )
+        self.assertIn(
+            "Plaza de toros, Paseo de Hemingway, Segundo Ensanche, Pamplona, Navarra, 31002, Espana",
+            queries,
+        )
+
     def test_city_context_filters_far_coordinates(self):
         page = _page()
         page.url = "https://visitaburgosciudad.es/"

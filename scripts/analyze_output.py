@@ -37,9 +37,13 @@ EDITORIAL_NAME_TERMS = [
     "sabias que",
     "sabías que",
     "curiosidades",
+    "breve historia de",
     "redescubre",
     "consejos para",
     "opciones unicas",
+    "los tesoros de",
+    "las claves de",
+    "escapada a",
     "opciones únicas",
     "se encuentra",
 ]
@@ -123,9 +127,11 @@ def _print_suspect_addresses(entities: list[dict[str, Any]], samples: int) -> No
 
 def _is_editorial_name(name: str) -> bool:
     name_key = _norm(name)
+    name_plain = (name or "").casefold()
     return bool(name_key) and (
         any(term in name_key for term in EDITORIAL_NAME_TERMS)
         or len(name_key.split()) > 14
+        or bool(re.search(r":\s+\b(historia|arte|arquitectura|cultura|naturaleza|gastronom|desde|plan ideal)\b", name_plain))
     )
 
 

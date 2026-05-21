@@ -831,11 +831,15 @@ EDITORIAL_NAME_PREFIXES = (
     "sabias que",
     "conoces",
     "curiosidades",
+    "breve historia de",
     "redescubre",
     "descubre esta",
     "disfruta de",
     "consejos para",
     "opciones unicas",
+    "los tesoros de",
+    "las claves de",
+    "escapada a",
     "una ruta por",
     "la unica",
 )
@@ -858,7 +862,7 @@ def _is_editorial_title(name: str, source_url: str, types: list[str]) -> bool:
     path_segments = set(urlparse(source_url or "").path.strip("/").split("/"))
     is_event_url = "evento" in path_segments
     # Allow only short event names on dedicated event pages
-    if is_event_url and "Event" in types and word_count <= 8:
+    if is_event_url and "Event" in types and word_count <= 8 and ":" not in name_plain:
         return False
     if any(name_key.startswith(prefix) for prefix in EDITORIAL_NAME_PREFIXES):
         return True
@@ -880,6 +884,8 @@ def _is_editorial_title(name: str, source_url: str, types: list[str]) -> bool:
     # "X: Imperativo Y" — colon-separated article headline
     # e.g. "Ruta Regionalista: Redescubre la ciudad"
     if re.search(r":\s+\b(redescubre|descubre|conoce|visita|explora|disfruta|aprende|siente|vive)\b", name_plain):
+        return True
+    if re.search(r":\s+\b(historia|arte|arquitectura|cultura|naturaleza|gastronomia|desde|plan ideal)\b", name_plain):
         return True
     # Descriptive relative clause: "X que representa Y"
     if re.search(r"\bque (representa|simboliza|alberga|esconde)\b", name_key):
