@@ -22,8 +22,10 @@ from .images import enrich_entities_images, is_image_relevant_to_entity_url
 from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
 from .knowledge_base import filter_low_quality_entities, load_crawled_urls, load_kb, save_kb, tag_sources_with_page_url
+from .models import Entity
 from .report import count_by_type, to_markdown
 from .text_utils import is_boilerplate_text, normalize_key
+from .virtuoso_exporter import ExportDefaults, VirtuosoSchema, export_entities
 from .web_extractor import extract_page, fetch_html, parse_html
 
 
@@ -186,6 +188,61 @@ def build_parser() -> argparse.ArgumentParser:
         "--json-to-md",
         metavar="PATH",
         help="Convierte un JSON de salida existente a Markdown (usar con --output-md).",
+    )
+    parser.add_argument(
+        "--virtuoso-output",
+        metavar="PATH",
+        help="Ruta para guardar payloads GraphQL/Virtuoso generados desde las entidades extraidas.",
+    )
+    parser.add_argument(
+        "--virtuoso-introspection",
+        default="Introspection.json",
+        metavar="PATH",
+        help="Ruta al introspection.json de GraphQL/Virtuoso.",
+    )
+    parser.add_argument(
+        "--virtuoso-dti",
+        default="",
+        metavar="VALUE",
+        help="Valor dti requerido por las mutations GraphQL/Virtuoso.",
+    )
+    parser.add_argument("--virtuoso-org", default="", metavar="VALUE", help="Valor org para Virtuoso.")
+    parser.add_argument("--virtuoso-lang", default="es", metavar="CODE", help="Idioma de literales Virtuoso.")
+    parser.add_argument(
+        "--virtuoso-country",
+        default="España",
+        metavar="VALUE",
+        help="Pais por defecto para LocationInput.",
+    )
+    parser.add_argument(
+        "--virtuoso-autonomous-community",
+        default="",
+        metavar="VALUE",
+        help="Comunidad autonoma por defecto para LocationInput.",
+    )
+    parser.add_argument(
+        "--virtuoso-province",
+        default="",
+        metavar="VALUE",
+        help="Provincia por defecto para LocationInput.",
+    )
+    parser.add_argument(
+        "--virtuoso-municipality",
+        default="",
+        metavar="VALUE",
+        help="Municipio por defecto para LocationInput.",
+    )
+    parser.add_argument(
+        "--virtuoso-postal-code",
+        default="",
+        metavar="VALUE",
+        help="Codigo postal por defecto para LocationInput.",
+    )
+    parser.add_argument(
+        "--virtuoso-external-id-prefix",
+        default="webex",
+        metavar="VALUE",
+        help="Prefijo para externalId estable en Virtuoso.",
     )
     return parser
 
@@ -899,8 +956,42 @@ def main() -> None:
         Path(output_md).parent.mkdir(parents=True, exist_ok=True)
         Path(output_md).write_text(md_content, encoding="utf-8")
 
+    virtuoso_output = getattr(args, "virtuoso_output", None)
+    if virtuoso_output:
+        if not getattr(args, "virtuoso_dti", ""):
+            parser.error("--virtuoso-output requiere --virtuoso-dti.")
+        _write_virtuoso_output(result, args, virtuoso_output)
+
     if not args.quiet:
         _print_output(output)
+
+
+def _write_virtuoso_output(result: dict[str, Any], args: argparse.Namespace, output_path: str) -> dict[str, Any]:
+    raw_entities = result.get("entities", [])
+    entities = [Entity.from_dict(item) for item in raw_entities if isinstance(item, dict)]
+    schema = VirtuosoSchema.from_file(getattr(args, "virtuoso_introspection", "Introspection.json"))
+    defaults = ExportDefaults(
+        dti=getattr(args, "virtuoso_dti", ""),
+        org=getattr(args, "virtuoso_org", ""),
+        lang=getattr(args, "virtuoso_lang", "es"),
+        country=getattr(args, "virtuoso_country", "España"),
+        autonomous_community=getattr(args, "virtuoso_autonomous_community", ""),
+        province=getattr(args, "virtuoso_province", ""),
+        municipality=getattr(args, "virtuoso_municipality", ""),
+        postal_code=getattr(args, "virtuoso_postal_code", ""),
+        external_id_prefix=getattr(args, "virtuoso_external_id_prefix", "webex"),
+    )
+    payloads = export_entities(entities, schema, defaults)
+    output = {
+        "source": getattr(args, "output", "") or getattr(args, "url", "") or "",
+        "count": len(payloads),
+        "warningCount": sum(len(item.warnings) for item in payloads),
+        "payloads": [item.to_dict() for item in payloads],
+    }
+    path = Path(output_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
+    return output
 
 
 def _apply_flatten(result: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:

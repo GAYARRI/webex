@@ -1,5 +1,11 @@
 import unittest
+import argparse
+import json
+import shutil
+import uuid
+from pathlib import Path
 
+from src.main import _write_virtuoso_output
 from src.models import Coordinates, Entity
 from src.virtuoso_exporter import ExportDefaults, VirtuosoSchema, entity_to_payload
 
@@ -90,6 +96,72 @@ class VirtuosoExporterTests(unittest.TestCase):
         self.assertEqual(payload.mutation, "createTourismentity")
         self.assertEqual(payload.class_name, "TourismEntity")
         self.assertTrue(any("No GraphQL class found" in warning for warning in payload.warnings))
+
+    def test_main_helper_writes_virtuoso_payloads_from_result(self):
+        tmpdir = Path(".test_tmp") / f"virtuoso-{uuid.uuid4().hex}"
+        tmpdir.mkdir(parents=True, exist_ok=False)
+        try:
+            schema_path = tmpdir / "introspection.json"
+            output_path = Path(tmpdir) / "payloads.json"
+            schema_path.write_text(json.dumps({
+                "data": {
+                    "__schema": {
+                        "mutationType": {"name": "Mutation"},
+                        "types": [
+                            {
+                                "name": "Mutation",
+                                "fields": [
+                                    {"name": "createMuseum", "args": []},
+                                    {"name": "createTourismentity", "args": []},
+                                ],
+                            },
+                            {
+                                "name": "MuseumInput",
+                                "inputFields": [
+                                    {"name": "name", "type": {"kind": "NON_NULL"}},
+                                    {"name": "hasDescription", "type": {"kind": "NON_NULL"}},
+                                ],
+                            },
+                        ],
+                    }
+                }
+            }), encoding="utf-8")
+            args = argparse.Namespace(
+                output="output/source.json",
+                url="",
+                virtuoso_introspection=str(schema_path),
+                virtuoso_dti="dti-test",
+                virtuoso_org="",
+                virtuoso_lang="es",
+                virtuoso_country="España",
+                virtuoso_autonomous_community="Region de Murcia",
+                virtuoso_province="Murcia",
+                virtuoso_municipality="Murcia",
+                virtuoso_postal_code="30001",
+                virtuoso_external_id_prefix="webex",
+            )
+            result = {
+                "entities": [
+                    {
+                        "name": "Museo",
+                        "type": "Museum",
+                        "shortDescription": "Descripcion",
+                    }
+                ]
+            }
+
+            output = _write_virtuoso_output(result, args, str(output_path))
+
+            self.assertEqual(output["count"], 1)
+            self.assertTrue(output_path.exists())
+            written = json.loads(output_path.read_text(encoding="utf-8"))
+            self.assertEqual(written["payloads"][0]["mutation"], "createMuseum")
+        finally:
+            shutil.rmtree(tmpdir, ignore_errors=True)
+            try:
+                tmpdir.parent.rmdir()
+            except OSError:
+                pass
 
 
 if __name__ == "__main__":
