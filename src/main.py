@@ -182,6 +182,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Muestra el resumen de cada artículo con --read-rss.",
     )
+    parser.add_argument(
+        "--json-to-md",
+        metavar="PATH",
+        help="Convierte un JSON de salida existente a Markdown (usar con --output-md).",
+    )
     return parser
 
 
@@ -807,6 +812,30 @@ def run_rss_batch(args: argparse.Namespace) -> dict[str, Any]:
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
+
+    json_to_md = getattr(args, "json_to_md", None)
+    if json_to_md:
+        import json as _json
+        from urllib.parse import urlparse as _urlparse
+        data = _json.loads(Path(json_to_md).read_text(encoding="utf-8"))
+        entities = data.get("entities", [])
+        crawl_report = data.get("crawl_report") or data.get("batch_report") or {}
+        source_url = crawl_report.get("pages", [{}])[0].get("url", "") if crawl_report.get("pages") else ""
+        domain = _urlparse(source_url).netloc.removeprefix("www.") if source_url else Path(json_to_md).stem
+        md_content = to_markdown(
+            entities,
+            domain=domain,
+            pages_processed=crawl_report.get("pages_processed", 0),
+            extracted_at=data.get("extracted_at", ""),
+        )
+        output_md = getattr(args, "output_md", None)
+        if output_md:
+            Path(output_md).parent.mkdir(parents=True, exist_ok=True)
+            Path(output_md).write_text(md_content, encoding="utf-8")
+            print(f"Markdown guardado en {output_md}")
+        else:
+            print(md_content)
+        return
 
     discover_rss_url = getattr(args, "discover_rss", None)
     if discover_rss_url:

@@ -1,0 +1,1721 @@
+{
+  "extracted_at": "2026-05-22T04:49:30.643820+00:00",
+  "model": "gpt-5.4-mini",
+  "pages_processed": 151,
+  "pages_error": 53,
+  "added_total": 30,
+  "enriched_total": 66,
+  "kb_total": 30,
+  "pages": [
+    {
+      "url": "https://www.castelldefelsturismo.com",
+      "status": "ok",
+      "added": 3,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/++theme++castelldefels_turisme/favicons/site.webmanifest",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/@@redirect_language",
+      "status": "ok",
+      "added": 1,
+      "enriched": 2
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/@@search",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/agenda",
+      "status": "error",
+      "error": "HTTPError: 500 Server Error: Internal Server Error for url: https://www.castelldefelsturismo.com/es/agenda"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc",
+      "status": "ok",
+      "added": 4,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/contacto",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-alojarse",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/eventos-gastronomicos",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/gastronomia",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/restaurantes",
+      "status": "ok",
+      "added": 2,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/canal-olimpico-de-cataluna",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/deportivo",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/descubre",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/el-castillo",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/en-familia",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/film-office",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/naturaleza",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/patrimonio",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/playas",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/profesional",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/shopping",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/search_rss",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels",
+      "status": "ok",
+      "added": 2,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 4
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar",
+      "status": "ok",
+      "added": 0,
+      "enriched": 2
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels",
+      "status": "ok",
+      "added": 1,
+      "enriched": 2
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/contacto/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-alojarse/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer",
+      "status": "ok",
+      "added": 1,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/donde-comer/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/eventos-gastronomicos/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/gastronomia/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/restaurantes/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 2
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer",
+      "status": "ok",
+      "added": 5,
+      "enriched": 2
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/canal-olimpico-de-cataluna/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/deportivo/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/descubre/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/el-castillo/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/en-familia/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/film-office/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/naturaleza/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/patrimonio/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/playas/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://castelldefelsturismo.com/castillo-de-castelldefels",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/gastronomía",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/donde-comer/gastronom%C3%ADa"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/profesional/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/shopping/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/bloc/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/@@images/image/tablet",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 3
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/deporte-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/garraf-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/gastronomia-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/playa-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/puesta-sol-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/@@images/image/tablet",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/almuerzo-arroz-de-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/cena-castelldefels-1.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/cena-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/desayuno-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/tarde-museo-piratia.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@images/image/tablet",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 2
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/canal-olimpic.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/deportes-agua.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/deportes-equipo.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/deportes-tierra.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/@@images/image/tablet",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 3
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/chiringuito-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/cursa-autisme-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/marato-mediterrani-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/mostra-de-vins-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/ruta-tapa-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/sant-ponc-castelldefels.jpg/@@images/image/large",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/contacto/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/contacto/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-alojarse/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/donde-alojarse/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 2
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/eventos-gastronomicos/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/donde-comer/eventos-gastronomicos/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/gastronomia/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/donde-comer/gastronomia/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/donde-comer/restaurantes/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/donde-comer/restaurantes/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 7
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/canal-olimpico-de-cataluna/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/canal-olimpico-de-cataluna/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/deportivo/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/deportivo/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/descubre/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/descubre/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/el-castillo/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/el-castillo/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/en-familia/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/en-familia/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/film-office/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/film-office/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/naturaleza/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/naturaleza/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/patrimonio/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/patrimonio/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/playas/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/playas/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://castelldefelsturismo.com/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/$%7bsocial_action/url%7d"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/profesional/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/profesional/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/que-hacer/shopping/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/que-hacer/shopping/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/arxiu/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/riu/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/bloc/24-horas-en-castelldefels/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/arxiu",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/arxiu/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/arxiu/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/arxiu/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 3
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/45248e8b-cc56-4934-8a98-2ebd5f47fd7e.jpeg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/5633_077.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/85d863c4-3e5e-4053-98a3-2eb105c705ce.png/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 3
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/abandono-y-restauracion.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/actividades-en-el-canal-olimpico-de-cataluna.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/c00d7d93-df0d-4694-881e-917f80dfb99b.jpeg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/canal-olimpico-de-cataluna-juegos-olimpicos-de-barcelona.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/view",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/view",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/view",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/e832b326-fe3e-4050-a4b3-c695a941de99.jpeg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/edificaciones-del-canal-olimpico-de-catalun.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/view",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-01.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-02.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/image.jpeg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/image.png/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/informacion-del-canal-olimpico-de-cataluna.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/view",
+      "status": "ok",
+      "added": 1,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/restauracion-de-2001.jpg/view",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/riu",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/riu/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/riu/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/riu/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 3
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/riu/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/45248e8b-cc56-4934-8a98-2ebd5f47fd7e.jpeg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/45248e8b-cc56-4934-8a98-2ebd5f47fd7e.jpeg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/45248e8b-cc56-4934-8a98-2ebd5f47fd7e.jpeg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/45248e8b-cc56-4934-8a98-2ebd5f47fd7e.jpeg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/5633_077.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/5633_077.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/5633_077.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/5633_077.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/85d863c4-3e5e-4053-98a3-2eb105c705ce.png/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/85d863c4-3e5e-4053-98a3-2eb105c705ce.png/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/85d863c4-3e5e-4053-98a3-2eb105c705ce.png/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/85d863c4-3e5e-4053-98a3-2eb105c705ce.png/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/abandono-y-restauracion.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/abandono-y-restauracion.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/abandono-y-restauracion.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/abandono-y-restauracion.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/actividades-en-el-canal-olimpico-de-cataluna.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/actividades-en-el-canal-olimpico-de-cataluna.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/actividades-en-el-canal-olimpico-de-cataluna.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/actividades-en-el-canal-olimpico-de-cataluna.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/c00d7d93-df0d-4694-881e-917f80dfb99b.jpeg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/c00d7d93-df0d-4694-881e-917f80dfb99b.jpeg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/c00d7d93-df0d-4694-881e-917f80dfb99b.jpeg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/c00d7d93-df0d-4694-881e-917f80dfb99b.jpeg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/canal-olimpico-de-cataluna-juegos-olimpicos-de-barcelona.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/canal-olimpico-de-cataluna-juegos-olimpicos-de-barcelona.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/canal-olimpico-de-cataluna-juegos-olimpicos-de-barcelona.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/canal-olimpico-de-cataluna-juegos-olimpicos-de-barcelona.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 3
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/e832b326-fe3e-4050-a4b3-c695a941de99.jpeg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/e832b326-fe3e-4050-a4b3-c695a941de99.jpeg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/e832b326-fe3e-4050-a4b3-c695a941de99.jpeg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/e832b326-fe3e-4050-a4b3-c695a941de99.jpeg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/edificaciones-del-canal-olimpico-de-catalun.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/edificaciones-del-canal-olimpico-de-catalun.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/edificaciones-del-canal-olimpico-de-catalun.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 3
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/edificaciones-del-canal-olimpico-de-catalun.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-01.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-01.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-01.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 3
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-01.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-02.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-02.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-02.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/foto-02.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/image.jpeg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/image.jpeg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/image.jpeg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/image.jpeg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/image.png/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/image.png/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/image.png/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/image.png/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/informacion-del-canal-olimpico-de-cataluna.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/informacion-del-canal-olimpico-de-cataluna.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/informacion-del-canal-olimpico-de-cataluna.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/informacion-del-canal-olimpico-de-cataluna.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 1
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/restauracion-de-2001.jpg/${social_action/url}",
+      "status": "error",
+      "error": "HTTPError: 404 Client Error: Not Found for url: https://www.castelldefelsturismo.com/es/recursos/imagenes/restauracion-de-2001.jpg/$%7Bsocial_action/url%7D"
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/restauracion-de-2001.jpg/@@redirect_language",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    },
+    {
+      "url": "https://www.castelldefelsturismo.com/es/recursos/imagenes/restauracion-de-2001.jpg/image_view_fullscreen",
+      "status": "ok",
+      "added": 0,
+      "enriched": 0
+    }
+  ],
+  "entities": [
+    {
+      "summary": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información El Castillo. municipio colombiano del departamento del Meta El Castillo es un municipio colombiano situado en el departamento del Meta.",
+      "name": "El castillo",
+      "type": "Castle",
+      "types": [
+        "Castle"
+      ],
+      "score": 0.45,
+      "sourceUrl": "https://www.castelldefelsturismo.com/",
+      "url": "",
+      "relatedUrls": [
+        "https://www.wikidata.org/wiki/Q1577456",
+        "https://es.wikipedia.org/wiki/El_Castillo_(Meta)"
+      ],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 3.5647222222222,
+        "lng": -73.794444444444,
+        "source": "wikidata",
+        "confidence": 0.85
+      },
+      "shortDescription": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información",
+      "longDescription": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información El Castillo. municipio colombiano del departamento del Meta El Castillo es un municipio colombiano situado en el departamento del Meta.",
+      "sourceText": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información",
+      "description": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información El Castillo. municipio colombiano del departamento del Meta El Castillo es un municipio colombiano situado en el departamento del Meta.",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/que-hacer/el-castillo/@@images/image/large",
+        "https://www.castelldefelsturismo.com/es/++theme++castelldefels_turisme/img/bg-elcastell.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Colombia_location_map.svg/langes-330px-Colombia_location_map.svg.png"
+      ],
+      "wikidataId": "Q1577456",
+      "evidence": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información",
+      "classificationEvidence": {
+        "selected": "Castle",
+        "confidence": 180,
+        "signals": [
+          "Castle: keyword 'castillo' (+100)",
+          "Castle: keyword 'castillo' (+20)",
+          "Castle: keyword 'castillo' (+40)",
+          "Castle: keyword 'castillo' (+20)"
+        ],
+        "candidates": [
+          "Castle"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.wikidata.org/wiki/Q1577456",
+        "https://es.wikipedia.org/wiki/El_Castillo_(Meta)"
+      ]
+    },
+    {
+      "summary": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico",
+      "name": "El castillo",
+      "type": "Castle",
+      "types": [
+        "Castle"
+      ],
+      "score": 0.9,
+      "sourceUrl": "https://www.castelldefelsturismo.com",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=El%20castillo%2C%20Spain"
+      ],
+      "address": "",
+      "phone": "93 665 28 22",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información Vive el castillo",
+      "longDescription": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información España Vive el castillo España",
+      "sourceText": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico",
+      "description": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información España Vive el castillo España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/que-hacer/el-castillo/@@images/image/large",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg",
+        "https://www.castelldefelsturismo.com/es/++theme++castelldefels_turisme/img/bg-elcastell.jpg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/abandono-y-restauracion.jpg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/restauracion-de-2001.jpg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg"
+      ],
+      "wikidataId": "",
+      "evidence": "El castillo Visita el edificio más emblemático de nuestra ciudad Más información",
+      "classificationEvidence": {
+        "selected": "Castle",
+        "confidence": 100,
+        "signals": [
+          "Castle: keyword 'castillo' (+100)"
+        ],
+        "candidates": [
+          "Castle"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=El%20castillo%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français Castelldefels, un paraíso deportivo: de la montaña al mar Tancar Usted está aquí: Blog Castelldefels, un paraíso deportivo: de… Castelldefels, un paraíso deportivo: de la montaña al mar Si eres un amante del deporte, Castelldefels es tu destino. https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@download/image/Deportes agua.jpg Si eres un amante del deporte, Castelldefels es tu destino. 10 de marzo de 2025 Con un entorno privilegiado entre el Mediterráneo y el Parque Natural del Garraf, la ciudad ofrece una increíble variedad de actividades para todos los niveles. Ya sea en el agua, en la arena o en plena naturaleza, aquí encontrarás la combinación perfecta entre deporte y paisajes espectaculares. Deportes acuáticos: adrenalina y diversión en el mar Con más de 5 km de playa, Castelldefels es el lugar perfecto para practicar surf, paddle surf, windsurf y kitesurf. Si prefieres algo más relajado, puedes optar por un paseo en kayak o una sesión de vela. Los días con aguas tranquilas hacen que estos deportes sean accesibles tanto para principiantes como para expertos. Siempre recomendable acudir a las escuelas especializadas donde además de alquilar el material te darán consejos para empezar. Tierra firme: running, ciclismo y senderismo con vistas únicas Si lo tuyo es correr, aquí tienes opciones para todos los gustos: el paseo marítimo ofrece un recorrido llano ideal para runners, mientras que el Parque Natural del Garraf pone a prueba a los más aventureros con rutas de montaña rodeadas de naturaleza. Los amantes del ciclismo también tienen su espacio, con rutas tanto de carretera como de montaña. Desde paseos familiares hasta recorridos exigentes para ciclistas avanzados, el paisaje del Garraf es el escenario perfecto para disfrutar sobre dos ruedas. El Canal Olímpico: un icono del deporte en Castelldefels Construido para los Juegos Olímpicos de Barcelona 1992, el Canal Olímpico de Catalunya es hoy en día un referente para la práctica de deportes acuáticos como piragüismo, remo, paddle surf, Wakeboard y esquí acuático. Además, cuenta con un entorno ideal para entrenamientos al aire libre, con zonas de calistenia y espacios para el entrenamiento funcional. La playa y los deportes de equipo Si prefieres los deportes en grupo, las playas de Castelldefels son el escenario ideal para jugar al vóley playa, fútbol, rugby o tenis playa. De hecho, anualmente se celebran tor",
+      "name": "Castelldefels, un paraíso deportivo: de la montaña al mar",
+      "type": "Mountain",
+      "types": [
+        "Mountain"
+      ],
+      "score": 0.9,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/bloc",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=Castelldefels%2C%20un%20para%C3%ADso%20deportivo%3A%20de%20la%20monta%C3%B1a%20al%20mar%2C%20Spain"
+      ],
+      "address": "paseo en kayak o una sesión de vela",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "Castelldefels, un paraíso deportivo: de la montaña al mar Si eres un amante del deporte, Castelldefels es tu destino. Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónd",
+      "longDescription": "Castelldefels, un paraíso deportivo: de la montaña al mar Si eres un amante del deporte, Castelldefels es tu destino. España Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français Castelldefels, un paraíso deportivo: de la montaña al mar Tancar Usted está aquí: Blog Castelldefels, un paraíso deportivo: de… Castelldefels, un paraíso deportivo: de la montaña al mar Si eres un amante del deporte, Castelldefels es tu destino. https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@download/image/Deportes agua.jpg Si eres un amante del deporte, Castelldefels es tu destino. 10 de marzo de 2025 Con un entorno privilegiado entre el Mediterráneo y el Parque Natural del Garraf, la ciudad ofrece una increíble variedad de actividades para todos los niveles. Ya sea en el agua, en la arena o e",
+      "sourceText": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français Castelldefels, un paraíso deportivo: de la montaña al mar Tancar Usted está aquí: Blog Castelldefels, un paraíso deportivo: de… Castelldefels, un paraíso deportivo: de la montaña al mar Si eres un amante del deporte, Castelldefels es tu destino. https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@download/image/Deportes agua.jpg Si eres un amante del deporte, Castelldefels es tu destino. 10 de marzo de 2025 Con un entorno privilegiado entre el Mediterráneo y el Parque Natural del Garraf, la ciudad ofrece una increíble variedad de actividades para todos los niveles. Ya sea en el agua, en la arena o en plena naturaleza, aquí encontrarás la combinación perfecta entre deporte y paisajes espectaculares. Deportes acuáticos: adrenalina y diversión en el mar Con más de 5 km de playa, Castelldefels es el lugar perfecto para practicar surf, paddle surf, windsurf y kitesurf. Si prefieres algo más relajado, puedes optar por un paseo en kayak o una sesión de vela. Los días con aguas tranquilas hacen que estos deportes sean accesibles tanto para principiantes como para expertos. Siempre recomendable acudir a las escuelas especializadas donde además de alquilar el material te darán consejos para empezar. Tierra firme: running, ciclismo y senderismo con vistas únicas Si lo tuyo es correr, aquí tienes opciones para todos los gustos: el paseo marítimo ofrece un recorrido llano ideal para runners, mientras que el Parque Natural del Garraf pone a prueba a los más aventureros con rutas de montaña rodeadas de naturaleza. Los amantes del ciclismo también tienen su espacio, con rutas tanto de carretera como de montaña. Desde paseos familiares hasta recorridos exigentes para ciclistas avanzados, el paisaje del Garraf es el escenario perfecto para disfrutar sobre dos ruedas. El Canal Olímpico: un icono del deporte en Castelldefels Construido para los Juegos Olímpicos de Barcelona 1992, el Canal Olímpico de Catalunya es hoy en día un referente para la práctica de deportes acuáticos como piragüismo, remo, paddle surf, Wakeboard y esquí acuático. Además, cuenta con un entorno ideal para entrenamientos al aire libre, con zonas de calistenia y espacios para el entrenamiento funcional. La playa y los deportes de equipo Si prefieres los deportes en grupo, las playas de Castelldefels son el escenario ideal para jugar al vóley playa, fútbol, rugby o tenis playa. De hecho, anualmente se celebran tor",
+      "description": "Castelldefels, un paraíso deportivo: de la montaña al mar Si eres un amante del deporte, Castelldefels es tu destino. España Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français Castelldefels, un paraíso deportivo: de la montaña al mar Tancar Usted está aquí: Blog Castelldefels, un paraíso deportivo: de… Castelldefels, un paraíso deportivo: de la montaña al mar Si eres un amante del deporte, Castelldefels es tu destino. https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@download/image/Deportes agua.jpg Si eres un amante del deporte, Castelldefels es tu destino. 10 de marzo de 2025 Con un entorno privilegiado entre el Mediterráneo y el Parque Natural del Garraf, la ciudad ofrece una increíble variedad de actividades para todos los niveles. Ya sea en el agua, en la arena o e",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@images/image/large",
+        "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@images/ef1003a9-f4cb-4c04-8cd4-691b6a9dc582.jpeg",
+        "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/deportes-tierra.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/deportes-equipo.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/canal-olimpic.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/castelldefels-un-paraiso-deportivo-de-la-montana-al-mar/deportes-agua.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/@@images/image/large"
+      ],
+      "wikidataId": "",
+      "evidence": "Castelldefels, un paraíso deportivo: de la montaña al mar Si eres un amante del deporte, Castelldefels es tu destino.",
+      "classificationEvidence": {
+        "selected": "Mountain",
+        "confidence": 100,
+        "signals": [
+          "Mountain: keyword 'montana' (+100)"
+        ],
+        "candidates": [
+          "Mountain"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=Castelldefels%2C%20un%20para%C3%ADso%20deportivo%3A%20de%20la%20monta%C3%B1a%20al%20mar%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français Fiestas y eventos Tancar Usted está aquí: Qué hacer Fiestas y eventos Fiestas y eventos ¡Déjate sorprender en cada visita! https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos https://www.castelldefelsturismo.com/@@site-logo/Recurso 2.png ¡Déjate sorprender en cada visita! Castelldefels vibra todo el año con una agenda llena de fiestas y eventos para todos los gustos. Desde celebraciones tradicionales hasta espectáculos y actividades culturales, siempre hay algo nuevo para descubrir y disfrutar. Calendario de fiestas y actividades 2026 Enero 2-4 de enero. Mercado de Reyes 5 de enero. Cabalgata de Reyes Febrero 14 y 15 de febrero. Carnaval Marzo 1 de marzo. Rally Internacional de Coches de Época Barcelona – Sitges 15 de marzo. Vermuta Area de Fiestas y eventos, Ciudad de México, Gustavo A. Madero, Ciudad de México, México Fiestas y eventos ¡Déjate sorprender en cada visita! España",
+      "name": "Fiestas y eventos",
+      "type": "NaturalPark",
+      "types": [
+        "NaturalPark"
+      ],
+      "score": 0.45,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=Fiestas%20y%20eventos%2C%20Spain"
+      ],
+      "address": "Plaza de las Palmeras 20, 21 y 22 de marzo",
+      "phone": "+34 93 635 27 27",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónd Fiestas y eventos ¡Déjate sorprender en cada visita!",
+      "longDescription": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français Fiestas y eventos Tancar Usted está aquí: Qué hacer Fiestas y eventos Fiestas y eventos ¡Déjate sorprender en cada visita! https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos https://www.castelldefelsturismo.com/@@site-logo/Recurso 2.png ¡Déjate sorprender en cada visita! Castelldefels vibra todo el año con una agenda llena de fiestas y eventos para todos los gustos. Desde celebraciones tradicionales hasta espectáculos y actividades culturales, siempre hay algo nuevo para descubrir y disfrutar. Calendario de fiestas y actividades 2026 Enero 2-4 de enero. Mercado de Reyes 5 de enero. Cabalgata de Reyes Febrero 14 y 15 de febrero. Carnaval Marzo 1 de marzo. Rally Internacional de Coches de Época Barcelona – Sitges 15 de marzo. Vermuta Area de Fiestas y eventos, Ciudad de México, Gustavo A. Madero, Ciudad de México, México Fiestas y eventos ¡Déjate sorprender en cada visita! España",
+      "sourceText": "Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Fiestas y eventos ¡Déjate sorprender en cada visita!",
+      "description": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français Fiestas y eventos Tancar Usted está aquí: Qué hacer Fiestas y eventos Fiestas y eventos ¡Déjate sorprender en cada visita! https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos https://www.castelldefelsturismo.com/@@site-logo/Recurso 2.png ¡Déjate sorprender en cada visita! Castelldefels vibra todo el año con una agenda llena de fiestas y eventos para todos los gustos. Desde celebraciones tradicionales hasta espectáculos y actividades culturales, siempre hay algo nuevo para descubrir y disfrutar. Calendario de fiestas y actividades 2026 Enero 2-4 de enero. Mercado de Reyes 5 de enero. Cabalgata de Reyes Febrero 14 y 15 de febrero. Carnaval Marzo 1 de marzo. Rally Internacional de Coches de Época Barcelona – Sitges 15 de marzo. Vermuta Area de Fiestas y eventos, Ciudad de México, Gustavo A. Madero, Ciudad de México, México Fiestas y eventos ¡Déjate sorprender en cada visita! España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos/@@images/video_preview_image",
+        "https://www.castelldefelsturismo.com/es/que-hacer/fiestas-y-eventos/@@images/image/large"
+      ],
+      "wikidataId": "",
+      "evidence": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónd",
+      "classificationEvidence": {
+        "selected": "NaturalPark",
+        "confidence": 110,
+        "signals": [
+          "osm:leisure/park:NaturalPark"
+        ],
+        "candidates": [
+          "NaturalPark"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=Fiestas%20y%20eventos%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français 10 motivos para visitar Castelldefels Tancar Usted está aquí: Blog 10 motivos para visitar Castelldefels 10 motivos para visitar Castelldefels Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/@@download/image/Castillo Casteldlefels.jpg Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. 10 de marzo de 2025 Situada a pocos minutos de Barcelona, ofrece experiencias para todos los gustos. Pero si todavía no te has convencido te presentamos 10 motivos para visitar Castelldefels: Kilómetros de playa Con más de 5 km de arena dorada, la playa de Castelldefels es perfecta para relajarse, practicar deportes acuáticos o disfrutar de una puesta de sol inolvidable. Además, con una anchura media de 90 metros, permite disfrutar de un espacio cómodo y menos masificado que otras playas del litoral catalán. Gastronomía irresistible No puedes perderte el Arroz de Castelldefels, un plato único que refleja la esencia mediterránea de la ciudad. Además, su oferta gastronómica incluye marisco fresco, tapas creativas y cocina de autor. Deportes acuáticos y de aventura Windsurf, paddle surf, vela… Su ubicación privilegiada y las condiciones meteorológicas hacen de Castelldefels un paraíso para los amantes del mar y el deporte. A esto se le suma una oferta de instalaciones deportivas de alto nivel: complejos deportivos, gimnasios, piscinas, pabellones polideportivos, clubes de tenis, pista de skate… ¡Y por supuesto, el Canal Olímpico! El Castillo de Castelldefels Un símbolo de la ciudad que te transporta al pasado medieval con unas vistas impresionantes sobre el litoral. No te pierdas sus exposiciones y actividades culturales. Además, en su interior podrás visitar Piratia, una experiencia interactiva e inmersiva que te permitirá adentrarte en el mundo de la piratería a través de los sentidos. El Parque Natural del Garraf Si te gusta el senderismo y el contacto con la naturaleza, este parque te sorprenderá con paisajes únicos, rutas señalizadas y una fauna y flora espectaculares. Una ubicación privilegiada A solo 20 minutos de Barcelona y muy cerca del aeropuerto del Prat, Castelldefels es un punto estratégico para explorar la costa y el interior de Cataluña. Un ambiente animado todo el año Mercados, festivales, música en vivo y actividades para to",
+      "name": "Kilómetros de playa",
+      "type": "Beach",
+      "types": [
+        "Beach"
+      ],
+      "score": 0.45,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=Kil%C3%B3metros%20de%20playa%2C%20Spain"
+      ],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "Usted está aquí: Blog 10 motivos para visitar Castelldefels 10 motivos para visitar Castelldefels Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels htt",
+      "longDescription": "Usted está aquí: Blog 10 motivos para visitar Castelldefels 10 motivos para visitar Castelldefels Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/@@download/image/Castillo Casteldlefels.jpg Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. 10 de marzo de 2025 Situada a pocos minutos de Barcelona, ofrece experiencias para todos los gustos. Pero si todavía no te has convencido te presentamos 10 motivos para visitar Castelldefels: Kilómetros de playa Con más de 5 km de arena dorada, la playa de Castelldefels es perfecta para relajarse, practicar deportes acuáticos o disfrutar de una puesta de sol inolvidable. Además, con una anchura media de 90 metros, permite disfrutar de un espacio cómodo y menos masificado que otras playas del litoral catalán. Gastronomía irresistible No puedes perderte el Arroz de Castelldefels, un plato único que refleja la esencia mediterránea de la ciudad. Además, su España",
+      "sourceText": "Saltar al contingut Saltar a la navegació Informació de contacte Castelldefels Mostrar menú Qué hacer Descubre En familia Shopping Fiestas y eventos Naturaleza Playas Deporte Patrimonio Profesional Film Office El castillo Canal Olímpico Dónde comer Gastronomía Restaurantes Eventos gastronómicos Dónde alojarse Blog Agenda Contacto Buscar Selecciona tu idioma Idioma Català English Español Selecciona tu idioma Idioma Català English Français 10 motivos para visitar Castelldefels Tancar Usted está aquí: Blog 10 motivos para visitar Castelldefels 10 motivos para visitar Castelldefels Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/@@download/image/Castillo Casteldlefels.jpg Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. 10 de marzo de 2025 Situada a pocos minutos de Barcelona, ofrece experiencias para todos los gustos. Pero si todavía no te has convencido te presentamos 10 motivos para visitar Castelldefels: Kilómetros de playa Con más de 5 km de arena dorada, la playa de Castelldefels es perfecta para relajarse, practicar deportes acuáticos o disfrutar de una puesta de sol inolvidable. Además, con una anchura media de 90 metros, permite disfrutar de un espacio cómodo y menos masificado que otras playas del litoral catalán. Gastronomía irresistible No puedes perderte el Arroz de Castelldefels, un plato único que refleja la esencia mediterránea de la ciudad. Además, su oferta gastronómica incluye marisco fresco, tapas creativas y cocina de autor. Deportes acuáticos y de aventura Windsurf, paddle surf, vela… Su ubicación privilegiada y las condiciones meteorológicas hacen de Castelldefels un paraíso para los amantes del mar y el deporte. A esto se le suma una oferta de instalaciones deportivas de alto nivel: complejos deportivos, gimnasios, piscinas, pabellones polideportivos, clubes de tenis, pista de skate… ¡Y por supuesto, el Canal Olímpico! El Castillo de Castelldefels Un símbolo de la ciudad que te transporta al pasado medieval con unas vistas impresionantes sobre el litoral. No te pierdas sus exposiciones y actividades culturales. Además, en su interior podrás visitar Piratia, una experiencia interactiva e inmersiva que te permitirá adentrarte en el mundo de la piratería a través de los sentidos. El Parque Natural del Garraf Si te gusta el senderismo y el contacto con la naturaleza, este parque te sorprenderá con paisajes únicos, rutas señalizadas y una fauna y flora espectaculares. Una ubicación privilegiada A solo 20 minutos de Barcelona y muy cerca del aeropuerto del Prat, Castelldefels es un punto estratégico para explorar la costa y el interior de Cataluña. Un ambiente animado todo el año Mercados, festivales, música en vivo y actividades para to",
+      "description": "Usted está aquí: Blog 10 motivos para visitar Castelldefels 10 motivos para visitar Castelldefels Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/@@download/image/Castillo Casteldlefels.jpg Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. 10 de marzo de 2025 Situada a pocos minutos de Barcelona, ofrece experiencias para todos los gustos. Pero si todavía no te has convencido te presentamos 10 motivos para visitar Castelldefels: Kilómetros de playa Con más de 5 km de arena dorada, la playa de Castelldefels es perfecta para relajarse, practicar deportes acuáticos o disfrutar de una puesta de sol inolvidable. Además, con una anchura media de 90 metros, permite disfrutar de un espacio cómodo y menos masificado que otras playas del litoral catalán. Gastronomía irresistible No puedes perderte el Arroz de Castelldefels, un plato único que refleja la esencia mediterránea de la ciudad. Además, su España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/@@images/492b7efe-6428-4f74-8485-9f7747f1bb81.jpeg",
+        "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/deporte-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/garraf-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/gastronomia-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/playa-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels/puesta-sol-castelldefels.jpg/@@images/image/preview"
+      ],
+      "wikidataId": "",
+      "evidence": "Usted está aquí: Blog 10 motivos para visitar Castelldefels 10 motivos para visitar Castelldefels Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels htt 10 motivos para visitar Castelldefels Si buscas un destino que lo tenga todo: playas, gastronomía, naturaleza, cultura… Castelldefels es tu mejor opción. https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-visitar-castelldefels https://www.castelldefelsturismo.com/es/bloc/10-motivos-para-vi Situada a pocos minutos de Barcelona, ofrece experiencias para todos los gustos. Pero si todavía no te has convencido te presentamos 10 motivos para visitar Castelldefels: Kilómetros de playa Con más de 5 km de arena dorada, la playa de Castelldefels es perfecta para relajarse, practicar deportes ac",
+      "classificationEvidence": {
+        "selected": "Beach",
+        "confidence": 100,
+        "signals": [
+          "Beach: keyword 'playa' (+100)"
+        ],
+        "candidates": [
+          "Beach"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=Kil%C3%B3metros%20de%20playa%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "Usted está aquí: Blog Los imprescindibles de esta primavera e… Los imprescindibles de esta primavera en Castelldefels Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/@@download/image/Sant Jordi Castelldefels.png Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. 10 de marzo de 2025 Antes de que el calor veraniego se apodere de nuestras playas, esta estación nos brinda la oportunidad perfecta para descubrir todo lo que nuestra ciudad tiene preparado. Los chiringuitos vuelven a la playa Uno de los momentos más esperados de la temporada es la reapertura de los chiringuitos de la playa. A partir de la primavera, estos espacios se convierten en puntos de encuentro ideales para disfrutar de una comida frente al mar, un cóctel al atardecer o simplemente relajarse con el sonido de las olas. Mostra de Vins: un brindis por la primavera (4, 5 y 6 de abril) Los amantes del buen vino tienen una cita ineludible en la Mostra de Vins de Castelldefels, un evento que se reinventa pasa a celebrarse esta primavera. Podrás degustar una selección de vinos maridados con gastronomía local. Un plan perfecto para quienes buscan descubrir nuevos sabores en un ambiente animado y acogedor. Sant Jordi: libros, rosas y amor en las calles El 23 de abril, Castelldefels se llena de magia con la celebración de Sant Jordi. Las calles se visten de libros y rosas, creando un ambiente único donde la literatura y el romanticismo son los protagonistas. Un día ideal para pasear, descubrir nuevas lecturas y compartir el espíritu de esta festividad tan especial. XX Marató del Mediterrani (27 de abril) El deporte también tiene un papel destacado esta primavera con la XX edición de la Marató del Mediterrani. Una prueba consolidada en el calendario de carreras que reúne a corredores de todas partes para disfrutar de un recorrido espectacular junto al mar. Deporte en primera línea: Torneo de baloncesto U13-U14 La primavera también trae consigo emoción deportiva con el torneo de baloncesto U13-U14, un evento que reúne a jóvenes promesas del baloncesto en un ambiente competitivo y lleno de energía. Una gran ocasión para disfrutar de este deporte y animar a las futuras estrellas. Semana Santa en Castelldefels: tradición y mar Esta primavera, la Semana Santa llega con su mezcla de tradición, descanso y ocio junto al Mediterráneo. Castelldefels ofrece un ambiente ideal para disfrutar de las vacaciones, ya sea participando en los actos religiosos, degustando la gastronomía local o simplemente relajándose en la playa. Además, es una excelente oportunidad para realizar planes en fam",
+      "name": "Los chiringuitos vuelven a la playa",
+      "type": "Beach",
+      "types": [
+        "Beach"
+      ],
+      "score": 0.45,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=Los%20chiringuitos%20vuelven%20a%20la%20playa%2C%20Spain"
+      ],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "Usted está aquí: Blog Los imprescindibles de esta primavera e… Los imprescindibles de esta primavera en Castelldefels Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. https://www.castell",
+      "longDescription": "Usted está aquí: Blog Los imprescindibles de esta primavera e… Los imprescindibles de esta primavera en Castelldefels Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/@@download/image/Sant Jordi Castelldefels.png Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. 10 de marzo de 2025 Antes de que el calor veraniego se apodere de nuestras playas, esta estación nos brinda la oportunidad perfecta para descubrir todo lo que nuestra ciudad tiene preparado. Los chiringuitos vuelven a la playa Uno de los momentos más esperados de la temporada es la reapertura de los chiringuitos de la playa. A partir de la primavera, estos espacios se convierten en puntos de encuentro ideales para disfrutar de una comida frente al mar, un cóctel al atardecer o simplemente relajarse con el España",
+      "sourceText": "Usted está aquí: Blog Los imprescindibles de esta primavera e… Los imprescindibles de esta primavera en Castelldefels Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/@@download/image/Sant Jordi Castelldefels.png Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. 10 de marzo de 2025 Antes de que el calor veraniego se apodere de nuestras playas, esta estación nos brinda la oportunidad perfecta para descubrir todo lo que nuestra ciudad tiene preparado. Los chiringuitos vuelven a la playa Uno de los momentos más esperados de la temporada es la reapertura de los chiringuitos de la playa. A partir de la primavera, estos espacios se convierten en puntos de encuentro ideales para disfrutar de una comida frente al mar, un cóctel al atardecer o simplemente relajarse con el sonido de las olas. Mostra de Vins: un brindis por la primavera (4, 5 y 6 de abril) Los amantes del buen vino tienen una cita ineludible en la Mostra de Vins de Castelldefels, un evento que se reinventa pasa a celebrarse esta primavera. Podrás degustar una selección de vinos maridados con gastronomía local. Un plan perfecto para quienes buscan descubrir nuevos sabores en un ambiente animado y acogedor. Sant Jordi: libros, rosas y amor en las calles El 23 de abril, Castelldefels se llena de magia con la celebración de Sant Jordi. Las calles se visten de libros y rosas, creando un ambiente único donde la literatura y el romanticismo son los protagonistas. Un día ideal para pasear, descubrir nuevas lecturas y compartir el espíritu de esta festividad tan especial. XX Marató del Mediterrani (27 de abril) El deporte también tiene un papel destacado esta primavera con la XX edición de la Marató del Mediterrani. Una prueba consolidada en el calendario de carreras que reúne a corredores de todas partes para disfrutar de un recorrido espectacular junto al mar. Deporte en primera línea: Torneo de baloncesto U13-U14 La primavera también trae consigo emoción deportiva con el torneo de baloncesto U13-U14, un evento que reúne a jóvenes promesas del baloncesto en un ambiente competitivo y lleno de energía. Una gran ocasión para disfrutar de este deporte y animar a las futuras estrellas. Semana Santa en Castelldefels: tradición y mar Esta primavera, la Semana Santa llega con su mezcla de tradición, descanso y ocio junto al Mediterráneo. Castelldefels ofrece un ambiente ideal para disfrutar de las vacaciones, ya sea participando en los actos religiosos, degustando la gastronomía local o simplemente relajándose en la playa. Además, es una excelente oportunidad para realizar planes en fam",
+      "description": "Usted está aquí: Blog Los imprescindibles de esta primavera e… Los imprescindibles de esta primavera en Castelldefels Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/@@download/image/Sant Jordi Castelldefels.png Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. 10 de marzo de 2025 Antes de que el calor veraniego se apodere de nuestras playas, esta estación nos brinda la oportunidad perfecta para descubrir todo lo que nuestra ciudad tiene preparado. Los chiringuitos vuelven a la playa Uno de los momentos más esperados de la temporada es la reapertura de los chiringuitos de la playa. A partir de la primavera, estos espacios se convierten en puntos de encuentro ideales para disfrutar de una comida frente al mar, un cóctel al atardecer o simplemente relajarse con el España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/@@images/2f6906ea-c701-4035-9543-352c9b5147ad.png",
+        "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/chiringuito-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/cursa-autisme-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/marato-mediterrani-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/mostra-de-vins-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/ruta-tapa-castelldefels.jpg/@@images/image/preview",
+        "https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera-en-castelldefels/sant-ponc-castelldefels.jpg/@@images/image/preview"
+      ],
+      "wikidataId": "",
+      "evidence": "Usted está aquí: Blog Los imprescindibles de esta primavera e… Los imprescindibles de esta primavera en Castelldefels Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. https://www.castell Los imprescindibles de esta primavera en Castelldefels Con la llegada de la primavera el 20 de marzo, Castelldefels se viste de colores, temperaturas agradables y un sinfín de actividades para disfrutar al aire libre. https://www.castelldefelsturismo.com/es/bloc/los-imprescindibles-de-esta-primavera Antes de que el calor veraniego se apodere de nuestras playas, esta estación nos brinda la oportunidad perfecta para descubrir todo lo que nuestra ciudad tiene preparado. Los chiringuitos vuelven a la playa Uno de los momentos más esperados de la temporada es la reapertura de los chiringuitos de la",
+      "classificationEvidence": {
+        "selected": "Beach",
+        "confidence": 100,
+        "signals": [
+          "Beach: keyword 'playa' (+100)"
+        ],
+        "candidates": [
+          "Beach"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=Los%20chiringuitos%20vuelven%20a%20la%20playa%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "Situación del Castillo de Castelldefels https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/@@download/image/castillo de castelldefels Situación del Castillo de Castelldefels.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 153.5 KB Situación del Castillo de Castelldefels Inicio",
+      "name": "Situación del Castillo de Castelldefels",
+      "type": "Castle",
+      "types": [
+        "Castle"
+      ],
+      "score": 0.9,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/view",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=Situaci%C3%B3n%20del%20Castillo%20de%20Castelldefels%2C%20Spain"
+      ],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "",
+      "longDescription": "España",
+      "sourceText": "Situación del Castillo de Castelldefels https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/@@download/image/castillo de castelldefels Situación del Castillo de Castelldefels.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 153.5 KB Situación del Castillo de Castelldefels Inicio",
+      "description": "España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/@@images/47d46224-e904-4f98-8f9a-6bed3c698fb3.jpeg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/castillo-de-castelldefels-situacion-del-castillo-de-castelldefels.jpg/@@images/image.jpeg"
+      ],
+      "wikidataId": "",
+      "evidence": "page_title:Situación del Castillo de Castelldefels",
+      "classificationEvidence": {
+        "selected": "Castle",
+        "confidence": 100,
+        "signals": [
+          "Castle: keyword 'castillo' (+100)"
+        ],
+        "candidates": [
+          "Castle"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=Situaci%C3%B3n%20del%20Castillo%20de%20Castelldefels%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "Cuerpo A, el inicio del castillo https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/@@download/image/Cuerpo A, el inicio del castillo.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 129.5 KB Cuerpo A, el inicio del castillo Inicio",
+      "name": "Cuerpo A, el inicio del castillo",
+      "type": "Castle",
+      "types": [
+        "Castle"
+      ],
+      "score": 0.9,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/view",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=Cuerpo%20A%2C%20el%20inicio%20del%20castillo%2C%20Spain"
+      ],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "",
+      "longDescription": "España",
+      "sourceText": "Cuerpo A, el inicio del castillo https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/@@download/image/Cuerpo A, el inicio del castillo.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 129.5 KB Cuerpo A, el inicio del castillo Inicio",
+      "description": "España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/@@images/fa438309-2acc-4b06-981c-8ab7936c3fd8.jpeg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-a-el-inicio-del-castillo.jpg/@@images/image.jpeg"
+      ],
+      "wikidataId": "",
+      "evidence": "page_title:Cuerpo A, el inicio del castillo",
+      "classificationEvidence": {
+        "selected": "Castle",
+        "confidence": 100,
+        "signals": [
+          "Castle: keyword 'castillo' (+100)"
+        ],
+        "candidates": [
+          "Castle"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=Cuerpo%20A%2C%20el%20inicio%20del%20castillo%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "Cuerpo B, la ampliación del castillo https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/@@download/image/Cuerpo B, la ampliación del castillo.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 200.1 KB Cuerpo B, la ampliación del castillo Inicio",
+      "name": "Cuerpo B, la ampliación del castillo",
+      "type": "Castle",
+      "types": [
+        "Castle"
+      ],
+      "score": 0.9,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/view",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=Cuerpo%20B%2C%20la%20ampliaci%C3%B3n%20del%20castillo%2C%20Spain"
+      ],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "",
+      "longDescription": "España",
+      "sourceText": "Cuerpo B, la ampliación del castillo https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/@@download/image/Cuerpo B, la ampliación del castillo.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 200.1 KB Cuerpo B, la ampliación del castillo Inicio",
+      "description": "España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/@@images/d36c8353-ce7a-4af4-989c-f4329aa3063d.jpeg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/cuerpo-b-la-ampliacion-del-castillo.jpg/@@images/image.jpeg"
+      ],
+      "wikidataId": "",
+      "evidence": "page_title:Cuerpo B, la ampliación del castillo",
+      "classificationEvidence": {
+        "selected": "Castle",
+        "confidence": 100,
+        "signals": [
+          "Castle: keyword 'castillo' (+100)"
+        ],
+        "candidates": [
+          "Castle"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=Cuerpo%20B%2C%20la%20ampliaci%C3%B3n%20del%20castillo%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "El ayuntamiento de Castelldefels compra el castillo https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/@@download/image/El ayuntamiento de Castelldefels compra el castillo.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 84.6 KB El ayuntamiento de Castelldefels compra el castillo Inicio",
+      "name": "El ayuntamiento de Castelldefels compra el castillo",
+      "type": "Castle",
+      "types": [
+        "Castle"
+      ],
+      "score": 0.9,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/view",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=El%20ayuntamiento%20de%20Castelldefels%20compra%20el%20castillo%2C%20Spain"
+      ],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "",
+      "longDescription": "España",
+      "sourceText": "El ayuntamiento de Castelldefels compra el castillo https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/@@download/image/El ayuntamiento de Castelldefels compra el castillo.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 84.6 KB El ayuntamiento de Castelldefels compra el castillo Inicio",
+      "description": "España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/@@images/2e52c8da-6a76-46aa-bba7-252909e8c391.jpeg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/el-ayuntamiento-de-castelldefels-compra-el-castillo.jpg/@@images/image.jpeg"
+      ],
+      "wikidataId": "",
+      "evidence": "page_title:El ayuntamiento de Castelldefels compra el castillo",
+      "classificationEvidence": {
+        "selected": "Castle",
+        "confidence": 100,
+        "signals": [
+          "Castle: keyword 'castillo' (+100)"
+        ],
+        "candidates": [
+          "Castle"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=El%20ayuntamiento%20de%20Castelldefels%20compra%20el%20castillo%2C%20Spain"
+      ]
+    },
+    {
+      "summary": "la iglesia https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/@@download/image/La iglesia.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 115.1 KB la iglesia Inicio",
+      "name": "la iglesia",
+      "type": "Church",
+      "types": [
+        "Church"
+      ],
+      "score": 0.9,
+      "sourceUrl": "https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/view",
+      "url": "",
+      "relatedUrls": [
+        "https://www.openstreetmap.org/search?query=la%20iglesia%2C%20Spain"
+      ],
+      "address": "",
+      "phone": "",
+      "email": "",
+      "coordinates": {
+        "lat": 39.3260685,
+        "lng": -4.8379791,
+        "source": "openstreetmap",
+        "confidence": 0.9295913704622313
+      },
+      "shortDescription": "",
+      "longDescription": "España",
+      "sourceText": "la iglesia https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/view https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/@@download/image/La iglesia.jpg Haga clic aquí para ver la imagen a tamaño completo… Tamaño: 115.1 KB la iglesia Inicio",
+      "description": "España",
+      "images": [
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/@@images/99ee5f74-be85-4a75-a267-901627b2cd31.jpeg",
+        "https://www.castelldefelsturismo.com/es/recursos/imagenes/la-iglesia.jpg/@@images/image.jpeg"
+      ],
+      "wikidataId": "",
+      "evidence": "page_title:la iglesia",
+      "classificationEvidence": {
+        "selected": "Church",
+        "confidence": 100,
+        "signals": [
+          "Church: keyword 'iglesia' (+100)"
+        ],
+        "candidates": [
+          "Church"
+        ]
+      },
+      "referenceUrls": [
+        "https://www.openstreetmap.org/search?query=la%20iglesia%2C%20Spain"
+      ]
+    }
+  ],
+  "entities_output_count": 11
+}
