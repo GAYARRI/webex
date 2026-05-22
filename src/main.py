@@ -41,6 +41,11 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="PATH",
         help="Fichero con una URL por linea para procesamiento batch (requiere --kb).",
     )
+    parser.add_argument(
+        "--urls-rss",
+        metavar="URL",
+        help="Feed RSS/Atom del que extraer URLs de artículos para procesamiento batch (requiere --kb).",
+    )
     parser.add_argument("--output", help="Ruta opcional para guardar el JSON.")
     parser.add_argument("--quiet", action="store_true", help="No imprime el JSON en consola.")
     parser.add_argument("--ground-truth", help="Ruta a ground_truth.json.")
@@ -141,6 +146,41 @@ def build_parser() -> argparse.ArgumentParser:
             "Busca coordenadas en Wikidata para entidades sin wikidataId conocido "
             "(sin OSM). Más rápido que --geocode."
         ),
+    )
+    parser.add_argument(
+        "--discover-rss",
+        metavar="URL",
+        help="Descubre feeds RSS de un sitio web y los muestra filtrados por --topic.",
+    )
+    parser.add_argument(
+        "--topic",
+        metavar="KEYWORD",
+        default="",
+        help="Filtra los feeds RSS descubiertos por palabra clave (ej: turismo, viajes).",
+    )
+    parser.add_argument(
+        "--read-rss",
+        metavar="URL",
+        help="Lee y muestra los artículos de un feed RSS o Atom.",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=20,
+        metavar="N",
+        help="Número máximo de artículos a mostrar con --read-rss (default: 20).",
+    )
+    parser.add_argument(
+        "--since-days",
+        type=int,
+        default=0,
+        metavar="N",
+        help="Muestra solo artículos de los últimos N días con --read-rss.",
+    )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Muestra el resumen de cada artículo con --read-rss.",
     )
     return parser
 
@@ -655,17 +695,153 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
     return _apply_flatten(result, args)
 
 
+def run_rss_batch(args: argparse.Namespace) -> dict[str, Any]:
+    """Process RSS articles as synthetic pages — no fetch, uses title+summary directly."""
+    from .models import ContentBlock, PageExtraction
+    from .rss_reader import read_rss
+
+    load_dotenv()
+    model = args.model or configured_model()
+    threshold = getattr(args, "merge_threshold", 0.70)
+    quiet = getattr(args, "quiet", False)
+
+    def _progress(msg: str) -> None:
+        if not quiet:
+            print(msg, file=sys.stderr, flush=True)
+
+    articles = read_rss(args.urls_rss, limit=200)
+    _progress(f"RSS: {len(articles)} artículos cargados desde {args.urls_rss}")
+
+    kb_path = args.kb or getattr(args, "output", None)
+    kb_entities: list[Any] = load_kb(kb_path) if kb_path else []
+    pages_report: list[dict[str, Any]] = []
+    added_total = 0
+    enriched_total = 0
+
+    for i, article in enumerate(articles, 1):
+        url = article.get("url", "") or f"rss://article/{i}"
+        title = article.get("title", "")
+        summary = article.get("summary", "")
+        source = article.get("source", "")
+        published = article.get("published", "")
+        text = f"{title}\n\n{summary}".strip()
+
+        _progress(f"[{i}/{len(articles)}] {title[:80]}")
+
+        try:
+            page = PageExtraction(
+                url=url,
+                title=title,
+                description=summary,
+                language="es",
+                main_text=text,
+                raw_text=text,
+                images=[],
+                status="ok",
+                blocks=[
+                    ContentBlock(
+                        block_id="rss-0",
+                        url=url,
+                        title=title,
+                        text=summary,
+                        images=[],
+                    )
+                ],
+                structured_data=[],
+                geo_candidates=[],
+                errors=[],
+            )
+            entities = extract_entities(page, use_ai=not args.no_ai, model=model)
+            entities = merge_entities(entities)
+            entities = classify_entities(entities)
+            entities = _sanitize_entity_images(entities)
+            for entity in entities:
+                if not entity.sourceUrl:
+                    entity.sourceUrl = url
+                if source and not entity.description:
+                    entity.description = f"Fuente: {source} ({published})"
+            tag_sources_with_page_url(entities, url)
+            kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
+            kb_entities = _sanitize_entity_images(kb_entities)
+            if kb_path:
+                save_kb(kb_path, kb_entities)
+            added_total += kb_report["added"]
+            enriched_total += kb_report["enriched"]
+            pages_report.append({"url": url, "title": title, "status": "ok",
+                                  "added": kb_report["added"], "enriched": kb_report["enriched"]})
+            _progress(f"       +{kb_report['added']} nuevas  ~{kb_report['enriched']} enriquecidas  KB total: {len(kb_entities)}")
+        except Exception as exc:
+            pages_report.append({"url": url, "title": title, "status": "error",
+                                  "error": f"{exc.__class__.__name__}: {exc}"})
+            _progress(f"       ERROR: {exc.__class__.__name__}: {exc}")
+
+    kb_entities = classify_entities(kb_entities)
+    if kb_path:
+        save_kb(kb_path, kb_entities)
+
+    ok_count = sum(1 for p in pages_report if p["status"] == "ok")
+    err_count = sum(1 for p in pages_report if p["status"] == "error")
+    _progress(f"\nRSS batch completado: {ok_count} artículos · {len(kb_entities)} entidades en KB (+{added_total} nuevas)")
+
+    batch_report = {
+        "extracted_at": datetime.now(timezone.utc).isoformat(),
+        "model": None if args.no_ai else model,
+        "pages_processed": ok_count,
+        "pages_error": err_count,
+        "added_total": added_total,
+        "enriched_total": enriched_total,
+        "kb_total": len(kb_entities),
+        "pages": pages_report,
+    }
+    output_format = getattr(args, "format", "full")
+    if output_format == "golden":
+        result = {"batch_report": batch_report, "entities": _build_golden_result(kb_entities)}
+    elif output_format == "clean":
+        result = _build_clean_result(args.urls_rss, kb_entities)
+        result["batch_report"] = batch_report
+    else:
+        result = {**batch_report, "entities": _build_golden_result(kb_entities)}
+    return _apply_flatten(result, args)
+
+
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
 
+    discover_rss_url = getattr(args, "discover_rss", None)
+    if discover_rss_url:
+        from .rss_discover import discover_rss
+        topic = getattr(args, "topic", "") or ""
+        feeds = discover_rss(discover_rss_url, topic=topic)
+        if not feeds:
+            print("No se encontraron feeds RSS" + (f" con tema '{topic}'" if topic else "") + ".")
+        else:
+            for feed in feeds:
+                title = f"  [{feed['title']}]" if feed["title"] else ""
+                print(f"{feed['url']}{title}")
+        return
+
+    read_rss_url = getattr(args, "read_rss", None)
+    if read_rss_url:
+        from .rss_reader import print_articles, read_rss
+        articles = read_rss(
+            read_rss_url,
+            limit=getattr(args, "limit", 20),
+            since_days=getattr(args, "since_days", 0),
+        )
+        print_articles(articles, show_summary=getattr(args, "summary", False))
+        return
+
     is_crawl = getattr(args, "crawl", False)
+    is_rss_batch = bool(getattr(args, "urls_rss", None))
     is_batch = bool(getattr(args, "urls", None) or getattr(args, "urls_file", None))
 
     if is_crawl:
         if not args.url:
             parser.error("--crawl requiere una URL raiz.")
         result = run_crawl(args)
+    elif is_rss_batch:
+        result = run_rss_batch(args)
     elif is_batch:
         result = run_batch(args)
     else:
