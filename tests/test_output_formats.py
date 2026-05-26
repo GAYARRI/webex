@@ -1,14 +1,9 @@
 import argparse
 import unittest
 
-from src.main import (
-    _build_golden_result,
-    _collect_urls,
-    _consolidate_entity_evidence,
-    _coverage_summary,
-    _page_summary,
-    _sanitize_entity_images,
-)
+from src.main import _collect_urls
+from src.pipeline import consolidate_entity_evidence as _consolidate_entity_evidence, sanitize_entity_images as _sanitize_entity_images
+from src.serializers import build_golden_result as _build_golden_result, coverage_summary as _coverage_summary, page_summary as _page_summary
 from src.models import Coordinates, ContentBlock, Entity, Evidence, PageExtraction
 
 

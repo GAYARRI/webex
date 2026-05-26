@@ -15,14 +15,14 @@ from src.flattener import (
 )
 
 
-def _ok_checker(url: str) -> bool:
+def _ok_checker(url: str) -> tuple[bool, str]:
     # "ok.com" is valid; "broken.com" and "error.com" are not
     # NOTE: cannot use "ok" in url because "broken" contains the substring "ok"
-    return "ok.com" in url
+    return ("ok.com" in url, url)
 
 
-def _all_ok(_url: str) -> bool:
-    return True
+def _all_ok(url: str) -> tuple[bool, str]:
+    return (True, url)
 
 
 # ---------------------------------------------------------------------------

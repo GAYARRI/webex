@@ -111,7 +111,7 @@ Para forzar comparacion contra todo el archivo:
 python -m src.main "https://visitasevilla.es/el-flamenco" --ground-truth ground_truth.json --ground-truth-scope all
 ```
 
-El modelo de IA por defecto se lee de `.env` mediante `OPENAI_MODEL`. Para este proyecto se usa `gpt-5.4-mini`.
+El modelo de IA por defecto se lee de `.env` mediante `OPENAI_MODEL`. Para este proyecto se usa `gpt-4o-mini`.
 
 ## Pruebas
 

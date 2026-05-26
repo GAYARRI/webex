@@ -10,7 +10,7 @@ from .models import Entity, PageExtraction
 from .ontology import get_index
 
 
-DEFAULT_MODEL = "gpt-5.4-mini"
+DEFAULT_MODEL = "gpt-4o-mini"
 
 
 def _tourist_types() -> list[str]:

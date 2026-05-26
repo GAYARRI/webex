@@ -37,7 +37,7 @@ Esta decision documenta las herramientas candidatas, su papel previsto y sus lim
 ### Inteligencia artificial
 
 - OpenAI API: posible apoyo para extraccion de entidades, resumen, clasificacion candidata y normalizacion de texto.
-- Modelo por defecto del MVP: `gpt-5.4-mini`, configurable mediante `OPENAI_MODEL`.
+- Modelo por defecto del MVP: `gpt-4o-mini`, configurable mediante `OPENAI_MODEL`.
 
 ## Reglas iniciales de uso
 

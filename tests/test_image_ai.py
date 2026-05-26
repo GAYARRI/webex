@@ -33,7 +33,7 @@ class ImageAiTests(unittest.TestCase):
         )
 
         with patch.dict(os.environ, {"OPENAI_API_KEY": ""}, clear=False):
-            _, report = analyze_images_with_vision([Entity(name="A")], page, model="gpt-5.4-mini")
+            _, report = analyze_images_with_vision([Entity(name="A")], page, model="gpt-4o-mini")
 
         self.assertEqual(report["status"], "skipped")
         self.assertEqual(report["strategy"], "heuristic-first")
@@ -63,7 +63,7 @@ class FallbackStrategyTests(unittest.TestCase):
         entities = [Entity(name="A", images=["https://example.com/a.jpg"])]
         with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}, clear=False):
             result_entities, report = analyze_images_with_vision(
-                entities, _page(), model="gpt-5.4-mini", strategy="fallback"
+                entities, _page(), model="gpt-4o-mini", strategy="fallback"
             )
         self.assertEqual(report["status"], "skipped")
         self.assertTrue(any("ya tienen imágenes" in e for e in report["errors"]))
@@ -73,7 +73,7 @@ class FallbackStrategyTests(unittest.TestCase):
         entities = [Entity(name="A")]
         with patch.dict(os.environ, {"OPENAI_API_KEY": ""}, clear=False):
             _, report = analyze_images_with_vision(
-                entities, _page(), model="gpt-5.4-mini", strategy="fallback"
+                entities, _page(), model="gpt-4o-mini", strategy="fallback"
             )
         self.assertEqual(report["status"], "skipped")
         self.assertIn("OPENAI_API_KEY", report["errors"][0])
@@ -93,7 +93,7 @@ class FallbackStrategyTests(unittest.TestCase):
                 result_entities, report = analyze_images_with_vision(
                     entities,
                     _page(images=[{"url": assigned_url, "alt": "Found", "source": "page"}]),
-                    model="gpt-5.4-mini",
+                    model="gpt-4o-mini",
                     strategy="fallback",
                 )
 
@@ -113,7 +113,7 @@ class FallbackStrategyTests(unittest.TestCase):
         with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}, clear=False):
             with patch("src.image_ai._classify_image_batch", side_effect=fake_classify):
                 result_entities, _ = analyze_images_with_vision(
-                    [entity], page, model="gpt-5.4-mini", strategy="fallback"
+                    [entity], page, model="gpt-4o-mini", strategy="fallback"
                 )
 
         e = result_entities[0]
@@ -128,7 +128,7 @@ class FallbackStrategyTests(unittest.TestCase):
             _, report = analyze_images_with_vision(
                 [Entity(name="A", images=["https://example.com/x.jpg"])],
                 _page(),
-                model="gpt-5.4-mini",
+                model="gpt-4o-mini",
                 strategy="fallback",
             )
         self.assertEqual(report["strategy"], "fallback")

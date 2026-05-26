@@ -10,23 +10,19 @@ from typing import Any
 from dotenv import load_dotenv
 
 from .ai_client import configured_model
-from .flattener import flatten_entities
 from .content_coverage import analyze_content_coverage
 from .entity_extractor import classify_entities, extract_entities
 from .entity_merger import attach_block_evidence, merge_entities
-from .geo import enrich_entities_coordinates, enrich_entities_external_context, enrich_entities_geosearch_images, enrich_entities_wikidata_images
 from .ground_truth import compare_entities, load_ground_truth
-from .image_ai import analyze_images_with_vision
-from .image_filters import is_image_url, is_noise_image, is_trusted_image_source
-from .images import enrich_entities_images, is_image_relevant_to_entity_url
+from .knowledge_base import filter_low_quality_entities, load_crawled_urls, load_kb, save_kb, tag_sources_with_page_url
 from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
-from .knowledge_base import filter_low_quality_entities, load_crawled_urls, load_kb, save_kb, tag_sources_with_page_url
 from .models import Entity
+from .pipeline import consolidate_entity_evidence, process_page, sanitize_entity_images
 from .report import count_by_type, to_markdown
-from .text_utils import is_boilerplate_text, normalize_key
+from .serializers import apply_flatten, build_clean_result, build_golden_result, coverage_summary, page_summary
 from .virtuoso_exporter import ExportDefaults, VirtuosoSchema, export_entities
-from .web_extractor import extract_page, fetch_html, parse_html
+from .web_extractor import fetch_html, parse_html
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -247,58 +243,26 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _process_page(
-    url: str,
-    args: argparse.Namespace,
-) -> tuple[list[Any], Any, dict[str, Any]]:
-    """Extract and enrich entities from a single page. Returns (entities, page, image_report)."""
-    page = extract_page(url)
-    model = args.model or configured_model()
-    entities = extract_entities(page, use_ai=not args.no_ai, model=model)
-    entities = enrich_entities_images(entities, page)
-    image_analysis_report: dict[str, Any] = {
-        "enabled": False,
-        "status": "not_requested",
-        "candidates_count": 0,
-        "accepted_count": 0,
-        "accepted": [],
-        "errors": [],
-    }
-    if args.analyze_images:
-        entities, image_analysis_report = analyze_images_with_vision(
-            entities,
-            page,
-            model=model,
-            strategy=args.image_strategy,
-        )
-    entities = attach_block_evidence(entities, page)
-    entities = merge_entities(entities)
-    wikidata_coords = getattr(args, "wikidata_coords", False)
-    entities = enrich_entities_coordinates(
-        entities, page, geocode=args.geocode, wikidata_coords=wikidata_coords
-    )
-    # Tier 1: always enrich images and external context for entities with known wikidataId.
-    # These calls are cheap (all data already cached from the coordinates fetch).
-    entities = enrich_entities_wikidata_images(entities)
-    entities = enrich_entities_external_context(entities, page)
-    if args.geocode:
-        entities = enrich_entities_geosearch_images(entities)
-    entities = _consolidate_entity_evidence(entities)
-    entities = classify_entities(entities)
-    entities = _sanitize_entity_images(entities)
-    return entities, page, image_analysis_report
+def _collect_urls(args: argparse.Namespace) -> list[str]:
+    if getattr(args, "urls", None):
+        return list(args.urls)
+    if getattr(args, "urls_file", None):
+        lines = Path(args.urls_file).read_text(encoding="utf-8").splitlines()
+        return [line.strip() for line in lines if line.strip() and not line.startswith("#")]
+    if getattr(args, "url", None):
+        return [args.url]
+    return []
 
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
     load_dotenv()
     model = args.model or configured_model()
-    entities, page, image_analysis_report = _process_page(args.url, args)
+    entities, page, image_analysis_report = process_page(args.url, args)
 
     output_format = getattr(args, "format", "full")
     use_clean = output_format == "clean"
     use_golden = output_format == "golden"
 
-    # Knowledge base: load → tag → resolve → save
     kb_report: dict[str, Any] | None = None
     if args.kb:
         kb_entities = load_kb(args.kb)
@@ -306,15 +270,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         threshold = getattr(args, "merge_threshold", 0.70)
         kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
         kb_entities = classify_entities(kb_entities)
-        kb_entities = _sanitize_entity_images(kb_entities)
+        kb_entities = sanitize_entity_images(kb_entities)
         save_kb(args.kb, kb_entities)
         if use_clean or use_golden:
             entities = kb_entities
 
     if use_golden:
-        result = _build_golden_result(entities)
+        result = build_golden_result(entities)
     elif use_clean:
-        result = _build_clean_result(page.url, entities)
+        result = build_clean_result(page.url, entities)
         result["content_coverage_report"] = analyze_content_coverage(page, entities)
         if kb_report:
             result["kb_report"] = kb_report
@@ -322,10 +286,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         result = {
             "extracted_at": datetime.now(timezone.utc).isoformat(),
             "model": None if args.no_ai else model,
-            "page": _page_summary(page),
-            "entities": _build_golden_result(entities),
+            "page": page_summary(page),
+            "entities": build_golden_result(entities),
             "image_analysis_report": image_analysis_report,
-            "content_coverage_report": _coverage_summary(analyze_content_coverage(page, entities)),
+            "content_coverage_report": coverage_summary(analyze_content_coverage(page, entities)),
         }
         if kb_report:
             result["kb_report"] = kb_report
@@ -339,18 +303,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             scope=args.ground_truth_scope,
         )
 
-    return _apply_flatten(result, args)
-
-
-def _collect_urls(args: argparse.Namespace) -> list[str]:
-    if getattr(args, "urls", None):
-        return list(args.urls)
-    if getattr(args, "urls_file", None):
-        lines = Path(args.urls_file).read_text(encoding="utf-8").splitlines()
-        return [line.strip() for line in lines if line.strip() and not line.startswith("#")]
-    if getattr(args, "url", None):
-        return [args.url]
-    return []
+    return apply_flatten(result, args)
 
 
 def run_batch(args: argparse.Namespace) -> dict[str, Any]:
@@ -366,11 +319,11 @@ def run_batch(args: argparse.Namespace) -> dict[str, Any]:
     threshold = getattr(args, "merge_threshold", 0.70)
     for url in urls:
         try:
-            entities, _page, _img_report = _process_page(url, args)
+            entities, _page, _img_report = process_page(url, args)
             tag_sources_with_page_url(entities, url)
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
             kb_entities = classify_entities(kb_entities)
-            kb_entities = _sanitize_entity_images(kb_entities)
+            kb_entities = sanitize_entity_images(kb_entities)
             if args.kb:
                 save_kb(args.kb, kb_entities)
             added_total += kb_report["added"]
@@ -403,219 +356,14 @@ def run_batch(args: argparse.Namespace) -> dict[str, Any]:
 
     output_format = getattr(args, "format", "full")
     if output_format == "golden":
-        result = {"batch_report": batch_report, "entities": _build_golden_result(kb_entities)}
+        result = {"batch_report": batch_report, "entities": build_golden_result(kb_entities)}
     elif output_format == "clean":
         first_url = urls[0] if urls else ""
-        result = _build_clean_result(first_url, kb_entities)
+        result = build_clean_result(first_url, kb_entities)
         result["batch_report"] = batch_report
     else:
-        result = {**batch_report, "entities": _build_golden_result(kb_entities)}
-    return _apply_flatten(result, args)
-
-
-CLEAN_COORDS_MIN_CONFIDENCE = 0.3
-
-
-def _build_clean_result(url: str, entities: Any) -> dict[str, Any]:
-    clean_entities = []
-    for entity in entities:
-        coords = entity.coordinates
-        reliable = (
-            coords.lat is not None
-            and (coords.confidence is None or coords.confidence >= CLEAN_COORDS_MIN_CONFIDENCE)
-        )
-        clean_entities.append(
-            {
-                "name": entity.name,
-                "type": entity.type,
-                "sourceUrl": entity.sourceUrl or url,
-                "types": entity.types,
-                "shortDescription": entity.shortDescription,
-                "longDescription": entity.longDescription,
-                "images": entity.images,
-                "coordinates": {
-                    "lat": coords.lat,
-                    "lng": coords.lng,
-                    "source": coords.source or None,
-                    "confidence": coords.confidence,
-                }
-                if reliable
-                else None,
-            }
-        )
-    return {
-        "extracted_at": datetime.now(timezone.utc).isoformat(),
-        "entities": clean_entities,
-    }
-
-
-def _page_summary(page) -> dict[str, Any]:
-    return {
-        "url": page.url,
-        "title": page.title,
-        "description": page.description,
-        "language": page.language,
-        "status": page.status,
-        "errors": page.errors,
-        "image_count": len(page.images),
-        "block_count": len(page.blocks),
-        "structured_data_count": len(page.structured_data),
-        "geo_candidates_count": len(page.geo_candidates),
-    }
-
-
-def _coverage_summary(report: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "total_blocks": report.get("total_blocks"),
-        "candidate_tourist_blocks": report.get("candidate_tourist_blocks"),
-        "covered_candidate_blocks": report.get("covered_candidate_blocks"),
-        "uncovered_candidate_blocks": report.get("uncovered_candidate_blocks"),
-        "coverage_ratio": report.get("coverage_ratio"),
-        "status_counts": report.get("status_counts", {}),
-    }
-
-
-def _build_golden_result(entities: Any) -> list[dict[str, Any]]:
-    return [_golden_entity(entity) for entity in entities]
-
-
-def _golden_entity(entity) -> dict[str, Any]:
-    return {
-        "name": entity.name,
-        "type": entity.type,
-        "types": entity.types,
-        "score": entity.score,
-        "sourceUrl": entity.sourceUrl,
-        "url": entity.url,
-        "relatedUrls": entity.relatedUrls,
-        "address": entity.address,
-        "phone": entity.phone,
-        "email": entity.email,
-        "coordinates": {
-            "lat": entity.coordinates.lat,
-            "lng": entity.coordinates.lng,
-            "source": entity.coordinates.source,
-            "confidence": entity.coordinates.confidence,
-        },
-        "shortDescription": entity.shortDescription,
-        "longDescription": entity.longDescription,
-        "sourceText": entity.sourceText,
-        "description": entity.description,
-        "images": entity.images,
-        "wikidataId": entity.wikidataId,
-        "evidence": entity.evidence,
-        "classificationEvidence": entity.classificationEvidence,
-        "sources": [_source_dict(s) for s in entity.sources],
-    }
-
-
-def _source_dict(source) -> dict[str, Any]:
-    return {
-        "page_url": source.page_url or source.metadata.get("page_url", "") or source.url,
-        "url": source.url,
-        "block_id": source.block_id,
-        "source_type": source.source_type,
-        "title": source.title,
-        "text": source.text,
-        "images": source.images,
-        "metadata": source.metadata,
-    }
-
-
-_MAX_ENTITY_IMAGES = 10
-
-
-def _sanitize_entity_images(entities: Any) -> Any:
-    for entity in entities:
-        clean_images = []
-        seen = set()
-        clean_related_urls = []
-        for url in entity.relatedUrls:
-            if is_image_url(url):
-                entity.images = [*entity.images, url]
-                continue
-            clean_related_urls.append(url)
-        if entity.url and is_image_url(entity.url):
-            entity.images = [*entity.images, entity.url]
-            entity.url = ""
-        for image in entity.images:
-            if (
-                not image
-                or image in seen
-                or is_noise_image(image)
-                or (not is_trusted_image_source(image) and not is_image_relevant_to_entity_url(image, entity))
-            ):
-                continue
-            seen.add(image)
-            clean_images.append(image)
-        entity.images = _rank_and_cap_images(clean_images, entity, _MAX_ENTITY_IMAGES)
-        entity.relatedUrls = _dedupe_urls(clean_related_urls)
-    return entities
-
-
-def _rank_and_cap_images(images: list[str], entity: Any, max_count: int) -> list[str]:
-    """Sort images by slug relevance to entity name, keep top max_count."""
-    from urllib.parse import unquote, urlparse as _up
-    name_words = {w for w in normalize_key(entity.name).split() if len(w) >= 4}
-    if not name_words:
-        return images[:max_count]
-
-    def _slug_score(url: str) -> int:
-        slug = normalize_key(_up(unquote(url)).path.replace("/", " "))
-        return sum(1 for w in name_words if w in slug)
-
-    scored = sorted(range(len(images)), key=lambda i: _slug_score(images[i]), reverse=True)
-    return [images[i] for i in scored[:max_count]]
-
-
-def _consolidate_entity_evidence(entities: Any) -> Any:
-    for entity in entities:
-        for source in entity.sources:
-            if source.url and source.source_type not in {"page_block", "page"}:
-                entity.relatedUrls = [*entity.relatedUrls, source.url]
-                entity.images = [
-                    *entity.images,
-                    *[
-                        image
-                        for image in source.images
-                        if is_trusted_image_source(image) or is_image_relevant_to_entity_url(image, entity)
-                    ],
-                ]
-                if source.text:
-                    entity.longDescription = _append_context(entity.longDescription, source.text)
-                    entity.description = _append_context(entity.description, source.text)
-            if not entity.address and source.metadata.get("address"):
-                entity.address = str(source.metadata["address"])
-            if not entity.phone and source.metadata.get("phone"):
-                entity.phone = str(source.metadata["phone"])
-    return entities
-
-
-def _append_context(current: str, incoming: str) -> str:
-    current = (current or "").strip()
-    incoming = (incoming or "").strip()
-    if not incoming:
-        return current
-    if not current:
-        return incoming if not is_boilerplate_text(incoming) else current
-    if incoming in current:
-        return current
-    if current in incoming:
-        return incoming
-    if is_boilerplate_text(incoming):
-        return current
-    return f"{current} {incoming}"
-
-
-def _dedupe_urls(values: list[str]) -> list[str]:
-    result = []
-    seen = set()
-    for value in values:
-        if not value or value in seen:
-            continue
-        seen.add(value)
-        result.append(value)
-    return result
+        result = {**batch_report, "entities": build_golden_result(kb_entities)}
+    return apply_flatten(result, args)
 
 
 def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
@@ -638,9 +386,6 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
         _progress("  Buscando sitemap.xml ...")
 
     lang = getattr(args, "lang", "") or ""
-    wikidata_coords = getattr(args, "wikidata_coords", False)
-    # In crawl mode, --output acts as the KB file when --kb is not specified.
-    # This enables incremental saving and resumable crawl without extra flags.
     kb_path = args.kb or getattr(args, "output", None)
     crawled_urls: set[str] = load_crawled_urls(kb_path) if kb_path else set()
     if crawled_urls:
@@ -665,35 +410,16 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
 
     for url in crawl:
         n = crawl.visited_count
-        # With sitemap: total is known upfront and stable.
-        # With BFS: total grows as links are discovered; show current known total.
         total = args.max_pages or crawl.total_known
         _progress(f"[{n}/{total}] {url}")
         try:
             resolved_url, html, fetch_warnings = fetch_html(url)
             page = parse_html(resolved_url, html, errors=fetch_warnings)
-            entities = extract_entities(page, use_ai=not args.no_ai, model=model)
-            entities = enrich_entities_images(entities, page)
-            if args.analyze_images:
-                entities, _ = analyze_images_with_vision(
-                    entities, page, model=model, strategy=args.image_strategy
-                )
-            entities = attach_block_evidence(entities, page)
-            entities = merge_entities(entities)
-            entities = enrich_entities_coordinates(
-                entities, page, geocode=args.geocode, wikidata_coords=wikidata_coords
-            )
-            entities = enrich_entities_wikidata_images(entities)
-            entities = enrich_entities_external_context(entities, page)
-            if args.geocode:
-                entities = enrich_entities_geosearch_images(entities)
-            entities = _consolidate_entity_evidence(entities)
-            entities = classify_entities(entities)
-            entities = _sanitize_entity_images(entities)
+            entities = _process_crawl_page(page, args, model)
             entities = filter_low_quality_entities(entities)
             tag_sources_with_page_url(entities, url)
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
-            kb_entities = _sanitize_entity_images(kb_entities)
+            kb_entities = sanitize_entity_images(kb_entities)
             crawled_urls.add(url)
             if kb_path:
                 save_kb(kb_path, kb_entities, crawled_urls=crawled_urls)
@@ -710,8 +436,6 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
                 f"~{kb_report['enriched']} enriquecidas  "
                 f"KB total: {len(kb_entities)}"
             )
-            # Only do BFS discovery when no sitemap was found; the sitemap
-            # already provides the complete URL list for the site.
             if not crawl.sitemap_urls_found:
                 crawl.feed(html, url)
         except Exception as exc:
@@ -722,7 +446,6 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
             })
             _progress(f"       ERROR: {exc.__class__.__name__}: {exc}")
 
-    # Final classification once, after all evidence is accumulated
     kb_entities = classify_entities(kb_entities)
     if kb_path:
         save_kb(kb_path, kb_entities, crawled_urls=crawled_urls)
@@ -748,17 +471,49 @@ def run_crawl(args: argparse.Namespace) -> dict[str, Any]:
 
     output_format = getattr(args, "format", "full")
     if output_format == "golden":
-        result = {"crawl_report": crawl_report, "entities": _build_golden_result(kb_entities)}
+        result = {"crawl_report": crawl_report, "entities": build_golden_result(kb_entities)}
     elif output_format == "clean":
-        result = _build_clean_result(args.url, kb_entities)
+        result = build_clean_result(args.url, kb_entities)
         result["crawl_report"] = crawl_report
     else:
-        result = {**crawl_report, "entities": _build_golden_result(kb_entities)}
-    return _apply_flatten(result, args)
+        result = {**crawl_report, "entities": build_golden_result(kb_entities)}
+    return apply_flatten(result, args)
+
+
+def _process_crawl_page(page: Any, args: argparse.Namespace, model: str) -> list[Any]:
+    """Process a pre-fetched page within a crawl loop (page already downloaded)."""
+    from .geo import (
+        enrich_entities_coordinates,
+        enrich_entities_external_context,
+        enrich_entities_geosearch_images,
+        enrich_entities_wikidata_images,
+    )
+    from .image_ai import analyze_images_with_vision
+    from .images import enrich_entities_images
+
+    wikidata_coords = getattr(args, "wikidata_coords", False)
+    entities = extract_entities(page, use_ai=not args.no_ai, model=model)
+    entities = enrich_entities_images(entities, page)
+    if args.analyze_images:
+        entities, _ = analyze_images_with_vision(
+            entities, page, model=model, strategy=args.image_strategy
+        )
+    entities = attach_block_evidence(entities, page)
+    entities = merge_entities(entities)
+    entities = enrich_entities_coordinates(
+        entities, page, geocode=args.geocode, wikidata_coords=wikidata_coords
+    )
+    entities = enrich_entities_wikidata_images(entities)
+    entities = enrich_entities_external_context(entities, page)
+    if args.geocode:
+        entities = enrich_entities_geosearch_images(entities)
+    entities = consolidate_entity_evidence(entities)
+    entities = classify_entities(entities)
+    entities = sanitize_entity_images(entities)
+    return entities
 
 
 def run_rss_batch(args: argparse.Namespace) -> dict[str, Any]:
-    """Process RSS articles as synthetic pages — no fetch, uses title+summary directly."""
     from .models import ContentBlock, PageExtraction
     from .rss_reader import read_rss
 
@@ -816,7 +571,7 @@ def run_rss_batch(args: argparse.Namespace) -> dict[str, Any]:
             entities = extract_entities(page, use_ai=not args.no_ai, model=model)
             entities = merge_entities(entities)
             entities = classify_entities(entities)
-            entities = _sanitize_entity_images(entities)
+            entities = sanitize_entity_images(entities)
             for entity in entities:
                 if not entity.sourceUrl:
                     entity.sourceUrl = url
@@ -824,7 +579,7 @@ def run_rss_batch(args: argparse.Namespace) -> dict[str, Any]:
                     entity.description = f"Fuente: {source} ({published})"
             tag_sources_with_page_url(entities, url)
             kb_entities, kb_report = resolve_into_kb(kb_entities, entities, threshold=threshold)
-            kb_entities = _sanitize_entity_images(kb_entities)
+            kb_entities = sanitize_entity_images(kb_entities)
             if kb_path:
                 save_kb(kb_path, kb_entities)
             added_total += kb_report["added"]
@@ -857,13 +612,13 @@ def run_rss_batch(args: argparse.Namespace) -> dict[str, Any]:
     }
     output_format = getattr(args, "format", "full")
     if output_format == "golden":
-        result = {"batch_report": batch_report, "entities": _build_golden_result(kb_entities)}
+        result = {"batch_report": batch_report, "entities": build_golden_result(kb_entities)}
     elif output_format == "clean":
-        result = _build_clean_result(args.urls_rss, kb_entities)
+        result = build_clean_result(args.urls_rss, kb_entities)
         result["batch_report"] = batch_report
     else:
-        result = {**batch_report, "entities": _build_golden_result(kb_entities)}
-    return _apply_flatten(result, args)
+        result = {**batch_report, "entities": build_golden_result(kb_entities)}
+    return apply_flatten(result, args)
 
 
 def main() -> None:
@@ -872,9 +627,8 @@ def main() -> None:
 
     json_to_md = getattr(args, "json_to_md", None)
     if json_to_md:
-        import json as _json
         from urllib.parse import urlparse as _urlparse
-        data = _json.loads(Path(json_to_md).read_text(encoding="utf-8"))
+        data = json.loads(Path(json_to_md).read_text(encoding="utf-8"))
         entities = data.get("entities", [])
         crawl_report = data.get("crawl_report") or data.get("batch_report") or {}
         source_url = crawl_report.get("pages", [{}])[0].get("url", "") if crawl_report.get("pages") else ""
@@ -942,9 +696,9 @@ def main() -> None:
 
     output_md = getattr(args, "output_md", None)
     if output_md:
+        from urllib.parse import urlparse as _urlparse
         entities_for_md = result.get("entities", [])
         crawl_report = result.get("crawl_report") or result.get("batch_report") or {}
-        from urllib.parse import urlparse as _urlparse
         source_url = getattr(args, "url", "") or ""
         domain = _urlparse(source_url).netloc.removeprefix("www.") if source_url else ""
         md_content = to_markdown(
@@ -992,26 +746,6 @@ def _write_virtuoso_output(result: dict[str, Any], args: argparse.Namespace, out
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
     return output
-
-
-def _apply_flatten(result: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
-    if not getattr(args, "flatten", False):
-        return result
-    entities = result.get("entities", [])
-    if not entities:
-        return result
-    model = args.model or configured_model()
-    quiet = getattr(args, "quiet", False)
-    use_ai = not getattr(args, "no_ai", False)
-    if not quiet:
-        print(
-            f"\nAplanando {len(entities)} entidades (summary + verificación de imágenes)...",
-            file=sys.stderr,
-            flush=True,
-        )
-    result["entities"] = flatten_entities(entities, use_ai=use_ai, model=model, quiet=quiet)
-    result["entities_output_count"] = len(result["entities"])
-    return result
 
 
 def _print_output(output: str) -> None:
