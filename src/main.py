@@ -19,7 +19,7 @@ from .crawler import SiteCrawl
 from .entity_resolver import resolve_into_kb
 from .models import Entity
 from .pipeline import consolidate_entity_evidence, process_page, sanitize_entity_images
-from .report import count_by_type, to_markdown
+from .report import to_markdown
 from .serializers import apply_flatten, build_clean_result, build_golden_result, coverage_summary, page_summary
 from .virtuoso_exporter import ExportDefaults, VirtuosoSchema, export_entities
 from .web_extractor import fetch_html, parse_html
