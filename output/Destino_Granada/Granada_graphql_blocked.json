@@ -1,0 +1,4456 @@
+{
+  "source": "output/Destino_Granada/Granada.json",
+  "count": 59,
+  "items": [
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:semana-santa-de-granada:a0768b73b5f2",
+          "object": {
+            "externalId": "webex:event:semana-santa-de-granada:a0768b73b5f2",
+            "name": [
+              {
+                "value": "Semana Santa de Granada",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "La Semana Santa de Granada cautiva tus sentidos. Hermandades de silencio, cofradías de capa y de barrio, toda una exposición de sentimiento andaluz con la seña de una ciudad como Granada. El Zaidín, el Albaicín o el Realejo junto al centro histórico de la ciudad ven procesionar imágenes y cortejos d",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Semana Santa de Granada Fiesta de Interés Turístico Internacional (2009) Compartir: EN 2026 SE CELEBRA LA SEMANA SANTA DEL 29 DE MARZO AL 5 DE ABRIL. La Semana Santa de Granada cautiva tus sentidos. Hermandades de silencio, cofradías de capa y de barrio, toda una exposición de sentimiento andaluz con la seña de una ciudad como Granada. El Zaidín, el Albaicín o el Realejo junto al centro histórico de la ciudad ven procesionar imágenes y cortejos de gran belleza y con el único objetivo de hacer llegar al visitante, al espectador, el mensaje de Cristo Crucificado, Muerto y Resucitado. Un mensaje que llega en pasos de Misterio, como Tres Caídas, la Santa Cena, el Huerto de los Olivos, el Cristo del Perdón, la Sentencia, el Cristo zaidinero del Trabajo, la Sagrada Lanzada o el Despojado y en pasos de Cristo como el Sagrado Protector de la ciudad, o el Cristo del Silencio, Favores, Expiración, Cautivo, el Rescate y Cristo Resucitado. Todo ello enmarcado en un paisaje único, de colores inéditos mezclados con la luz del blanco de Sierra Nevada, el verde de la vega de Granada y el azul del cielo de la Semana Santa. Granada, su Semana Santa, sus hermandades, sus cultos, su gente y su gastron",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/semana-santa-granada"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/semana-santa-granada",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-10/Lunes_Santo_Granada_Rescate_Semana_Santa_1.png",
+                "secondaryImage": [
+                  "https://turismo.granada.org/sites/default/files/2026-01/semana%20santa%20cartel%202026.jpg",
+                  "https://turismo.granada.org/sites/default/files/2026-03/semana%20santa%20cartel%202026.jpg",
+                  "https://turismo.granada.org/sites/default/files/2026-03/guia%20cuaresma%202026%20portada.jpg",
+                  "https://turismo.granada.org/sites/default/files/2026-01/semana%20santa%20cartel%202026_0.jpg",
+                  "https://turismo.granada.org/sites/default/files/2023-10/federacion_hermandades.png",
+                  "https://turismo.granada.org/sites/default/files/2025-03/banner%20minimo.jpg",
+                  "https://turismo.granada.org/sites/default/files/2025-03/banner%20minimo_0.jpg",
+                  "https://turismo.granada.org/sites/default/files/2023-09/J_070.jpg",
+                  "https://turismo.granada.org/sites/default/files/2023-10/semana_santa_cartel_recorte.jpg"
+                ],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-internacional-de-tango-en-granada:f5d361ad3417",
+          "object": {
+            "externalId": "webex:event:festival-internacional-de-tango-en-granada:f5d361ad3417",
+            "name": [
+              {
+                "value": "Festival Internacional de Tango en Granada",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Festival Internacional de Tango en Granada Compartir: Actividad cultural Festival de Tango Fecha de Inicio: Martes, 18 de Marzo, 2025 - 20:00 Fecha de Fin: Domingo, 23 de Marzo, 2025 - 00:00 https://www.redentradas.com/",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Festival Internacional de Tango en Granada Compartir: Actividad cultural Festival de Tango Fecha de Inicio: Martes, 18 de Marzo, 2025 - 20:00 Fecha de Fin: Domingo, 23 de Marzo, 2025 - 00:00 https://www.redentradas.com/",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/festival-internacional-tango-granada"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/festival-internacional-tango-granada",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "Plaza Nueva"
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-sinf-nico-caf-del-mundo-con-la-jopma:788e174fc6c6",
+          "object": {
+            "externalId": "webex:event:concierto-sinf-nico-caf-del-mundo-con-la-jopma:788e174fc6c6",
+            "name": [
+              {
+                "value": "Concierto sinfónico Café del Mundo con la JOPMA",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Concierto sinfónico Café del Mundo con la JOPMA Compartir: Concierto Fecha de Inicio: Viernes, 2 de Mayo, 2025 - 20:00 Fecha de Fin: Viernes, 2 de Mayo, 2025 - 21:00 Duración: 1 o 2 horas https://www.redentradas.com/comprar-entradas/",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Concierto sinfónico Café del Mundo con la JOPMA Compartir: Concierto Fecha de Inicio: Viernes, 2 de Mayo, 2025 - 20:00 Fecha de Fin: Viernes, 2 de Mayo, 2025 - 21:00 Duración: 1 o 2 horas https://www.redentradas.com/comprar-entradas/",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/concierto-sinfonico-cafe-del-mundo-jopma"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/concierto-sinfonico-cafe-del-mundo-jopma",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-milnoff:d1ca843e9b5c",
+          "object": {
+            "externalId": "webex:event:festival-milnoff:d1ca843e9b5c",
+            "name": [
+              {
+                "value": "Festival MILNOFF",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Festival MILNOFF Compartir: Actividad cultural Fecha de Inicio: Martes, 3 de Junio, 2025 - 20:30 Fecha de Fin: Sábado, 7 de Junio, 2025 - 21:30 https://www.redentradas.com/?entradas=festival-flamenco-milnoff&recinto=teatro-municipal-isabel-la-cat%C3%B3lica&rid=15&eid=1886",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Festival MILNOFF Compartir: Actividad cultural Fecha de Inicio: Martes, 3 de Junio, 2025 - 20:30 Fecha de Fin: Sábado, 7 de Junio, 2025 - 21:30 https://www.redentradas.com/?entradas=festival-flamenco-milnoff&recinto=teatro-municipal-isabel-la-cat%C3%B3lica&rid=15&eid=1886",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/festival-milnoff"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/festival-milnoff",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-ben-fico-orquesta-m-dica-ib-rica:1e395c2a105b",
+          "object": {
+            "externalId": "webex:event:concierto-ben-fico-orquesta-m-dica-ib-rica:1e395c2a105b",
+            "name": [
+              {
+                "value": "Concierto benéfico Orquesta Médica Ibérica",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "https://www.redentradas.com/?entradas=concierto-benefico-orquesta-medica-iberica&recinto=auditorio-manuel-de-falla&rid=57&eid=3237",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "https://www.redentradas.com/?entradas=concierto-benefico-orquesta-medica-iberica&recinto=auditorio-manuel-de-falla&rid=57&eid=3237",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-benefico-orquesta-medica-iberica"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-benefico-orquesta-medica-iberica",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:fiestas-del-corpus-christi-granada-2025:d4ca89559402",
+          "object": {
+            "externalId": "webex:event:fiestas-del-corpus-christi-granada-2025:d4ca89559402",
+            "name": [
+              {
+                "value": "Fiestas del Corpus Christi Granada 2025",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Fiestas del Corpus Christi Granada 2025 Compartir: Actividad cultural Fecha de Inicio: Sábado, 14 de Junio, 2025 - 11:00 Fecha de Fin: Sábado, 21 de Junio, 2025 - 00:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Fiestas del Corpus Christi Granada 2025 Compartir: Actividad cultural Fecha de Inicio: Sábado, 14 de Junio, 2025 - 11:00 Fecha de Fin: Sábado, 21 de Junio, 2025 - 00:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/fiestas-del-corpus-christi-granada-2025"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/fiestas-del-corpus-christi-granada-2025",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2025-06/cartel-corpus-2025.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:22-fex-festival-extensi-n:7376c843cba1",
+          "object": {
+            "externalId": "webex:event:22-fex-festival-extensi-n:7376c843cba1",
+            "name": [
+              {
+                "value": "22 FEX Festival Extensión",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "https://www.redentradas.com/?entradas=22-fex-festival-extension&recinto=auditorio-manuel-de-falla&rid=57&eid=3285",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "https://www.redentradas.com/?entradas=22-fex-festival-extension&recinto=auditorio-manuel-de-falla&rid=57&eid=3285",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/22-fex-festival-extension"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/22-fex-festival-extension",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:granada-guitar-festival:96602768c407",
+          "object": {
+            "externalId": "webex:event:granada-guitar-festival:96602768c407",
+            "name": [
+              {
+                "value": "Granada Guitar Festival",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Granada Guitar Festival Del 14 de julio al 07 de agosto de 2025 Compartir: Actividad cultural Fecha de Inicio: Lunes, 14 de Julio, 2025 - 13:00 Fecha de Fin: Jueves, 7 de Agosto, 2025 - 13:00 https://granadaguitarfestival.com/#calendario",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Granada Guitar Festival Del 14 de julio al 07 de agosto de 2025 Compartir: Actividad cultural Fecha de Inicio: Lunes, 14 de Julio, 2025 - 13:00 Fecha de Fin: Jueves, 7 de Agosto, 2025 - 13:00 https://granadaguitarfestival.com/#calendario",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/granada-guitar-festival"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/granada-guitar-festival",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2025-06/guitar-festival.png",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:74-festival-internacional-de-m-sica-y-danza-de-granada-2025:49270206c5c7",
+          "object": {
+            "externalId": "webex:event:74-festival-internacional-de-m-sica-y-danza-de-granada-2025:49270206c5c7",
+            "name": [
+              {
+                "value": "74 Festival Internacional de Música y Danza de Granada 2025",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "74 Festival Internacional de Música y Danza de Granada 2025",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "74 Festival Internacional de Música y Danza de Granada 2025",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/74-festival-internacional-musica-y-danza-granada-2025"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/74-festival-internacional-musica-y-danza-granada-2025",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2025-06/festival-granada.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:el-concierto-para-viol-n-de-korngold:7c0e79321428",
+          "object": {
+            "externalId": "webex:event:el-concierto-para-viol-n-de-korngold:7c0e79321428",
+            "name": [
+              {
+                "value": "El concierto para violín de Korngold",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver El concierto para violín de Korngold Compartir: Música clásica Fecha de Inicio: Viernes, 10 de Octubre, 2025 - 19:30 Fecha de Fin: Viernes, 10 de Octubre, 2025 - 21:00 Web de Auditorio Manuel de Falla",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver El concierto para violín de Korngold Compartir: Música clásica Fecha de Inicio: Viernes, 10 de Octubre, 2025 - 19:30 Fecha de Fin: Viernes, 10 de Octubre, 2025 - 21:00 Web de Auditorio Manuel de Falla",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/concierto-violin-korngold"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/concierto-violin-korngold",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:el-concierto-para-piano-n-m-2-de-beethoven:1338363dc155",
+          "object": {
+            "externalId": "webex:event:el-concierto-para-piano-n-m-2-de-beethoven:1338363dc155",
+            "name": [
+              {
+                "value": "El concierto para piano núm. 2 de Beethoven",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver El concierto para piano núm. 2 de Beethoven Compartir: Música clásica Fecha de Inicio: Viernes, 7 de Noviembre, 2025 - 19:30 Fecha de Fin: Viernes, 7 de Noviembre, 2025 - 21:00 Web del Auditorio Manuel de Falla",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver El concierto para piano núm. 2 de Beethoven Compartir: Música clásica Fecha de Inicio: Viernes, 7 de Noviembre, 2025 - 19:30 Fecha de Fin: Viernes, 7 de Noviembre, 2025 - 21:00 Web del Auditorio Manuel de Falla",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/concierto-piano-num-2-beethoven"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/concierto-piano-num-2-beethoven",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:el-mundo-se-quema-en-concierto:ac1839686c59",
+          "object": {
+            "externalId": "webex:event:el-mundo-se-quema-en-concierto:ac1839686c59",
+            "name": [
+              {
+                "value": "El mundo se quema, en concierto",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver El mundo se quema, en concierto Compartir: Actividad cultural Fecha de Inicio: Viernes, 31 de Octubre, 2025 - 20:00 Fecha de Fin: Viernes, 31 de Octubre, 2025 - 21:30 Web del Teatro Alhambra",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver El mundo se quema, en concierto Compartir: Actividad cultural Fecha de Inicio: Viernes, 31 de Octubre, 2025 - 20:00 Fecha de Fin: Viernes, 31 de Octubre, 2025 - 21:30 Web del Teatro Alhambra",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/mundo-se-quema-concierto"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/mundo-se-quema-concierto",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2025-08/mundo-quema-concierto.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:tr-o-y-piano-en-concierto:5ac3a855bf59",
+          "object": {
+            "externalId": "webex:event:tr-o-y-piano-en-concierto:5ac3a855bf59",
+            "name": [
+              {
+                "value": "Trío y piano, en concierto",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Trío y piano, en concierto Compartir: Actividad cultural Fecha de Inicio: Miércoles, 17 de Diciembre, 2025 - 20:00 Fecha de Fin: Miércoles, 17 de Diciembre, 2025 - 21:30 Web del Teatro Alhambra",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Trío y piano, en concierto Compartir: Actividad cultural Fecha de Inicio: Miércoles, 17 de Diciembre, 2025 - 20:00 Fecha de Fin: Miércoles, 17 de Diciembre, 2025 - 21:30 Web del Teatro Alhambra",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/trio-y-piano-concierto"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/trio-y-piano-concierto",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:la-fuerza-de-la-costumbre-en-concierto:600da46d258a",
+          "object": {
+            "externalId": "webex:event:la-fuerza-de-la-costumbre-en-concierto:600da46d258a",
+            "name": [
+              {
+                "value": "La fuerza de la costumbre, en concierto",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver La fuerza de la costumbre, en concierto Fandila Compartir: Actividad cultural Fecha de Inicio: Sábado, 31 de Enero, 2026 - 20:00 Fecha de Fin: Sábado, 31 de Enero, 2026 - 21:30 Web del Teatro Alhambra",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver La fuerza de la costumbre, en concierto Fandila Compartir: Actividad cultural Fecha de Inicio: Sábado, 31 de Enero, 2026 - 20:00 Fecha de Fin: Sábado, 31 de Enero, 2026 - 21:30 Web del Teatro Alhambra",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/fuerza-costumbre-concierto"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/fuerza-costumbre-concierto",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2025-08/fuerza-costumbre.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-cau:b642e5b8dd2c",
+          "object": {
+            "externalId": "webex:event:festival-cau:b642e5b8dd2c",
+            "name": [
+              {
+                "value": "Festival CAU",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Festival CAU Circo y Artes Urbanas Compartir: Actividad cultural Fecha de Inicio: Martes, 2 de Septiembre, 2025 - 20:00 Fecha de Fin: Viernes, 5 de Septiembre, 2025 - 21:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Festival CAU Circo y Artes Urbanas Compartir: Actividad cultural Fecha de Inicio: Martes, 2 de Septiembre, 2025 - 20:00 Fecha de Fin: Viernes, 5 de Septiembre, 2025 - 21:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/festival-cau"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/festival-cau",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "Plaza 28 de febrero: Animasur \"Love, love, love\" Más"
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-programado:62e455d70167",
+          "object": {
+            "externalId": "webex:event:concierto-programado:62e455d70167",
+            "name": [
+              {
+                "value": "Concierto programado",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Concierto programado Banda de Música de Granada Compartir: Música clásica Fecha de Inicio: Viernes, 5 de Septiembre, 2025 - 20:30 Fecha de Fin: Viernes, 5 de Septiembre, 2025 - 22:00 Programa cultural: Banda Municipal de Música Volver Concierto programado Banda Municipal de Música Compartir: Música clásica Fecha de Inicio: Viernes, 12 de Septiembre, 2025 - 20:30 Fecha de Fin: Viernes, 12 de Septiembre, 2025 - 21:30 Programa cultural: Banda Municipal de Música Volver Concierto programado Banda Municipal de Música Compartir: Música clásica Fecha de Inicio: Viernes, 19 de Septiembre, 2025 - 20:00 Fecha de Fin: Viernes, 19 de Septiembre, 2025 - 21:00 Programa cultural: Banda Municipal de Música Volver Concierto programado Banda Municipal de Música Compartir: Música clásica Fecha de Inicio: Viernes, 26 de Septiembre, 2025 - 20:00 Fecha de Fin: Viernes, 26 de Septiembre, 2025 - 21:30 Programa cultural: Banda Municipal de Música",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Concierto programado Banda de Música de Granada Compartir: Música clásica Fecha de Inicio: Viernes, 5 de Septiembre, 2025 - 20:30 Fecha de Fin: Viernes, 5 de Septiembre, 2025 - 22:00 Programa cultural: Banda Municipal de Música Volver Concierto programado Banda Municipal de Música Compartir: Música clásica Fecha de Inicio: Viernes, 12 de Septiembre, 2025 - 20:30 Fecha de Fin: Viernes, 12 de Septiembre, 2025 - 21:30 Programa cultural: Banda Municipal de Música Volver Concierto programado Banda Municipal de Música Compartir: Música clásica Fecha de Inicio: Viernes, 19 de Septiembre, 2025 - 20:00 Fecha de Fin: Viernes, 19 de Septiembre, 2025 - 21:00 Programa cultural: Banda Municipal de Música Volver Concierto programado Banda Municipal de Música Compartir: Música clásica Fecha de Inicio: Viernes, 26 de Septiembre, 2025 - 20:00 Fecha de Fin: Viernes, 26 de Septiembre, 2025 - 21:30 Programa cultural: Banda Municipal de Música",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/concierto-programado"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/concierto-programado",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "Plaza de las Pasiegas"
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-fiestas-barrio-joaquina-eguaras:ae37b9fedab0",
+          "object": {
+            "externalId": "webex:event:concierto-fiestas-barrio-joaquina-eguaras:ae37b9fedab0",
+            "name": [
+              {
+                "value": "Concierto Fiestas Barrio Joaquina Eguaras",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Concierto Fiestas Barrio Joaquina Eguaras Banda Municipal de Música, Fiestas Barrios Compartir: Música clásica Fecha de Inicio: Domingo, 21 de Septiembre, 2025 - 12:00 Fecha de Fin: Domingo, 21 de Septiembre, 2025 - 13:00 Programa cultural: Banda Municipal de Música",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Concierto Fiestas Barrio Joaquina Eguaras Banda Municipal de Música, Fiestas Barrios Compartir: Música clásica Fecha de Inicio: Domingo, 21 de Septiembre, 2025 - 12:00 Fecha de Fin: Domingo, 21 de Septiembre, 2025 - 13:00 Programa cultural: Banda Municipal de Música",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/concierto-fiestas-barrio-joaquina-eguaras"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/concierto-fiestas-barrio-joaquina-eguaras",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:ii-festival-letrahist-rica-de-granada:b34c931a36e3",
+          "object": {
+            "externalId": "webex:event:ii-festival-letrahist-rica-de-granada:b34c931a36e3",
+            "name": [
+              {
+                "value": "II Festival Letrahistórica de Granada",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver II Festival Letrahistórica de Granada Ellas hacen historia Compartir: Actividad cultural Fecha de Inicio: Lunes, 22 de Septiembre, 2025 - 10:00 Fecha de Fin: Domingo, 28 de Septiembre, 2025 - 13:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver II Festival Letrahistórica de Granada Ellas hacen historia Compartir: Actividad cultural Fecha de Inicio: Lunes, 22 de Septiembre, 2025 - 10:00 Fecha de Fin: Domingo, 28 de Septiembre, 2025 - 13:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/ii-festival-letrahistorica-granada"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/ii-festival-letrahistorica-granada",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2025-09/cartel-festival-letrahistorica.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:cristalino-en-concierto:10e7735e9b1a",
+          "object": {
+            "externalId": "webex:event:cristalino-en-concierto:10e7735e9b1a",
+            "name": [
+              {
+                "value": "Cristalino en concierto",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Cristalino en concierto Compartir: Actividad cultural Concierto Fecha de Inicio: Sábado, 14 de Marzo, 2026 - 20:00 Fecha de Fin: Sábado, 14 de Marzo, 2026 - 20:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Cristalino en concierto Compartir: Actividad cultural Concierto Fecha de Inicio: Sábado, 14 de Marzo, 2026 - 20:00 Fecha de Fin: Sábado, 14 de Marzo, 2026 - 20:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/cristalino-concierto"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/cristalino-concierto",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:premios-pa-ta-ta-festival:8a1a956206b7",
+          "object": {
+            "externalId": "webex:event:premios-pa-ta-ta-festival:8a1a956206b7",
+            "name": [
+              {
+                "value": "Premios Pa-ta-ta Festival",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Premios Pa-ta-ta Festival Compartir: Actividad cultural Fecha de Inicio: Jueves, 9 de Octubre, 2025 - 19:30 Fecha de Fin: Jueves, 9 de Octubre, 2025 - 19:30",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Premios Pa-ta-ta Festival Compartir: Actividad cultural Fecha de Inicio: Jueves, 9 de Octubre, 2025 - 19:30 Fecha de Fin: Jueves, 9 de Octubre, 2025 - 19:30",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/premios-pa-ta-ta-festival"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/premios-pa-ta-ta-festival",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:horarios-especiales-semana-santa-2026-aqu:c2087721ad25",
+          "object": {
+            "externalId": "webex:event:horarios-especiales-semana-santa-2026-aqu:c2087721ad25",
+            "name": [
+              {
+                "value": "HORARIOS ESPECIALES SEMANA SANTA 2026 AQUÍ",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "La GRANADA CARD ofrece las entradas a los principales monumentos granadinos y servicio de transporte público. Existe también una modalidad de GRANADA CARD infantil para niños de edades comprendidas entre los 2 y 11 años de edad que incluye los mismos servicios que el de adulto. Para visitar los monu",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "La GRANADA CARD ofrece las entradas a los principales monumentos granadinos y servicio de transporte público. Existe también una modalidad de GRANADA CARD infantil para niños de edades comprendidas entre los 2 y 11 años de edad que incluye los mismos servicios que el de adulto. Para visitar los monumentos sólo hace falta el \"print at home\" en papel o en el móvil. Las tarjetas de transporte se recogen en los cajeros de bus. Las ventas están abiertas con 3 meses naturales de antelación. HORARIO MONUMENTOS HORARIOS ESPECIALES SEMANA SANTA 2026 AQUÍ La Alcazaba cerrará a las 15.00 el 4 de abril de 2026 (Sábado Santo) Los monumentos cierran el 25 de diciembre (Navidad) y el 1 de enero (Año Nuevo) COMPRAR GRANADA CARD ¡Descubre las distintas modalidades de Granada Card! Teléfono de compra +34 858 880 990 (ES, EN, FR)",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/granada-card"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "+34 858 880 990"
+                  ],
+                  "url": "https://turismo.granada.org/es/granada-card",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-internacional-de-j-venes-realizadores:4d8957c1ee9f",
+          "object": {
+            "externalId": "webex:event:festival-internacional-de-j-venes-realizadores:4d8957c1ee9f",
+            "name": [
+              {
+                "value": "Festival Internacional de Jóvenes Realizadores",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Festival Internacional de Jóvenes Realizadores El Festival Internacional de Jóvenes Realizadores de Granada se celebrará del 17 al 24 de octubre de 2015. Compartir: El Festival Internacional de Jóvenes Realizadores regresa a Granada para celebrar su vigésimo segunda edición. La ciudad de Granada se",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Festival Internacional de Jóvenes Realizadores El Festival Internacional de Jóvenes Realizadores de Granada se celebrará del 17 al 24 de octubre de 2015. Compartir: El Festival Internacional de Jóvenes Realizadores regresa a Granada para celebrar su vigésimo segunda edición. La ciudad de Granada se considera un espléndido escenario cinematográfico debido a su esplendor histórico y a su privilegiado enclave geográfico, así como un excelente espacio cultural para celebrar un encuentro para cinéfilos de la talla del Festival Internacional de Jóvenes Realizadores. Dada su buena trayectoria, el festival se ha convertido en un referente entre los festivales de cortometrajes y de cine de jóvenes realizadores que existen en Europa. El encuentro nace con el propósito de convertir Granada en una ciudad en que la cultura y la producción cinematográfica y audiovisual ganen cada vez más presencia, con el fin de exportar la marca GRANADA a todos los rincones del planeta. Hasta 93 cortometrajes de animación, acción y documentales, producidos por jóvenes procedentes de hasta 27 países de todo el mundo, han sido congregados esta nueva edición. El FIJR tendrá lugar entre los días 17 y 24 de octubre,",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/festival-internacional-jovenes-realizadores"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/festival-internacional-jovenes-realizadores",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/Festival_Internacional_Jovenes_Realizadores_3.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:consejos-y-consideraciones-de-semana-santa-2026:8f25e22b611a",
+          "object": {
+            "externalId": "webex:event:consejos-y-consideraciones-de-semana-santa-2026:8f25e22b611a",
+            "name": [
+              {
+                "value": "Consejos y consideraciones de Semana Santa 2026",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Consejos y consideraciones de Semana Santa 2026 Lee la siguiente información útil para disfrutar de la mejor Semana Santa Compartir: Carrera oficial La carrera oficial es el trayecto por el que desfilan todas las desfiles procesionales con un horario de paso por Tribuna oficial y entrada a Catedral",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Consejos y consideraciones de Semana Santa 2026 Lee la siguiente información útil para disfrutar de la mejor Semana Santa Compartir: Carrera oficial La carrera oficial es el trayecto por el que desfilan todas las desfiles procesionales con un horario de paso por Tribuna oficial y entrada a Catedral determinado. Itinerario de la carrera oficial Carrera de la Virgen (paseo central), Plaza Bibataubín, Plaza del Campillo, Plaza de Mariana Pineda, Calle Ángel Ganivet, Puerta Real de España, Mesones, Marqués de Gerona, Plaza de las Pasiegas, Santa Iglesia Catedral, salida por la puerta del Perdón. En el recorrido se disponen de palcos que se reservan a través de la Federación de Hermandades y Cofradías de Semana Santa de Granada. No es posible alquilarlos una vez comenzada la Semana Santa. Para los espectadores ocasionales se ofrecen sillas en la calle Mesones. No se reservan, simplemente se sienta uno en una libre y se pagan al cobrador. Precio aprox 12EUR. Palcos para personas con movilidad reducida: Se ubican sillas en la esquina de la Plaza Mariana Pineda con Ángel Ganivet. Se pueden reservar en www.redentradas.com del 19 de marzo a las 18.00 al 22 de marzo a las 18.00. Las procesion",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/consejos-y-consideraciones-semana-santa-2026"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/consejos-y-consideraciones-semana-santa-2026",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "calle Mesones"
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/J_070.jpg",
+                "secondaryImage": [
+                  "https://turismo.granada.org/sites/default/files/inline-images/carrera%20oficial%202025_0.jpg"
+                ],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:semana-santa-accesible:73fb6ff59d09",
+          "object": {
+            "externalId": "webex:event:semana-santa-accesible:73fb6ff59d09",
+            "name": [
+              {
+                "value": "Semana Santa Accesible",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Semana Santa Accesible Compartir: La Semana Santa de Granada acoge a todas las personas. Encontrarás nazarenos y manolas en silla de ruedas. El público, sea cual sea su condición, podrá hacer visitas sensoriales, acceder a zonas reservadas,. Lo puedes consultar en la 4ª edición de la guía de la Sema",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Semana Santa Accesible Compartir: La Semana Santa de Granada acoge a todas las personas. Encontrarás nazarenos y manolas en silla de ruedas. El público, sea cual sea su condición, podrá hacer visitas sensoriales, acceder a zonas reservadas,. Lo puedes consultar en la 4ª edición de la guía de la Semana Santa Accesible en Granada.",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/semana-santa-accesible"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/semana-santa-accesible",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/semana_santa.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:x-edici-n-del-festival-cines-del-sur:f9276a8ee2aa",
+          "object": {
+            "externalId": "webex:event:x-edici-n-del-festival-cines-del-sur:f9276a8ee2aa",
+            "name": [
+              {
+                "value": "X Edición del Festival Cines del Sur",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "X Edición del Festival Cines del Sur Compartir: La 10ª edición del Festival Internacional Cines del Sur, un festival que inicia “una nueva etapa” y que este año amplía su programación y rescata espacios emblemáticos. Así, el certamen recupera el Palacio de Carlos V de la Alhambra, para su inauguraci",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "X Edición del Festival Cines del Sur Compartir: La 10ª edición del Festival Internacional Cines del Sur, un festival que inicia “una nueva etapa” y que este año amplía su programación y rescata espacios emblemáticos. Así, el certamen recupera el Palacio de Carlos V de la Alhambra, para su inauguración, y la Plaza de las Pasiegas, para las proyecciones al aire libre, además de incorporar escenarios, como el Centro Lorca. Aguilar ha anunciado que el certamen, que se celebrará del 3 al 10 de junio, “vuelve revitalizado y reforzado” y “se abrirá a cinematografías de países emergentes, de Latinoamérica, Asia, Norte de África u Oriente Medio, con títulos de creadores que, por la propia realidad de sus países, imprimen una mirada especial a su cinematografía”. Consulta aquí la programación Fuente: Junta de Andalucía",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/x-edicion-del-festival-cines-del-sur"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/x-edicion-del-festival-cines-del-sur",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/festival_cines_del_sur_3.jpg",
+                "secondaryImage": [
+                  "https://turismo.granada.org/sites/default/files/2023-09/programa_cines_del_sur.jpg"
+                ],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:gastronom-a-de-semana-santa:07d2e883dfc7",
+          "object": {
+            "externalId": "webex:event:gastronom-a-de-semana-santa:07d2e883dfc7",
+            "name": [
+              {
+                "value": "Gastronomía de Semana Santa",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Gastronomía de Semana Santa Compartir: Para los más cocinitas, os invitamos a probar las recetas especiales de la Semana Santa de Granada Contenidos Relacionados Garbanzos con bacalao - Ingredientes 1 kg de bacalao desalado 400g de garbanzos ¾ de vino blanco 15 almendras tostadas 1 pastilla de caldo",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Gastronomía de Semana Santa Compartir: Para los más cocinitas, os invitamos a probar las recetas especiales de la Semana Santa de Granada Contenidos Relacionados Garbanzos con bacalao - Ingredientes 1 kg de bacalao desalado 400g de garbanzos ¾ de vino blanco 15 almendras tostadas 1 pastilla de caldo Sal 1 cebolla 2 dientes de ajo 1. Potaje de Garbanzos - Ingredientes ½ kilo de garbanzos ½ kilo de espinacas½ kilo de espinacas 2 huevos duros Cebolla Ajo Un par de zanahorias Un tomate Laurel Perejil. Torrijas - Ingredientes 8 rebanadas de pan del día anterior ½ litro de leche 2 huevos Aceite de oliva 3 cucharadas de azúcar Canela Elaboración Calentar la. Roscos fritos - Ingredientes Una docena de huevos Medio kilo de azúcar Medio litro de aceite de girasol Ralladura de limón Aprox. Dos kilos de azúcar Elaboración. Bacalao a la vizcaína - Ingredientes 6 lomos de bacalao de 250g cada uno 3 cebollas rojas 3 cebollas blancas Pimiento verde 4 dientes de ajo 1 y ½ dl de aceite de oliva 1.",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/gastronomia-semana-santa"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/gastronomia-semana-santa",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/gastronomia_semana_santa_granada_torrijas_2.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:semana-santa-de-granada-d-a-a-d-a:b3c8a7ce02bf",
+          "object": {
+            "externalId": "webex:event:semana-santa-de-granada-d-a-a-d-a:b3c8a7ce02bf",
+            "name": [
+              {
+                "value": "Semana Santa de Granada, día a día",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Semana Santa de Granada, día a día Conoce las procesiones de cada día y sus recorridos Compartir: ¡NO TE PIERDAS NADA! Pincha en cada día y conoce las procesiones desde el Domingo de Ramos hasta el Domingo de Resurrección. Contenidos Relacionados Domingo de Ramos Granada entre palmas y olivos, se po",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Semana Santa de Granada, día a día Conoce las procesiones de cada día y sus recorridos Compartir: ¡NO TE PIERDAS NADA! Pincha en cada día y conoce las procesiones desde el Domingo de Ramos hasta el Domingo de Resurrección. Contenidos Relacionados Domingo de Ramos Granada entre palmas y olivos, se pone guapa para despertar con el primer redoble de tambor y recibir los ocho días significativos de Pasión, Muerte. Lunes Santo En el Lunes Santo, la salida y regreso a la iglesia de San Pedro, del paso de la Virgen de los Dolores, no deja indiferente a ninguno de los. Martes Santo El Martes Santo, a su salida de la iglesia de San Juan de los Reyes, las granadinas calles del Albaicín se tiñen de la amargura del Cristo que recoge. Miércoles Santo Espectacular, excepcional y emocionante es la noche del Miércoles Santo en Granada que se pinta en tonos morados, rojos y dorados. Son dos los pasos. Jueves Santo La noche del Jueves Santo es la noche mágica del Albaicín. En casi el mismo espacio es posible encontrar el sabor popular de las tres Vírgenes del. Viernes Santo Día, Viernes Santo; hora, las tres en punto de la tarde; lugar, el campo del Príncipe. Lo que puede parecer una cita, no es más",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/semana-santa-granada-dia-dia"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/semana-santa-granada-dia-dia",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/Lunes_Santo_Granada_Rescate_Semana_Santa.png",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-de-tango:92324afdd1e2",
+          "object": {
+            "externalId": "webex:event:festival-de-tango:92324afdd1e2",
+            "name": [
+              {
+                "value": "Festival de Tango",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Festival de Tango La ciudad de Granada acoge cada año el Festival de Tango, baile declarado en 2009 Patrimonio Cultural Inmaterial de la Humanidad y que goza de un inmenso éxito en todo el mundo. Compartir: El Festival de Tango de Granada pretende contagiar de ritmo y pasión a toda la ciudad, gracia",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Festival de Tango La ciudad de Granada acoge cada año el Festival de Tango, baile declarado en 2009 Patrimonio Cultural Inmaterial de la Humanidad y que goza de un inmenso éxito en todo el mundo. Compartir: El Festival de Tango de Granada pretende contagiar de ritmo y pasión a toda la ciudad, gracias a las creaciones musicales y coreográficas de diversos artistas y espectáculos, así como mediante actividades paralelas como conferencias, clases de baile, bailes populares en la calle, fiestas nocturnas y encuentros entre artistas y aficionados. El certamen se celebra cada año en el Teatro Isabel La Católica, así como en otros enclaves de la provincia y en la Universidad. La organización del festival pretende dar a conocer el género del tango en todas sus manifestaciones como un maravilloso crisol de la cultura urbana contemporánea. Fecha: marzo 2015 (pendiente de confirmación)",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/festival-tango"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/festival-tango",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/tango_1.png",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:pa-ta-ta-festival:515d0f6c3d79",
+          "object": {
+            "externalId": "webex:event:pa-ta-ta-festival:515d0f6c3d79",
+            "name": [
+              {
+                "value": "Pa-ta-ta Festival",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Pa-ta-ta Festival Festival Internacional de Fotografía Emergente de Granada Compartir: El Festival Internacional de Fotografía Emergente Pa-Ta-Ta nace como una plataforma de lanzamiento para fotógrafos emergentes cuyo fin es apoyar su formación así como la exhibición y difusión de sus obras. \"Esto N",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Pa-ta-ta Festival Festival Internacional de Fotografía Emergente de Granada Compartir: El Festival Internacional de Fotografía Emergente Pa-Ta-Ta nace como una plataforma de lanzamiento para fotógrafos emergentes cuyo fin es apoyar su formación así como la exhibición y difusión de sus obras. \"Esto No es un Festival\" es el lema elegido para la X edición del Pa-ta-ta Festival, centrado este año en la fotografía inclusiva y participativa, un nuevo enfoque del arte de la fotografía como herramienta de dinamización social. Durante los días 14-29 de junio, el festival nos gran cantidad de actividades con las que profundizar en el conocimiento de la técnica fotográfica y su valor para visibilizar lo invisible. En esta edición, el barrio de la Magdalena y su vida vecinal serán los protagonistas, incluyéndose también un guiño al Albaicín y al proyecto que conmemora los 25 años de su declaración como Patrimonio de la Humanidad por la Uneso Descargue el programa de actividades aquí",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/pa-ta-ta-festival"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/pa-ta-ta-festival",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/01_7.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-internacional-de-jazz-de-granada:e0ca32bf6614",
+          "object": {
+            "externalId": "webex:event:festival-internacional-de-jazz-de-granada:e0ca32bf6614",
+            "name": [
+              {
+                "value": "Festival Internacional de Jazz de Granada",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Festival Internacional de Jazz de Granada El Festival Internacional de Jazz de Granada está consolidado como uno de los encuentros de jazz moderno más antiguos de Europa, con una trayectoria plagada de grandes conciertos y como un icono incuestionable de la vida cultural de la ciudad. Compartir: El",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Festival Internacional de Jazz de Granada El Festival Internacional de Jazz de Granada está consolidado como uno de los encuentros de jazz moderno más antiguos de Europa, con una trayectoria plagada de grandes conciertos y como un icono incuestionable de la vida cultural de la ciudad. Compartir: El certamen se celebra anualmente durante el mes de noviembre en la afamada ciudad andaluza gracias al apoyo del Ayuntamiento y la Diputación de Granada con la colaboración de la Junta de Andalucía y la Asociación GranadaJazz. Desde su primera edición en 1980, se ha consolidado como un encuentro ineludible del jazz moderno, congregando a músicos de la talla de Miles Davis, Art Blakey, Tete Montoliu, Dizzy Gillespie, Wayne Shorter, Herbie Hancock o Chano Domínguez. Se trata de uno de los más antiguos y reputados festivales de jazz de Europa y el único de España que forma parte de la red europea de festivales Europe Jazz Network. Este año se celebra la 39ª edición. Todos los conciertos serán a las 21:00h en el Teatro Isabel la Católica. Consulta la web del festival aquí para conocer la programación completa y venta de entradas. Fecha: Del 2 al 10 de noviembre de 2018",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/festival-internacional-jazz-granada"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/festival-internacional-jazz-granada",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/CARTEL_JAZZGRA_018_1.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-de-magia-hocus-pocus:fe32b4064a78",
+          "object": {
+            "externalId": "webex:event:festival-de-magia-hocus-pocus:fe32b4064a78",
+            "name": [
+              {
+                "value": "Festival de Magia Hocus Pocus",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Festival de Magia Hocus Pocus 'La magia nos mueve': el arte de la danza envuelve la edición de este año. Compartir: El Festival Internacional de Magia Hocus Pocus de Granada celebrará este año su decimoquinta edición este próximo mes de noviembre. Este año el Festival Internacional Hocus Pocus está",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Festival de Magia Hocus Pocus 'La magia nos mueve': el arte de la danza envuelve la edición de este año. Compartir: El Festival Internacional de Magia Hocus Pocus de Granada celebrará este año su decimoquinta edición este próximo mes de noviembre. Este año el Festival Internacional Hocus Pocus está de aniversario: cumple 16 años y quiere celebrarlo con actos especiales que recuerden las pasadas ediciones. Desde su primera edición, el Festival tomó un sentido temático cuyo objetivo era vincular el Ilusionismo con el entorno del ser humano. Es por esto que sus primeras ediciones se basaron en los cinco sentidos. Los siguientes cuatro años, el Festival dedicó las siguientes ediciones a los cuatro elementos de la naturaleza; es decir, aquello que se percibía a través de los sentidos: aire, tierra, agua y fuego. Ahora, Hocus Pocus afronta la transformación que el ser humano hace de su entorno a través de las siete artes, quedando inaugurado de esta manera el ciclo artístico. Las pasadas ediciones se centraton en la escultura, el cine, la pintura, la danza y la literatura, y este año el Festival Internacional ha decidido dedicar la decimoquinta edición a la arquitectura, de ahí que el le",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/festival-magia-hocus-pocus"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/festival-magia-hocus-pocus",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/Cartel-Hocus-Pocus_2017_1.jpg",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:fiesta-12-de-octubre-2022:4204b623820b",
+          "object": {
+            "externalId": "webex:event:fiesta-12-de-octubre-2022:4204b623820b",
+            "name": [
+              {
+                "value": "Fiesta 12 de octubre 2022",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Fiesta 12 de octubre 2022 Compartir: ACTOS INSTITUCIONALES 10:45 Misa en Capilla Real 11:15 Ejército en Plaza del Carmen 11:40 Salida comitiva institucional hacia Capilla Real 12:10 Tremolación del Estandarte Real en la Capilla Real 12:40 Homenaje al Almirante Colón. A su finalización, desfile hacia",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Fiesta 12 de octubre 2022 Compartir: ACTOS INSTITUCIONALES 10:45 Misa en Capilla Real 11:15 Ejército en Plaza del Carmen 11:40 Salida comitiva institucional hacia Capilla Real 12:10 Tremolación del Estandarte Real en la Capilla Real 12:40 Homenaje al Almirante Colón. A su finalización, desfile hacia el Ayuntamiento. *La entrada a la Capilla Real es libre. Se requiere estar con anticipación ya que el aforo es limitado. OTROS EVENTOS 13.00 DESFILE DE LA HISPANIDAD Y EL MESTIZAJE GRANADA (pendiente de confirmar) Paseo del Salón, Carrera de la Virgen, Fuente de las Batallas, Mesones, Arco de las Cucharas, Bib- Rambla (14.00). 18.00 Procesión Virgen del Rosario desde Iglesia de Santo Domingo. Recorrido: Plaza de Santo Domingo, ancha de Santo Domingo, Jesús y María, San Matías, Plaza Mariana Pineda, Ángel Ganivet, Puerta Real de España, Reyes Católicos, plaza Isabel la Católica, Pavaneras, Santa Eclesiástica, placeta Fortuny, Carnicería, plaza de Santo Domingo (22.00) 19.00 Banda municipal de Música. Teatro Isabel la Católica. Recogida de invitaciones: Teatro Isabel la Católica: A partir del martes 11 de octubre de 17.00 a 20.00 El comercio NO abrirá sus puertas",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/fiesta-12-octubre-2022"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/fiesta-12-octubre-2022",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "Plaza de Santo"
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/isabel_1_1.jfif",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:fiesta-12-de-octubre-2024:c0290a995867",
+          "object": {
+            "externalId": "webex:event:fiesta-12-de-octubre-2024:c0290a995867",
+            "name": [
+              {
+                "value": "Fiesta 12 de octubre 2024",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Fiesta 12 de octubre 2024 Fiesta Nacional de España Compartir: ACTOS INSTITUCIONALES 10:45 Misa en Capilla Real a las 10.30 11:15 Ejército en Plaza del Carmen 11:50 Salida comitiva institucional hacia Capilla Real a las 11:30 12:10 Tremolación del Estandarte Real en la Capilla Real a las 12:00 12:40",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Fiesta 12 de octubre 2024 Fiesta Nacional de España Compartir: ACTOS INSTITUCIONALES 10:45 Misa en Capilla Real a las 10.30 11:15 Ejército en Plaza del Carmen 11:50 Salida comitiva institucional hacia Capilla Real a las 11:30 12:10 Tremolación del Estandarte Real en la Capilla Real a las 12:00 12:40 Homenaje al Almirante Colón. A su finalización, desfile hacia el Ayuntamiento a las 12.30 aprox *La entrada a la Capilla Real es libre. Se requiere estar con anticipación ya que el aforo es limitado. OTROS EVENTOS 13.00 DESFILE DE LA HISPANIDAD Y EL MESTIZAJE GRANADA Desde la Fuente de las Granada, Carrera de la Virgen, Fuente de las Batallas, Mesones, Arco de las Cucharas, Bib- Rambla (14.00). 18.00 Procesión Virgen del Rosario desde Iglesia de Santo Domingo. Recorrido: Plaza de Santo Domingo, ancha de Santo Domingo, Jesús y María, San Matías, Plaza Mariana Pineda, Ángel Ganivet, Puerta Real de España, Reyes Católicos, plaza Isabel la Católica, Pavaneras, Santa Escolástica, placeta Fortuny, Carnicería, plaza de Santo Domingo (22.00) 19.00 Banda municipal de Música. Teatro Isabel la Católica. Invitaciones en https://www.redentradas.com/ a partir del 9 de octubre a las 18.00. El comercio",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/fiesta-12-octubre-2024"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/fiesta-12-octubre-2024",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "Plaza de Santo"
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/isabel_1.JPG",
+                "secondaryImage": [
+                  "https://turismo.granada.org/sites/default/files/inline-images/virgen%20del%20rosario%20cultos.jpg",
+                  "https://turismo.granada.org/sites/default/files/2023-09/isabel_3.JPG"
+                ],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:fiesta-12-de-octubre-2020:9d184811bb91",
+          "object": {
+            "externalId": "webex:event:fiesta-12-de-octubre-2020:9d184811bb91",
+            "name": [
+              {
+                "value": "Fiesta 12 de octubre 2020",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Fiesta 12 de octubre 2020 Fiesta 12 de octubre 2020 Compartir: ACTOS INSTITUCIONALES 10:30 Misa en Capilla Real 12:00 Homenaje al Almirante Colón. *La entrada a la Capilla Real es libre. Se requiere estar con anticipación ya que el aforo estña restringido por medidas covid-19. OTROS EVENTOS DESFILE",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Fiesta 12 de octubre 2020 Fiesta 12 de octubre 2020 Compartir: ACTOS INSTITUCIONALES 10:30 Misa en Capilla Real 12:00 Homenaje al Almirante Colón. *La entrada a la Capilla Real es libre. Se requiere estar con anticipación ya que el aforo estña restringido por medidas covid-19. OTROS EVENTOS DESFILE DE LA HISPANIDAD Y EL MESTIZAJE GRANADA SUSPENDIDO Procesión Virgen del Rosario SUSPENDIDA 12.00 Banda municipal de Música. Teatro Isabel la Católica. Invitaciones a partir del jueves 8 de octubre en la sala de ensayos de Quinta Alegre (11.00-13.00) El comercio abrirá sus puertas",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/fiesta-12-octubre-2020"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/fiesta-12-octubre-2020",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/COLON_1.PNG",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:xix-festival-internacional-de-teatro-con-t-teres:892e8c08f089",
+          "object": {
+            "externalId": "webex:event:xix-festival-internacional-de-teatro-con-t-teres:892e8c08f089",
+            "name": [
+              {
+                "value": "XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES Compartir: XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL Abierto plazo de abonos: 5 entradas por 30 € 17 ·18 Mayo XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL Una propuesta interdisciplinar de la Uni. El reta",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES Compartir: XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL Abierto plazo de abonos: 5 entradas por 30 € 17 ·18 Mayo XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL Una propuesta interdisciplinar de la Uni. El retablo de Maese Pedro de Manuel de Falla / Cancionero Cervantino de Juan Cruz-Guevara VER VÍDEO 15 € 19 ·20 ·21 Mayo XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL AXIOMA TEATRO El legado VER VÍDEO 10 € 23 Mayo XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL MERLIN PUPPET THEATRE Clowns'' Houses VER VÍDEO 10 € 26 Mayo XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL ONÍRICA MECÁNICA El rumor del ruido. VER VÍDEO 10 € 27 Mayo XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL ROCAMORA TEATRE Identitats (Identidades) VER VÍDEO 10 € 28 Mayo XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES, OBJETOS Y VISUAL CIA. TOTI TORONELL Libèlul.la (Libélula) VER VÍDEO 10 € COMPRA TU ABONO PARA EL FESTIVAL DESDE AQUÍ",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/xix-festival-internacional-teatro-titeres"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/xix-festival-internacional-teatro-titeres",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/festival_titeres.png",
+                "secondaryImage": [
+                  "https://turismo.granada.org/sites/default/files/2023-09/festival_titeres_1.png",
+                  "https://www.juntadeandalucia.es/cultura/teatros/sites/default/files/styles/imagen-evento/public/ougr-oficial2015-2.jpg?itok=dTjLNpfO",
+                  "https://www.juntadeandalucia.es/cultura/teatros/sites/default/files/styles/imagen-evento/public/axioma_horizontal_1.jpg?itok=_ApvPtO8",
+                  "https://www.juntadeandalucia.es/cultura/teatros/sites/default/files/styles/imagen-evento/public/merlin_puppetry4.jpg?itok=F6Y8w3Z_",
+                  "https://www.juntadeandalucia.es/cultura/teatros/sites/default/files/styles/imagen-evento/public/city_horizontal_4.jpg?itok=i0r1CJs0",
+                  "https://www.juntadeandalucia.es/cultura/teatros/sites/default/files/styles/imagen-evento/public/rocamora-identitats-27-8-16-046_horizontal.jpg?itok=U8nXFXC1",
+                  "https://www.juntadeandalucia.es/cultura/teatros/sites/default/files/styles/imagen-evento/public/7h4b1096_opt.jpg?itok=o09NSBzF"
+                ],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:semana-santa-2021:45047bb38ab4",
+          "object": {
+            "externalId": "webex:event:semana-santa-2021:45047bb38ab4",
+            "name": [
+              {
+                "value": "Semana Santa 2021",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Semana Santa 2021 Descárgate las guías de Semana Santa 2021 Compartir: Descárgate las guías de Semana Santa 2021: horarios de cultos y curiosidades. A continuación seleccione una pestaña para ver su contenido. Documentos guia_semana_santa_federacion.pdf guia_el_llamador.pdf guia_semana_santa_patrona",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Semana Santa 2021 Descárgate las guías de Semana Santa 2021 Compartir: Descárgate las guías de Semana Santa 2021: horarios de cultos y curiosidades. A continuación seleccione una pestaña para ver su contenido. Documentos guia_semana_santa_federacion.pdf guia_el_llamador.pdf guia_semana_santa_patronato.pdf",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/semana-santa-2021"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/semana-santa-2021",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/DSC_0241_1.JPG",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-internacional-de-poes-a:410bae5e3c04",
+          "object": {
+            "externalId": "webex:event:festival-internacional-de-poes-a:410bae5e3c04",
+            "name": [
+              {
+                "value": "Festival Internacional de Poesía",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Festival Internacional de Poesía Compartir: Festival Internacional de Poesía 2017 Del 15 a 19 de mayo de 2017 Descárgate aquí el programa de las actividades del festival para este año Fuente: Festival Internacional de Poesía c/ Azacayas, 16 3ºD Granada 18010, España fipgranada@yahoo.es info@festival",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Festival Internacional de Poesía Compartir: Festival Internacional de Poesía 2017 Del 15 a 19 de mayo de 2017 Descárgate aquí el programa de las actividades del festival para este año Fuente: Festival Internacional de Poesía c/ Azacayas, 16 3ºD Granada 18010, España fipgranada@yahoo.es info@festivaldepoesiadegranada.com (+34) 644 017 115",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/festival-internacional-poesia"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "644 017 115"
+                  ],
+                  "url": "https://turismo.granada.org/es/festival-internacional-poesia",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "c/ Azacayas, 16 3ºD Granada 18010, España fipgranada@yahoo"
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/fip.png",
+                "secondaryImage": [
+                  "https://turismo.granada.org/sites/default/files/2023-09/fip_1.png"
+                ],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:festival-de-m-sica-antigua-2017:41fc406b8604",
+          "object": {
+            "externalId": "webex:event:festival-de-m-sica-antigua-2017:41fc406b8604",
+            "name": [
+              {
+                "value": "FESTIVAL DE MÚSICA ANTIGUA 2017",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "FESTIVAL DE MÚSICA ANTIGUA 2017 Compartir: II Festival de Música Antigua de Granada, MAG, es un encuentro para las diversas manifestaciones musicales. Un espacio para la interculturalidad, con la música antigua como nexo de unión. Del 22 de mayo al 3 de junio 2017. Conferencias, talleres, exposicion",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "FESTIVAL DE MÚSICA ANTIGUA 2017 Compartir: II Festival de Música Antigua de Granada, MAG, es un encuentro para las diversas manifestaciones musicales. Un espacio para la interculturalidad, con la música antigua como nexo de unión. Del 22 de mayo al 3 de junio 2017. Conferencias, talleres, exposiciones y mucha música. Entrada libre hasta completar aforo. La entrada a los conciertos será gratuita y por orden de llegada hasta completar el aforo. Los aforos son reducidos. La puerta se cierra 10 min antes de la hora del concierto, por lo que recomendamos acudir con tiempo. Conciertos MAG 2017 CARLES MAGRANER Lunes, 22 de mayo, 20 h. Auditorio Manuel de Falla. EDUARDO PANIAGUA Martes, 23 de mayo, 20 h. Cuarto Real de Santo Domingo. PALOMA G. DEL ARROYO & MANUEL VILAS Miércoles, 24 de mayo, 20 h. Patio del Ayuntamiento. NUMEN ENSEMBLE Jueves, 25 de mayo, 20 h. Hospital Real (Patio de los Mármoles). LA DANSERYE Viernes, 26 de mayo, 20 h. Palacio de los Córdova. AXABEBA Sábado, 27 de mayo, 20:30 h. Palacio de Dar al-Horra. VOX TREMULA Martes, 30 de mayo, 20 h. Corrala de Santiago. L ́ANIMAL SONORE Miercoles, 31 de mayo, 20 h. Carlos V (Salón de Actos) ÍLIBER ENSEMBLE Jueves, 1 de junio, 20",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/festival-musica-antigua-2017"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/festival-musica-antigua-2017",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/MAG_2017.png",
+                "secondaryImage": [
+                  "https://turismo.granada.org/sites/default/files/2023-09/MAG_2017_1.png"
+                ],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-familiar-3:93e274c6055d",
+          "object": {
+            "externalId": "webex:event:concierto-familiar-3:93e274c6055d",
+            "name": [
+              {
+                "value": "Concierto familiar 3",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Concierto familiar 3 Compartir: Actividad cultural Fecha de Inicio: Sábado, 3 de Febrero, 2024 - 12:00 Fecha de Fin: Sábado, 3 de Febrero, 2024 - 12:00 Lugar: Auditorio Manuel de Falla Programa cultural: Orquesta Ciudad de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Concierto familiar 3 Compartir: Actividad cultural Fecha de Inicio: Sábado, 3 de Febrero, 2024 - 12:00 Fecha de Fin: Sábado, 3 de Febrero, 2024 - 12:00 Lugar: Auditorio Manuel de Falla Programa cultural: Orquesta Ciudad de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-familiar-3"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-familiar-3",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:el-concierto-para-viol-n-de-brahms:d258733b677b",
+          "object": {
+            "externalId": "webex:event:el-concierto-para-viol-n-de-brahms:d258733b677b",
+            "name": [
+              {
+                "value": "El concierto para violín de Brahms",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "El concierto para violín de Brahms Programa -- Johannes BRAHMS Concierto para violín en Re mayor, op. 77 Johannes BRAHMS Sinfonía núm. 1 en Do menor, op. 68 Intérpretes -- SERGEI DOGADIN violín LUCAS MACÍAS director",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "El concierto para violín de Brahms Programa -- Johannes BRAHMS Concierto para violín en Re mayor, op. 77 Johannes BRAHMS Sinfonía núm. 1 en Do menor, op. 68 Intérpretes -- SERGEI DOGADIN violín LUCAS MACÍAS director",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-violin-brahms"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-violin-brahms",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:el-concierto-para-viol-n-de-schumann:847c22c4cb47",
+          "object": {
+            "externalId": "webex:event:el-concierto-para-viol-n-de-schumann:847c22c4cb47",
+            "name": [
+              {
+                "value": "El concierto para violón de Schumann",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver El concierto para violón de Schumann Compartir: Actividad cultural Fecha de Inicio: Viernes, 16 de Febrero, 2024 - 19:30 Fecha de Fin: Viernes, 16 de Febrero, 2024 - 19:30 Lugar: Auditorio Manuel de Falla",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver El concierto para violón de Schumann Compartir: Actividad cultural Fecha de Inicio: Viernes, 16 de Febrero, 2024 - 19:30 Fecha de Fin: Viernes, 16 de Febrero, 2024 - 19:30 Lugar: Auditorio Manuel de Falla",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-violon-schumann"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-violon-schumann",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-familiar-2:d39a73cb539c",
+          "object": {
+            "externalId": "webex:event:concierto-familiar-2:d39a73cb539c",
+            "name": [
+              {
+                "value": "Concierto familiar 2",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Concierto familiar 2 Programa Villancicos populares del mundo Intérpretes Coros infantiles de Granada capital y provincia HÉCTOR ELIEL MÁRQUEZ director",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Concierto familiar 2 Programa Villancicos populares del mundo Intérpretes Coros infantiles de Granada capital y provincia HÉCTOR ELIEL MÁRQUEZ director",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-familiar-2"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-familiar-2",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-de-navidad-solistas-y-coros:bb3aeb57186d",
+          "object": {
+            "externalId": "webex:event:concierto-de-navidad-solistas-y-coros:bb3aeb57186d",
+            "name": [
+              {
+                "value": "Concierto de Navidad. Solistas y Coros",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Concierto de Navidad. Solistas y Coros Orquesta Clásica de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Concierto de Navidad. Solistas y Coros Orquesta Clásica de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-navidad-solistas-y-coros"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-navidad-solistas-y-coros",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-para-dos-pianos-y-orquesta-en-mi-mayor:662268d0b68a",
+          "object": {
+            "externalId": "webex:event:concierto-para-dos-pianos-y-orquesta-en-mi-mayor:662268d0b68a",
+            "name": [
+              {
+                "value": "Concierto para dos pianos y orquesta en mi mayor",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Concierto para dos pianos y orquesta en mi mayor Orquesta Académica de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Concierto para dos pianos y orquesta en mi mayor Orquesta Académica de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-dos-pianos-y-orquesta-mi-mayor"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-dos-pianos-y-orquesta-mi-mayor",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:fiesta-fin-de-a-o-2023:4406d8d22685",
+          "object": {
+            "externalId": "webex:event:fiesta-fin-de-a-o-2023:4406d8d22685",
+            "name": [
+              {
+                "value": "Fiesta Fin de Año 2023",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Fiesta Fin de Año 2023 Actividades lúdico-festivas: reparto de bolsas de cotillón y uvas, campanadas fin de año, fuegos artificiales y verbena amenizada por el grupo “EL BESO DE JUDAS” Hora: de 22:30 a 2:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Fiesta Fin de Año 2023 Actividades lúdico-festivas: reparto de bolsas de cotillón y uvas, campanadas fin de año, fuegos artificiales y verbena amenizada por el grupo “EL BESO DE JUDAS” Hora: de 22:30 a 2:00",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/fiesta-fin-ano-2023"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/fiesta-fin-ano-2023",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-de-navidad:f3dd9dcafefc",
+          "object": {
+            "externalId": "webex:event:concierto-de-navidad:f3dd9dcafefc",
+            "name": [
+              {
+                "value": "Concierto de Navidad",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "XIV Ciclo Música y Tiempo Litúrgico Concierto de Navidad A cargo de Angeli et Seraphim Pueri Cantores de la Catedral de Granada Director: Héctor Eliel Márquez Patrocina: Fundación Caja Rural de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "XIV Ciclo Música y Tiempo Litúrgico Concierto de Navidad A cargo de Angeli et Seraphim Pueri Cantores de la Catedral de Granada Director: Héctor Eliel Márquez Patrocina: Fundación Caja Rural de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-navidad"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-navidad",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:ix-concierto-de-villancicos-carpa-diem-coro-de-la-parroquia-san-gregoria-b-tico:72edbefe74f6",
+          "object": {
+            "externalId": "webex:event:ix-concierto-de-villancicos-carpa-diem-coro-de-la-parroquia-san-gregoria-b-tico:72edbefe74f6",
+            "name": [
+              {
+                "value": "IX Concierto de Villancicos Carpa Diem Coro de la Parroquia San Gregoria Bético",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "IX Concierto de Villancicos Carpa Diem Coro de la Parroquia San Gregoria Bético",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "IX Concierto de Villancicos Carpa Diem Coro de la Parroquia San Gregoria Bético",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/ix-concierto-villancicos-carpa-diem-coro-parroquia-san-gregoria-betico"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/ix-concierto-villancicos-carpa-diem-coro-parroquia-san-gregoria-betico",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-de-a-o-nuevo:b05cd3940ca0",
+          "object": {
+            "externalId": "webex:event:concierto-de-a-o-nuevo:b05cd3940ca0",
+            "name": [
+              {
+                "value": "Concierto de Año nuevo.",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Concierto de Año nuevo. ORQUESTA FILARMONÍA GRANADA Teresa Villena, soprano. Leticia Rodríguez, mezzosoprano. Víctor Cruz, Barítono. Ricardo J. Espigares Carrillo, director",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Concierto de Año nuevo. ORQUESTA FILARMONÍA GRANADA Teresa Villena, soprano. Leticia Rodríguez, mezzosoprano. Víctor Cruz, Barítono. Ricardo J. Espigares Carrillo, director",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-ano-nuevo"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-ano-nuevo",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:semana-santa-accesible-2023:cc7316357fad",
+          "object": {
+            "externalId": "webex:event:semana-santa-accesible-2023:cc7316357fad",
+            "name": [
+              {
+                "value": "Semana Santa Accesible 2023",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Semana Santa Accesible 2023 Compartir: La Semana Santa de Granada acoge a todas las personas. Encontrarás nazarenos y manolas en silla de ruedas. El público, sea cual sea su condición, podrá hacer visitas sensoriales, acceder a zonas reservadas,. Lo puedes consultar en la la guía de la Semana Santa",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Semana Santa Accesible 2023 Compartir: La Semana Santa de Granada acoge a todas las personas. Encontrarás nazarenos y manolas en silla de ruedas. El público, sea cual sea su condición, podrá hacer visitas sensoriales, acceder a zonas reservadas,. Lo puedes consultar en la la guía de la Semana Santa Accesible en Granada 2023",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/semana-santa-accesible-2023"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/semana-santa-accesible-2023",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2024-02/portada%20semana%20santa%20acceisble%202023.JPG",
+                "secondaryImage": [],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:36-festival-internacional-de-tango:781bec67e4e1",
+          "object": {
+            "externalId": "webex:event:36-festival-internacional-de-tango:781bec67e4e1",
+            "name": [
+              {
+                "value": "36º Festival Internacional de Tango",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver 36º Festival Internacional de Tango Compartir: Actividad cultural Fecha de Inicio: Martes, 12 de Marzo, 2024 - 00:00 Fecha de Fin: Domingo, 17 de Marzo, 2024 - 23:59 Lugar: Teatro Municipal Isabel la Católica Programa cultural: Festival Internacional de Tango https://www.redentradas.com",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver 36º Festival Internacional de Tango Compartir: Actividad cultural Fecha de Inicio: Martes, 12 de Marzo, 2024 - 00:00 Fecha de Fin: Domingo, 17 de Marzo, 2024 - 23:59 Lugar: Teatro Municipal Isabel la Católica Programa cultural: Festival Internacional de Tango https://www.redentradas.com",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/36o-festival-internacional-tango"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/36o-festival-internacional-tango",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:raphael-en-concierto:26f399320343",
+          "object": {
+            "externalId": "webex:event:raphael-en-concierto:26f399320343",
+            "name": [
+              {
+                "value": "Raphael, en concierto",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Raphael, en concierto Compartir: Actividad cultural Fecha de Inicio: Sábado, 22 de Junio, 2024 - 00:00 Fecha de Fin: Sábado, 22 de Junio, 2024 - 23:59 Lugar: Plaza de Toros",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Raphael, en concierto Compartir: Actividad cultural Fecha de Inicio: Sábado, 22 de Junio, 2024 - 00:00 Fecha de Fin: Sábado, 22 de Junio, 2024 - 23:59 Lugar: Plaza de Toros",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/raphael-concierto"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/raphael-concierto",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "Plaza de Toros"
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:el-se-or-de-los-anillos-en-concierto:35404ef62962",
+          "object": {
+            "externalId": "webex:event:el-se-or-de-los-anillos-en-concierto:35404ef62962",
+            "name": [
+              {
+                "value": "El Señor de los Anillos en concierto",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver El Señor de los Anillos en concierto Compartir: Actividad cultural Fecha de Inicio: Jueves, 18 de Abril, 2024 - 00:00 Fecha de Fin: Jueves, 18 de Abril, 2024 - 23:59 Lugar: Palacio de Exposiciones y Congresos https://www.redentradas.com",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver El Señor de los Anillos en concierto Compartir: Actividad cultural Fecha de Inicio: Jueves, 18 de Abril, 2024 - 00:00 Fecha de Fin: Jueves, 18 de Abril, 2024 - 23:59 Lugar: Palacio de Exposiciones y Congresos https://www.redentradas.com",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/senor-anillos-concierto"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/senor-anillos-concierto",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:preg-n-oficial-de-semana-santa:4d05c54120fe",
+          "object": {
+            "externalId": "webex:event:preg-n-oficial-de-semana-santa:4d05c54120fe",
+            "name": [
+              {
+                "value": "Pregón oficial de Semana Santa",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Pregón oficial de Semana Santa Pregonero: José Espinel Lugar de venta: Privado",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Pregón oficial de Semana Santa Pregonero: José Espinel Lugar de venta: Privado",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/pregon-oficial-semana-santa"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/pregon-oficial-semana-santa",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:entrega-viii-premio-virgen-de-la-salud-y-concierto-de-la-discapacidad-militar:dccc851bf069",
+          "object": {
+            "externalId": "webex:event:entrega-viii-premio-virgen-de-la-salud-y-concierto-de-la-discapacidad-militar:dccc851bf069",
+            "name": [
+              {
+                "value": "Entrega VIII Premio Virgen de la Salud y concierto de la discapacidad militar",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Entrega VIII Premio Virgen de la Salud y concierto de la discapacidad militar",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Entrega VIII Premio Virgen de la Salud y concierto de la discapacidad militar",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/entrega-viii-premio-virgen-salud-y-concierto-discapacidad-militar"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/entrega-viii-premio-virgen-salud-y-concierto-discapacidad-militar",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-d-a-de-andaluc-a:62d3f64344e6",
+          "object": {
+            "externalId": "webex:event:concierto-d-a-de-andaluc-a:62d3f64344e6",
+            "name": [
+              {
+                "value": "Concierto Día de Andalucía",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver Concierto Día de Andalucía Compartir: Actividad cultural Fecha de Inicio: Miércoles, 28 de Febrero, 2024 - 00:00 Fecha de Fin: Miércoles, 28 de Febrero, 2024 - 23:59 Lugar: Teatro Municipal Isabel la Católica Programa cultural: Banda Municipal de Música",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver Concierto Día de Andalucía Compartir: Actividad cultural Fecha de Inicio: Miércoles, 28 de Febrero, 2024 - 00:00 Fecha de Fin: Miércoles, 28 de Febrero, 2024 - 23:59 Lugar: Teatro Municipal Isabel la Católica Programa cultural: Banda Municipal de Música",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/concierto-dia-andalucia"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/concierto-dia-andalucia",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:x-gran-festival-flamenco-pe-a-la-plater-a:3236e4be1bd5",
+          "object": {
+            "externalId": "webex:event:x-gran-festival-flamenco-pe-a-la-plater-a:3236e4be1bd5",
+            "name": [
+              {
+                "value": "X Gran Festival Flamenco Peña La Platería",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver X Gran Festival Flamenco Peña La Platería Compartir: Actividad cultural Fecha de Inicio: Miércoles, 14 de Febrero, 2024 - 00:00 Fecha de Fin: Miércoles, 14 de Febrero, 2024 - 23:59 Lugar: Teatro Municipal Isabel la Católica",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver X Gran Festival Flamenco Peña La Platería Compartir: Actividad cultural Fecha de Inicio: Miércoles, 14 de Febrero, 2024 - 00:00 Fecha de Fin: Miércoles, 14 de Febrero, 2024 - 23:59 Lugar: Teatro Municipal Isabel la Católica",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/x-gran-festival-flamenco-pena-plateria"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/x-gran-festival-flamenco-pena-plateria",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:xxvi-festival-a-beneficio-de-granadown:03ba2e21454a",
+          "object": {
+            "externalId": "webex:event:xxvi-festival-a-beneficio-de-granadown:03ba2e21454a",
+            "name": [
+              {
+                "value": "XXVI Festival a beneficio de Granadown",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "Volver XXVI Festival a beneficio de Granadown Compartir: Actividad cultural Fecha de Inicio: Domingo, 7 de Abril, 2024 - 00:00 Fecha de Fin: Domingo, 7 de Abril, 2024 - 23:59 Lugar: Plaza de Toros",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Volver XXVI Festival a beneficio de Granadown Compartir: Actividad cultural Fecha de Inicio: Domingo, 7 de Abril, 2024 - 00:00 Fecha de Fin: Domingo, 7 de Abril, 2024 - 23:59 Lugar: Plaza de Toros",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/xxvi-festival-beneficio-granadown"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/xxvi-festival-beneficio-granadown",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasLocation": [
+              {
+                "object": {
+                  "country": "España",
+                  "autonomousCommunity": "Comunidad Autónoma de Andalucía",
+                  "province": "Granada",
+                  "municipality": "Granada",
+                  "postalCode": "",
+                  "streetAddress": "Plaza de Toros"
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:concierto-de-cuaresma:f1f32be80863",
+          "object": {
+            "externalId": "webex:event:concierto-de-cuaresma:f1f32be80863",
+            "name": [
+              {
+                "value": "Concierto de Cuaresma",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "XIV Ciclo Música y Tiempo Litúrgico Concierto de Cuaresma A cargo de: Gohar Vahanyan, soprano, Concepción Fernández Vivas, organista Patrocina: Fundación Caja Rural de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "XIV Ciclo Música y Tiempo Litúrgico Concierto de Cuaresma A cargo de: Gohar Vahanyan, soprano, Concepción Fernández Vivas, organista Patrocina: Fundación Caja Rural de Granada",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-cuaresma"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [
+                    "958 24 71 28"
+                  ],
+                  "url": "https://turismo.granada.org/es/agenda/actividad-cultural/concierto-cuaresma",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "query": "mutation CreateEvent($dti: String!, $input: EventRefInput!, $org: String) {\n  createEvent(dti: $dti, input: $input, org: $org) {\n    uri\n  }\n}",
+      "variables": {
+        "dti": "dti:es:Granada",
+        "input": {
+          "externalId": "webex:event:feria-del-corpus-de-granada:4a790753d9c6",
+          "object": {
+            "externalId": "webex:event:feria-del-corpus-de-granada:4a790753d9c6",
+            "name": [
+              {
+                "value": "Feria del Corpus de Granada",
+                "lang": "es"
+              }
+            ],
+            "hasDescription": [
+              {
+                "object": {
+                  "shortDescription": [
+                    {
+                      "value": "La feria del Corpus es la fiesta mayor de la ciudad. Cada año, comienza un sábado a las doce de la noche con el alumbrao, encendido de las miles de bombillas de la portada, y termina el domingo siguiente con un espectáculo de fuegos artificiales. Con más de quinientos años de antigüedad, estas fiest",
+                      "lang": "es"
+                    }
+                  ],
+                  "longDescription": [
+                    {
+                      "value": "Feria del Corpus de Granada Del de mayo al 5 de junio de 2026 Compartir: La feria del Corpus es la fiesta mayor de la ciudad. Cada año, comienza un sábado a las doce de la noche con el alumbrao, encendido de las miles de bombillas de la portada, y termina el sábado siguiente con un espectáculo de fuegos artificiales. Con más de quinientos años de antigüedad, estas fiestas del Corpus se realizaron por primera vez bajo mandato real. Forman parte de las más alegres tradiciones que conserva la ciudad y en toda su historia han servido de paréntesis en la vida cotidiana de los granadinos, propiciando unas jornadas de sana convivencia y divertimento. Granada huele a Corpus y se viste de Corpus en estos días donde un completo abanico de acontecimientos culturales, entre los que destacan las fiestas taurinas, comparten el tiempo con las ornamentadas casetas y los trepidantes columpios del ferial. La feria suele ser en el mes de junio pero no tiene una fecha concreta, depende de la Semana Santa. La forma de saber el inicio del Corpus es contar 60 días desde el Lunes de Pascua, primer lunes tras el Domingo de Resurrección, y nos dará el jueves del Corpus Christi, el día grande de esta semana",
+                      "lang": "es"
+                    }
+                  ],
+                  "keyword": [
+                    "Event"
+                  ],
+                  "relatedTourismDestination": []
+                }
+              }
+            ],
+            "relatedTo": [
+              "https://turismo.granada.org/es/feria-del-corpus-granada"
+            ],
+            "hasContactPoint": [
+              {
+                "object": {
+                  "email": [],
+                  "telephone": [],
+                  "url": "https://turismo.granada.org/es/feria-del-corpus-granada",
+                  "app": [],
+                  "instantMessagingService": []
+                }
+              }
+            ],
+            "hasMultimedia": {
+              "object": {
+                "mainImage": "https://turismo.granada.org/sites/default/files/2023-09/Cabezuos_feria_corpus_granada_-_copia.jpg",
+                "secondaryImage": [
+                  "https://turismo.granada.org/sites/default/files/2025-06/cartel%20corpus%202025.jpg",
+                  "https://turismo.granada.org/sites/default/files/inline-images/corpus%20liturgia.jpg",
+                  "https://turismo.granada.org/sites/default/files/2025-06/cartel-corpus-2025.jpg",
+                  "https://turismo.granada.org/sites/default/files/2023-09/Procesion_Corpus_Christi_1.jpg",
+                  "https://turismo.granada.org/sites/default/files/2026-04/Dise%C3%B1o%20sin%20t%C3%ADtulo%20%281%29.png",
+                  "https://turismo.granada.org/sites/default/files/2023-05/_DSC3965%5B1%5D_0.jpg",
+                  "https://turismo.granada.org/sites/default/files/2023-05/Inauguraci__n_Feria_2008_1%5B1%5D.jpg",
+                  "https://turismo.granada.org/sites/default/files/2023-05/cartel_corpus_2010_-_copia_1%5B1%5D_0.JPG"
+                ],
+                "video": [],
+                "audio": [],
+                "text": [],
+                "url": []
+              }
+            },
+            "hasAdditionalType": [
+              "Event"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "metadata": [
+    {
+      "entity": "Semana Santa de Granada",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Festival Internacional de Tango en Granada",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto sinfónico Café del Mundo con la JOPMA",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Festival MILNOFF",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto benéfico Orquesta Médica Ibérica",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Fiestas del Corpus Christi Granada 2025",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "22 FEX Festival Extensión",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Granada Guitar Festival",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "74 Festival Internacional de Música y Danza de Granada 2025",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "El concierto para violín de Korngold",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "El concierto para piano núm. 2 de Beethoven",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "El mundo se quema, en concierto",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Trío y piano, en concierto",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "La fuerza de la costumbre, en concierto",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Festival CAU",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto programado",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto Fiestas Barrio Joaquina Eguaras",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "II Festival Letrahistórica de Granada",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Cristalino en concierto",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Premios Pa-ta-ta Festival",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "HORARIOS ESPECIALES SEMANA SANTA 2026 AQUÍ",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Festival Internacional de Jóvenes Realizadores",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Consejos y consideraciones de Semana Santa 2026",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Semana Santa Accesible",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "X Edición del Festival Cines del Sur",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Gastronomía de Semana Santa",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Semana Santa de Granada, día a día",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Festival de Tango",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Pa-ta-ta Festival",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Festival Internacional de Jazz de Granada",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Festival de Magia Hocus Pocus",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Fiesta 12 de octubre 2022",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Fiesta 12 de octubre 2024",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Fiesta 12 de octubre 2020",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "XIX FESTIVAL INTERNACIONAL DE TEATRO CON TÍTERES",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Semana Santa 2021",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Festival Internacional de Poesía",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "FESTIVAL DE MÚSICA ANTIGUA 2017",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto familiar 3",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "El concierto para violín de Brahms",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "El concierto para violón de Schumann",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto familiar 2",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto de Navidad. Solistas y Coros",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto para dos pianos y orquesta en mi mayor",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Fiesta Fin de Año 2023",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto de Navidad",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "IX Concierto de Villancicos Carpa Diem Coro de la Parroquia San Gregoria Bético",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto de Año nuevo.",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Semana Santa Accesible 2023",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "36º Festival Internacional de Tango",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Raphael, en concierto",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "El Señor de los Anillos en concierto",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Pregón oficial de Semana Santa",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Entrega VIII Premio Virgen de la Salud y concierto de la discapacidad militar",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto Día de Andalucía",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "X Gran Festival Flamenco Peña La Platería",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "XXVI Festival a beneficio de Granadown",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Location included without default postalCode",
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Concierto de Cuaresma",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    },
+    {
+      "entity": "Feria del Corpus de Granada",
+      "className": "Event",
+      "mutation": "createEvent",
+      "warnings": [
+        "Missing required EventInput.endsAt",
+        "Missing required EventInput.eventType",
+        "Missing required EventInput.startsAt"
+      ]
+    }
+  ]
+}
