@@ -114,12 +114,30 @@ class ImageTests(unittest.TestCase):
 
         self.assertEqual(matches, [])
 
-    def test_alt_text_is_not_enough_without_url_match(self):
+    def test_alt_text_alone_is_sufficient_for_match(self):
+        """Alt text describing the entity is enough even when the URL slug is opaque."""
         page = _page(
             [
                 {
                     "url": "https://example.com/imagen-generica.jpg",
                     "alt": "Catedral de Burgos",
+                    "source": "page",
+                },
+            ]
+        )
+        entity = Entity(name="Catedral de Burgos", types=["monumento"])
+
+        matches = match_images_for_entity(entity, page)
+
+        self.assertEqual(matches, ["https://example.com/imagen-generica.jpg"])
+
+    def test_unrelated_alt_text_is_rejected(self):
+        """Alt text that does not mention the entity name produces no match."""
+        page = _page(
+            [
+                {
+                    "url": "https://example.com/imagen-generica.jpg",
+                    "alt": "Vista panorámica del río",
                     "source": "page",
                 },
             ]

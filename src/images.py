@@ -85,11 +85,14 @@ def match_images_by_context(entity: Entity, page: PageExtraction) -> list[str]:
         url = image.get("url", "")
         if not url or _is_generic_image(_url_haystack(url)) or is_noise_image(url):
             continue
+        alt = image.get("alt", "")
+        alt_score = _score_alt_for_entity(alt, entity)
         ctx_score = _score_context(image, keywords)
-        if ctx_score <= 0:
+        score = max(alt_score, ctx_score)
+        if score <= 0:
             continue
         index = int(image.get("index", "999999") or "999999")
-        scored.append((ctx_score, -index, url))
+        scored.append((score, -index, url))
     scored.sort(key=lambda item: (item[0], item[1]), reverse=True)
     return [url for _, _, url in scored]
 
@@ -114,19 +117,46 @@ def match_images_for_entity(entity: Entity, page: PageExtraction) -> list[str]:
         url_haystack = _url_haystack(url)
         if _is_generic_image(url_haystack):
             continue
-        metadata_score = _score_url_for_entity(url, entity)
-        # Contract: an image can be assigned only when the image URL itself has
-        # an explicit or indubitable textual match with the entity name.
-        if metadata_score <= 0:
+        alt = image.get("alt", "")
+        score = _score_image_for_entity(url, alt, entity)
+        if score <= 0:
             continue
         index = int(image.get("index", "999999") or "999999")
-        scored.append((metadata_score, -index, url))
+        scored.append((score, -index, url))
     scored.sort(key=lambda item: (item[0], item[1]), reverse=True)
     return [url for _, _, url in scored]
 
 
 def is_image_relevant_to_entity_url(url: str, entity: Entity) -> bool:
     return _score_url_for_entity(url, entity) > 0 and not _is_generic_image(_url_haystack(url))
+
+
+def _score_image_for_entity(url: str, alt: str, entity: Entity) -> int:
+    """Score combining URL-slug match and alt-text match. Either alone is sufficient."""
+    url_score = _score_url_for_entity(url, entity)
+    alt_score = _score_alt_for_entity(alt, entity) if alt else 0
+    return max(url_score, alt_score)
+
+
+def _score_alt_for_entity(alt: str, entity: Entity) -> int:
+    if not alt:
+        return 0
+    alt_key = normalize_key(alt)
+    keywords = _entity_name_keywords(entity)
+    if not keywords:
+        return 0
+    compound = normalize_key(entity.name).replace(" ", " ")
+    if compound and compound in alt_key:
+        return 95
+    matched = [kw for kw in keywords if kw in alt_key and "-" not in kw]
+    distinctive = [kw for kw in keywords if "-" not in kw]
+    if not distinctive:
+        return 0
+    if len(matched) >= min(2, len(distinctive)):
+        return 35 + len(matched)
+    if len(distinctive) == 1 and matched:
+        return 45
+    return 0
 
 
 def _score_url_for_entity(url: str, entity: Entity) -> int:

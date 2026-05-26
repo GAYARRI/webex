@@ -399,9 +399,36 @@ WIKIDATA_P31_TO_TYPE: dict[str, str] = {
     # --- Rutas ---
     "Q628179": "Route",         # ruta de senderismo
     "Q1137285":"Route",         # ruta de peregrinación
+    "Q2143825":"Route",         # ruta cultural
+    # --- Alojamiento ---
+    "Q27686":  "Hotel",         # edificio de hotel
+    "Q2631695":"Hostel",        # albergue de peregrinos
+    "Q2041543":"RuralHouse",    # casa rural
+    "Q256020": "Camping",       # camping
+    # --- Gastronomía ---
+    "Q1228895":"Winery",        # bodega de vino
+    "Q22674": "TraditionalMarket", # mercado de abastos
+    # --- Edificios religiosos adicionales ---
+    "Q44856":  "Church",        # parroquia
+    "Q1329623":"Church",        # parroquia católica
+    "Q1161515":"Monastery",     # convento de clausura
+    "Q2298524":"Monastery",     # monasterio benedictino (P279 → Q44613)
+    "Q56242695":"Monastery",    # monasterio cisterciense
+    "Q54074":  "Monastery",     # abadía
+    # --- Patrimonio / arqueología ---
+    "Q839954": "ArcheologicalSite", # yacimiento arqueológico (ya estaba, refuerzo)
+    "Q4989906":"Monument",      # memorial / cenotafio
+    "Q1007894":"CultureCentre", # centro de interpretación
+    "Q11707":  "Restaurant",    # restaurante (duplicado explícito para hostelería)
+    # --- Naturaleza adicional ---
+    "Q16917":  "NaturalPark",   # parque regional
+    "Q1321977":"NaturalPark",   # reserva natural
+    "Q23790":  "NaturalPark",   # parque periurbano
+    "Q2763074":"Trail",         # vía verde
     # --- Otros ---
     "Q1076486":"TouristAttractionSite",  # atracción turística genérica
     "Q570116": "TouristAttractionSite",  # lugar de interés turístico
+    "Q1497375":"TouristAttractionSite",  # complejo turístico
 }
 
 # OpenStreetMap (category, type) → tourist type.
@@ -706,7 +733,12 @@ def _classify_entity(entity: Entity) -> tuple[str, list[str], dict[str, Any]]:
 
 
 def _type_from_wikidata_p31(entity: Entity) -> tuple[str, str]:
-    """Return (tourist_type, matched_qid) from Wikidata P31 metadata, or ('', '')."""
+    """Return (tourist_type, matched_qid) from Wikidata P31 metadata, or ('', '').
+
+    When the exact P31 QID is not in the mapping, climbs one level via P279
+    (subclass of) to handle specific subclasses (e.g. Q2298524 = Benedictine
+    monastery → parent Q44613 = monastery).
+    """
     for source in entity.sources:
         if source.source_type != "wikidata":
             continue
@@ -714,7 +746,29 @@ def _type_from_wikidata_p31(entity: Entity) -> tuple[str, str]:
             tourist_type = WIKIDATA_P31_TO_TYPE.get(qid)
             if tourist_type:
                 return tourist_type, qid
+            # Walk one P279 level
+            parent_qid = _p279_parent(qid)
+            if parent_qid:
+                tourist_type = WIKIDATA_P31_TO_TYPE.get(parent_qid)
+                if tourist_type:
+                    return tourist_type, parent_qid
     return "", ""
+
+
+def _p279_parent(qid: str) -> str:
+    """Return the first P279 (subclass of) QID for the given entity, or ''."""
+    from .geo import _fetch_wikidata_entity
+    data = _fetch_wikidata_entity(qid)
+    if not data:
+        return ""
+    for claim in data.get("claims", {}).get("P279", []):
+        try:
+            parent = claim["mainsnak"]["datavalue"]["value"]["id"]
+            if parent:
+                return parent
+        except (KeyError, TypeError):
+            continue
+    return ""
 
 
 def _type_from_osm(entity: Entity) -> tuple[str, str]:
@@ -757,7 +811,11 @@ def _infer_type(entity: Entity, name_only: bool = False) -> tuple[str, int, list
     contexts: list[tuple[str, int]] = [(entity.name, 100)]
     if not name_only:
         for source in entity.sources:
-            if source.source_type in {"wikidata", "wikipedia"}:
+            if source.source_type == "wikipedia":
+                contexts.append((source.title, 40))
+                # Wikipedia extracts are more descriptive than Wikidata labels
+                contexts.append((source.text, 35))
+            elif source.source_type == "wikidata":
                 contexts.append((source.title, 40))
                 contexts.append((source.text, 20))
     scores: dict[str, int] = {}

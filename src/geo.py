@@ -118,6 +118,11 @@ def enrich_entity_coordinates(
     if entity.coordinates.lat is not None and entity.coordinates.lng is not None:
         if not entity.coordinates.source:
             entity.coordinates.source = "entity"
+        # Reverse-geocode to fill missing address when coords are already known
+        if geocode and not entity.address:
+            rev = _reverse_geocode(entity.coordinates.lat, entity.coordinates.lng, timeout=timeout)
+            if rev:
+                entity.address = rev
         return entity
 
     if page.geo_candidates:
@@ -144,7 +149,7 @@ def enrich_entity_coordinates(
     # Tier 1: wikidataId already known — fetch P625 directly, no search needed.
     # Runs always (no flag required) since it reuses cached Wikidata data.
     if entity.wikidataId:
-        city_context = _city_context(page)
+        city_context = _city_context(page, entity_address=entity.address)
         candidate = _wikidata_entity_coordinates(
             entity.wikidataId, city_context=city_context, timeout=timeout
         )
@@ -181,7 +186,7 @@ def wikidata_coordinates(
     page: PageExtraction,
     timeout: int = 12,
 ) -> tuple[Coordinates, str] | None:
-    city_context = _city_context(page)
+    city_context = _city_context(page, entity_address=entity.address)
     qids = [entity.wikidataId] if entity.wikidataId else _wikidata_search(entity.name, timeout=timeout)
     for qid in qids:
         if not qid:
@@ -300,9 +305,16 @@ def wikidata_images_for_entity(entity: Entity, timeout: int = 12) -> list[str]:
     return _resolve_commons_image_urls(filenames, timeout=timeout)
 
 
+_COMMONS_URL_CACHE: dict[str, str] = {}
+
+
 def _resolve_commons_image_urls(filenames: list[str], timeout: int = 12) -> list[str]:
     """Resolve Wikimedia filenames to direct upload.wikimedia.org URLs via imageinfo API."""
-    titles = "|".join(f"File:{fn}" for fn in filenames[:50])
+    cached_urls = [_COMMONS_URL_CACHE[fn] for fn in filenames if fn in _COMMONS_URL_CACHE]
+    missing = [fn for fn in filenames if fn not in _COMMONS_URL_CACHE]
+    if not missing:
+        return cached_urls
+    titles = "|".join(f"File:{fn}" for fn in missing[:50])
     try:
         resp = requests.get(
             WIKIMEDIA_COMMONS_API_URL,
@@ -318,15 +330,20 @@ def _resolve_commons_image_urls(filenames: list[str], timeout: int = 12) -> list
         )
         resp.raise_for_status()
         pages = resp.json().get("query", {}).get("pages", {})
-        urls: list[str] = []
-        for page in pages.values():
-            for info in page.get("imageinfo", []):
+        fetched: list[str] = []
+        for page_data in pages.values():
+            title = page_data.get("title", "")
+            fn = title[5:].replace(" ", "_") if title.startswith("File:") else ""
+            for info in page_data.get("imageinfo", []):
                 url = info.get("url", "")
                 if url:
-                    urls.append(url)
-        return urls
+                    fetched.append(url)
+                    if fn:
+                        _COMMONS_URL_CACHE[fn] = url
+        return [*cached_urls, *fetched]
     except Exception:
-        return [WIKIMEDIA_FILE_URL.format(filename=quote(fn, safe="")) for fn in filenames]
+        fallback = [WIKIMEDIA_FILE_URL.format(filename=quote(fn, safe="")) for fn in missing]
+        return [*cached_urls, *fallback]
 
 
 def enrich_entities_wikidata_images(
@@ -343,6 +360,52 @@ def enrich_entities_wikidata_images(
         entity.images = [*wd_images, *existing]
         _add_wikidata_evidence(entity, entity.wikidataId, entity.coordinates, images=wd_images, timeout=timeout)
     return entities
+
+
+_REVERSE_GEOCODE_CACHE: dict[tuple[float, float], str | None] = {}
+
+# Entity types that cover large areas — use a wider search radius for images
+_WIDE_RADIUS_TYPES = {"NaturalPark", "Beach", "Mountain", "Trail", "Route", "Valley", "NaturalResource"}
+# Dense urban features — keep narrow to avoid picking up neighbour buildings
+_NARROW_RADIUS_TYPES = {"Square", "Monument", "Bridge", "Tower", "Church", "Cathedral", "Monastery"}
+
+
+def _reverse_geocode(lat: float, lng: float, timeout: int = 8) -> str:
+    """Return a formatted address string for the given coordinates via Nominatim reverse."""
+    global _LAST_NOMINATIM_REQUEST
+    cache_key = (round(lat, 5), round(lng, 5))
+    if cache_key in _REVERSE_GEOCODE_CACHE:
+        return _REVERSE_GEOCODE_CACHE[cache_key] or ""
+    try:
+        elapsed = time.monotonic() - _LAST_NOMINATIM_REQUEST
+        if elapsed < NOMINATIM_MIN_INTERVAL_SECONDS:
+            time.sleep(NOMINATIM_MIN_INTERVAL_SECONDS - elapsed)
+        resp = requests.get(
+            "https://nominatim.openstreetmap.org/reverse",
+            params={"lat": lat, "lon": lng, "format": "jsonv2", "addressdetails": 1},
+            headers={"User-Agent": "ExtraccionWebSemantica/0.1"},
+            timeout=timeout,
+        )
+        _LAST_NOMINATIM_REQUEST = time.monotonic()
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception:
+        _REVERSE_GEOCODE_CACHE[cache_key] = None
+        return ""
+    address = data.get("address", {})
+    formatted = _format_nominatim_address(address) if isinstance(address, dict) else ""
+    _REVERSE_GEOCODE_CACHE[cache_key] = formatted or None
+    return formatted
+
+
+def _geosearch_radius_for_entity(entity_types: list[str]) -> int:
+    """Return Wikimedia Commons geosearch radius in metres based on entity type."""
+    for t in entity_types:
+        if t in _WIDE_RADIUS_TYPES:
+            return 800
+        if t in _NARROW_RADIUS_TYPES:
+            return 100
+    return 200
 
 
 _COMMONS_GEOSEARCH_CACHE: dict[tuple[float, float], list[str]] = {}
@@ -390,7 +453,11 @@ def enrich_entities_geosearch_images(entities: list[Entity], timeout: int = 10) 
             continue
         if entity.coordinates.lat is None or entity.coordinates.lng is None:
             continue
-        urls = _wikimedia_commons_geosearch(entity.coordinates.lat, entity.coordinates.lng, timeout=timeout)
+        radius_m = _geosearch_radius_for_entity(entity.types)
+        urls = _wikimedia_commons_geosearch(
+            entity.coordinates.lat, entity.coordinates.lng,
+            radius_m=radius_m, timeout=timeout,
+        )
         if urls:
             entity.images = urls
     return entities
@@ -594,7 +661,7 @@ def _has_source(entity: Entity, source_type: str) -> bool:
 
 
 def geocode_entity(entity: Entity, page: PageExtraction, timeout: int = 12) -> tuple[Coordinates, dict[str, Any]] | None:
-    city_context = _city_context(page)
+    city_context = _city_context(page, entity_address=entity.address)
     for query in _build_geocode_queries(entity, page):
         candidate = _geocode_query(query, city_context=city_context, timeout=timeout)
         if candidate:
@@ -813,13 +880,24 @@ def _city_from_structured_data(structured_data: list[dict]) -> str:
     return ""
 
 
-def _city_hint(page: PageExtraction) -> str:
+_DYNAMIC_CITY_CACHE: dict[str, dict[str, float | str] | None] = {}
+
+
+def _city_hint(page: PageExtraction, entity_address: str = "") -> str:
     # Priority 1: JSON-LD structured data (most reliable)
     city = _city_from_structured_data(page.structured_data)
     if city:
         return city
 
-    # Priority 2: URL, title and description text match against known cities
+    # Priority 2: entity address field (e.g. "Calle Mayor 1, Burgos")
+    if entity_address:
+        parts = [p.strip() for p in entity_address.split(",")]
+        for part in reversed(parts):
+            part_key = _ascii_query(part.casefold())
+            if part_key in CITY_CENTERS:
+                return str(CITY_CENTERS[part_key]["name"])
+
+    # Priority 3: URL, title and description text match against known cities
     text = " ".join(part for part in [page.url, page.title or "", page.description or ""] if part)
     lowered = text.casefold()
     for city_key in CITY_CENTERS:
@@ -828,13 +906,57 @@ def _city_hint(page: PageExtraction) -> str:
     return ""
 
 
-def _city_context(page: PageExtraction) -> dict[str, float | str] | None:
-    city = _city_hint(page)
+def _resolve_city_context_dynamic(city_name: str, timeout: int = 8) -> dict[str, float | str] | None:
+    """Geocode an unknown city via Nominatim and build a dynamic context entry."""
+    cache_key = _ascii_query(city_name.casefold())
+    if cache_key in _DYNAMIC_CITY_CACHE:
+        return _DYNAMIC_CITY_CACHE[cache_key]
+    disk_section = _disk_cache.get("dynamic_cities", {})
+    if cache_key in disk_section:
+        result = disk_section[cache_key]
+        _DYNAMIC_CITY_CACHE[cache_key] = result
+        return result
+    try:
+        elapsed = time.monotonic() - _LAST_NOMINATIM_REQUEST
+        if elapsed < NOMINATIM_MIN_INTERVAL_SECONDS:
+            time.sleep(NOMINATIM_MIN_INTERVAL_SECONDS - elapsed)
+        resp = requests.get(
+            NOMINATIM_URL,
+            params={"q": city_name, "format": "jsonv2", "limit": 1, "addressdetails": 0},
+            headers={"User-Agent": "ExtraccionWebSemantica/0.1"},
+            timeout=timeout,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception:
+        _DYNAMIC_CITY_CACHE[cache_key] = None
+        return None
+    if not data:
+        _DYNAMIC_CITY_CACHE[cache_key] = None
+        return None
+    item = data[0]
+    try:
+        lat = float(item["lat"])
+        lng = float(item["lon"])
+    except (KeyError, ValueError):
+        _DYNAMIC_CITY_CACHE[cache_key] = None
+        return None
+    ctx: dict[str, float | str] = {"name": city_name, "lat": lat, "lng": lng, "radius_km": 30.0}
+    _DYNAMIC_CITY_CACHE[cache_key] = ctx
+    _disk_cache.setdefault("dynamic_cities", {})[cache_key] = ctx
+    return ctx
+
+
+def _city_context(page: PageExtraction, entity_address: str = "") -> dict[str, float | str] | None:
+    city = _city_hint(page, entity_address=entity_address)
     if not city:
         return None
-    key = unicodedata.normalize("NFKD", city.casefold())
-    key = "".join(char for char in key if not unicodedata.combining(char))
-    return CITY_CENTERS.get(key)
+    key = _ascii_query(city.casefold())
+    ctx = CITY_CENTERS.get(key)
+    if ctx:
+        return ctx
+    # City not in the static list — resolve dynamically via Nominatim
+    return _resolve_city_context_dynamic(city)
 
 
 def _is_near_city(lat: float, lng: float, city_context: dict[str, float | str]) -> bool:
