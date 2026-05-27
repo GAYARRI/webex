@@ -104,12 +104,19 @@ def _clean_page_title(title: str) -> str:
     return title
 
 
+_EVENT_PATH_SEGMENTS = {"agenda", "eventos", "evento", "agenda-cultural", "actividades"}
+
+
 def entity_from_page_meta(page: PageExtraction) -> Entity | None:
     """Create an entity from the page <title> and meta description.
 
     Only fires when the page title clearly names a single tourist resource
     (type inference confidence >= 40).  Score 0.9 so filter_low_quality_entities
     treats it as an anchor-quality entity on par with structured-data entries.
+
+    Exception: pages under known event URL paths (e.g. /agenda/) whose body
+    contains explicit date markers ("Fecha de Inicio") are treated as Event
+    entities regardless of keyword confidence.
     """
     name = _clean_page_title(page.title)
     if not name:
@@ -118,16 +125,35 @@ def entity_from_page_meta(page: PageExtraction) -> Entity | None:
     if not name_key or name_key in NAVIGATION_NAMES:
         return None
 
+    path_segments = set(urlparse(page.url or "").path.strip("/").split("/"))
+    is_event_page = bool(path_segments & _EVENT_PATH_SEGMENTS)
+    has_date_signal = bool(
+        is_event_page and re.search(r"fecha\s+de\s+inicio", page.main_text or "", re.IGNORECASE)
+    )
+
     # Reuse _infer_type on a temporary entity to check tourist keyword confidence.
     probe = Entity(name=name, score=0.9, sourceUrl=page.url, url="")
     inferred, confidence, _ = _infer_type(probe)
-    if not inferred or confidence < 40:
+
+    if has_date_signal:
+        # Strong structural signal: this is a dated event page.
+        # Use keyword-inferred type if available, otherwise force Event.
+        entity_type = inferred if inferred else "Event"
+        if entity_type not in ("Event",) and confidence < 60:
+            entity_type = "Event"
+    elif not inferred or confidence < 40:
         return None
+    else:
+        entity_type = inferred
 
     description = (page.description or "").strip()
+    start_date, end_date = ("", "")
+    if has_date_signal:
+        start_date, end_date = extract_event_dates(page.main_text or "")
+
     return Entity(
         name=name,
-        types=[inferred],
+        types=[entity_type],
         score=0.9,
         sourceUrl=page.url,
         url="",
@@ -136,6 +162,8 @@ def entity_from_page_meta(page: PageExtraction) -> Entity | None:
         description=description,
         images=[],
         evidence=f"page_title:{name}",
+        startDate=start_date,
+        endDate=end_date,
     )
 
 
