@@ -9,7 +9,7 @@ import unicodedata
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -25,12 +25,14 @@ WIKIMEDIA_FILE_URL = "https://commons.wikimedia.org/wiki/Special:FilePath/{filen
 WIKIMEDIA_COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php"
 WIKIPEDIA_SUMMARY_URL = "https://{language}.wikipedia.org/api/rest_v1/page/summary/{title}"
 NOMINATIM_MIN_INTERVAL_SECONDS = 1.1
+WIKIDATA_MIN_INTERVAL_SECONDS = 1.0
 NOMINATIM_MIN_CONFIDENCE = 0.05
 _GEOCODE_CACHE: dict[str, tuple[Coordinates, dict[str, Any]] | None] = {}
 _WIKIDATA_CACHE: dict[str, tuple[Coordinates, str] | None] = {}
 _WIKIDATA_DATA_CACHE: dict[str, dict | None] = {}
 _WIKIPEDIA_SUMMARY_CACHE: dict[tuple[str, str], dict[str, str] | None] = {}
 _LAST_NOMINATIM_REQUEST = 0.0
+_LAST_WIKIDATA_REQUEST = 0.0
 
 # ---------------------------------------------------------------------------
 # Disk cache — persists Wikidata, Wikipedia and Nominatim results across runs
@@ -115,6 +117,16 @@ def enrich_entity_coordinates(
     wikidata_coords: bool = False,
     timeout: int = 12,
 ) -> Entity:
+    # Wikidata name search runs before any early-return so that entities which
+    # already have OSM coordinates still receive their wikidataId.
+    if (geocode or wikidata_coords) and not entity.wikidataId:
+        wd_candidate, wd_qid = wikidata_coordinates(entity, page, timeout=timeout)
+        if wd_qid:
+            entity.wikidataId = wd_qid
+            if wd_candidate and entity.coordinates.lat is None:
+                entity.coordinates = wd_candidate
+                _add_wikidata_evidence(entity, wd_qid, wd_candidate, timeout=timeout)
+
     if entity.coordinates.lat is not None and entity.coordinates.lng is not None:
         if not entity.coordinates.source:
             entity.coordinates.source = "entity"
@@ -146,8 +158,7 @@ def enrich_entity_coordinates(
             )
             return entity
 
-    # Tier 1: wikidataId already known — fetch P625 directly, no search needed.
-    # Runs always (no flag required) since it reuses cached Wikidata data.
+    # Tier 1: wikidataId known (pre-existing or just resolved above) → fetch P625.
     if entity.wikidataId:
         city_context = _city_context(page, entity_address=entity.address)
         candidate = _wikidata_entity_coordinates(
@@ -158,17 +169,7 @@ def enrich_entity_coordinates(
             _add_wikidata_evidence(entity, entity.wikidataId, candidate, timeout=timeout)
             return entity
 
-    # Tier 2: Wikidata name search for entities without wikidataId.
-    # Activated by --wikidata-coords or --geocode.
-    if (geocode or wikidata_coords) and not entity.wikidataId:
-        wikidata_candidate = wikidata_coordinates(entity, page, timeout=timeout)
-        if wikidata_candidate:
-            candidate, qid = wikidata_candidate
-            entity.coordinates = candidate
-            entity.wikidataId = qid
-            _add_wikidata_evidence(entity, qid, candidate, timeout=timeout)
-
-    # Tier 3: OSM Nominatim — only with --geocode.
+    # Tier 2: OSM Nominatim — only with --geocode.
     if geocode and entity.coordinates.lat is None:
         geocode_result = geocode_entity(entity, page, timeout=timeout)
         if geocode_result:
@@ -181,34 +182,140 @@ def enrich_entity_coordinates(
     return entity
 
 
+_LABEL_MATCH_STOPWORDS = {
+    "de", "del", "la", "las", "los", "el", "y", "en", "san", "santa", "real", "nueva", "nuevo",
+}
+
+
+def _name_from_url_slug(source_url: str) -> str:
+    """Extract a human-readable name from the last path segment of a URL."""
+    if not source_url:
+        return ""
+    segments = [s for s in urlparse(source_url).path.split("/") if s]
+    if not segments:
+        return ""
+    return segments[-1].replace("-", " ").replace("_", " ").strip()
+
+
+def _candidate_wikidata_qids(
+    entity_name: str,
+    source_url: str,
+    city_name: str,
+    timeout: int = 12,
+) -> list[str]:
+    """Build a deduplicated QID list from multiple search strategies.
+
+    Strategies (in priority order):
+      1. Entity name alone ("La Catedral")
+      2. URL slug as name ("catedral" from /que-ver/catedral)
+      3. Entity name + city ("La Catedral Burgos")
+      4. URL slug + city ("catedral Burgos")
+    """
+    url_name = _name_from_url_slug(source_url)
+    url_name_norm = _ascii_query(url_name.casefold()) if url_name else ""
+    entity_name_norm = _ascii_query(entity_name.casefold())
+
+    queries: list[str] = [entity_name]
+    if url_name and url_name_norm != entity_name_norm:
+        queries.append(url_name)
+    if city_name:
+        queries.append(f"{entity_name} {city_name}")
+        if url_name:
+            queries.append(f"{url_name} {city_name}")
+            queries.append(f"{url_name} de {city_name}")
+
+    seen: set[str] = set()
+    result: list[str] = []
+    for q in queries:
+        for qid in _wikidata_search(q, timeout=timeout):
+            if qid not in seen:
+                seen.add(qid)
+                result.append(qid)
+    return result[:8]
+
+
+def _wikidata_label_matches(qid: str, entity_name: str, timeout: int = 12) -> bool:
+    """Return True if the Wikidata entity's label/aliases share meaningful keywords with entity_name.
+
+    This pre-filter avoids spending P625 API calls on obviously wrong QIDs (e.g. returning
+    the generic Q2977 'cathedral' concept when searching for 'La Catedral Burgos').
+    """
+    data = _fetch_wikidata_entity(qid, timeout=timeout)
+    if not data:
+        return True  # can't validate — allow through
+    texts: list[str] = [v.get("value", "") for v in data.get("labels", {}).values()]
+    for lang_aliases in data.get("aliases", {}).values():
+        texts.extend(a.get("value", "") for a in lang_aliases)
+    if not texts:
+        return True
+    name_norm = _ascii_query(entity_name.casefold())
+    keywords = {w for w in re.findall(r"[a-z0-9]{3,}", name_norm) if w not in _LABEL_MATCH_STOPWORDS}
+    if not keywords:
+        return True
+    haystack = " ".join(_ascii_query(t.casefold()) for t in texts)
+    return any(kw in haystack for kw in keywords)
+
+
 def wikidata_coordinates(
     entity: Entity,
     page: PageExtraction,
     timeout: int = 12,
-) -> tuple[Coordinates, str] | None:
+) -> tuple[Coordinates | None, str]:
+    """Return (coordinates_or_None, qid). qid is empty string when nothing found.
+
+    The QID is only set when P625 is found within the city context, which acts as
+    geographic validation preventing false-positive Wikidata matches.
+    """
     city_context = _city_context(page, entity_address=entity.address)
-    qids = [entity.wikidataId] if entity.wikidataId else _wikidata_search(entity.name, timeout=timeout)
+    if entity.wikidataId:
+        qids = [entity.wikidataId]
+    else:
+        city_name = str(city_context.get("name", "")) if city_context else ""
+        qids = _candidate_wikidata_qids(entity.name, entity.sourceUrl, city_name, timeout=timeout)
     for qid in qids:
         if not qid:
+            continue
+        # Skip QIDs whose labels share no keywords with the entity name (prevents generic concept matches)
+        if not entity.wikidataId and not _wikidata_label_matches(qid, entity.name, timeout=timeout):
             continue
         candidate = _wikidata_entity_coordinates(qid, city_context=city_context, timeout=timeout)
         if candidate:
             return candidate, qid
-    return None
+    return None, ""
+
+
+def _wikidata_throttle() -> None:
+    global _LAST_WIKIDATA_REQUEST  # noqa: PLW0603
+    elapsed = time.monotonic() - _LAST_WIKIDATA_REQUEST
+    if elapsed < WIKIDATA_MIN_INTERVAL_SECONDS:
+        time.sleep(WIKIDATA_MIN_INTERVAL_SECONDS - elapsed)
+    _LAST_WIKIDATA_REQUEST = time.monotonic()
 
 
 def _wikidata_search(name: str, timeout: int = 12) -> list[str]:
-    queries = [_ascii_query(name), name]
+    # Deduplicate: _ascii_query often produces the same string when no special chars
+    raw = [_ascii_query(name), name]
+    queries: list[str] = list(dict.fromkeys(q for q in raw if q))
     qids: list[str] = []
     for query in queries:
-        if not query:
-            continue
         cache_key = f"search:{query}"
         if cache_key in _WIKIDATA_CACHE:
             cached = _WIKIDATA_CACHE[cache_key]
-            if cached:
-                qids.append(cached[1])
+            if cached and isinstance(cached, list):
+                for qid in cached:
+                    if qid not in qids:
+                        qids.append(qid)
             continue
+        # Check disk cache for search results
+        disk_searches = _disk_cache.get("wikidata_searches", {})
+        if cache_key in disk_searches:
+            saved = disk_searches[cache_key]
+            _WIKIDATA_CACHE[cache_key] = saved if saved else None
+            for qid in (saved or []):
+                if qid not in qids:
+                    qids.append(qid)
+            continue
+        _wikidata_throttle()
         try:
             response = requests.get(
                 WIKIDATA_SEARCH_URL,
@@ -217,21 +324,35 @@ def _wikidata_search(name: str, timeout: int = 12) -> list[str]:
                     "search": query,
                     "language": "es",
                     "format": "json",
-                    "limit": 3,
+                    "limit": 5,
                 },
                 headers={"User-Agent": "ExtraccionWebSemantica/0.1"},
                 timeout=timeout,
             )
+            if response.status_code == 429:
+                # Rate-limited: back off and retry once
+                time.sleep(5.0)
+                _LAST_WIKIDATA_REQUEST = time.monotonic()
+                response = requests.get(
+                    WIKIDATA_SEARCH_URL,
+                    params={"action": "wbsearchentities", "search": query, "language": "es", "format": "json", "limit": 5},
+                    headers={"User-Agent": "ExtraccionWebSemantica/0.1"},
+                    timeout=timeout,
+                )
             response.raise_for_status()
             data = response.json()
         except Exception:
             _WIKIDATA_CACHE[cache_key] = None
             continue
+        new_qids: list[str] = []
         for item in data.get("search", []):
             qid = item.get("id")
             if qid and qid not in qids:
                 qids.append(qid)
-    return qids[:5]
+                new_qids.append(qid)
+        _WIKIDATA_CACHE[cache_key] = new_qids if new_qids else None
+        _disk_cache.setdefault("wikidata_searches", {})[cache_key] = new_qids
+    return qids[:8]
 
 
 def _fetch_wikidata_entity(qid: str, timeout: int = 12) -> dict | None:
@@ -241,6 +362,7 @@ def _fetch_wikidata_entity(qid: str, timeout: int = 12) -> dict | None:
     if qid in disk_section:
         _WIKIDATA_DATA_CACHE[qid] = disk_section[qid]
         return disk_section[qid]
+    _wikidata_throttle()
     try:
         response = requests.get(
             WIKIDATA_ENTITY_URL.format(qid=qid),
