@@ -17,9 +17,18 @@ _IMAGE_CHECK_TIMEOUT = 5
 _IMAGE_CHECK_HEADERS = {"User-Agent": "ExtraccionWeb/1.0 (tourism-kb)"}
 _MAX_FLAT_IMAGES = 10
 
+# Trusted CDNs whose images are verified at ingest time — skip the HEAD check
+_TRUSTED_IMAGE_HOSTS = {
+    "upload.wikimedia.org",
+    "commons.wikimedia.org",
+}
+
 
 def _check_image_url(url: str) -> tuple[bool, str]:
     """Return (is_valid, resolved_url). resolved_url is the final URL after redirects."""
+    from urllib.parse import urlparse
+    if urlparse(url).netloc in _TRUSTED_IMAGE_HOSTS:
+        return True, url
     try:
         resp = _requests.head(
             url,
@@ -37,6 +46,9 @@ def _check_image_url(url: str) -> tuple[bool, str]:
                 headers=_IMAGE_CHECK_HEADERS,
                 stream=True,
             )
+        # 429 = rate-limited, treat as transient — keep the image
+        if resp.status_code == 429:
+            return True, url
         if resp.status_code >= 400:
             return False, url
         ct = resp.headers.get("Content-Type", "")
