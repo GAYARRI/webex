@@ -107,6 +107,8 @@ class Entity:
     evidence: str = ""
     sources: list[Evidence] = field(default_factory=list)
     classificationEvidence: dict[str, Any] = field(default_factory=dict)
+    startDate: str = ""
+    endDate: str = ""
 
     @classmethod
     def from_dict(cls, value: dict[str, Any]) -> "Entity":
@@ -138,6 +140,8 @@ class Entity:
             classificationEvidence=value.get("classificationEvidence")
             if isinstance(value.get("classificationEvidence"), dict)
             else {},
+            startDate=str(value.get("startDate", "") or ""),
+            endDate=str(value.get("endDate", "") or ""),
         )
 
     def to_dict(self) -> dict[str, Any]:

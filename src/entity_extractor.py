@@ -174,6 +174,10 @@ def entities_from_blocks(page: PageExtraction) -> list[Entity]:
         ]
         _normalize_entity(entity, page)
         if _is_valid_entity(entity, page):
+            if "Event" in entity.types and not entity.startDate:
+                entity.startDate, entity.endDate = extract_event_dates(
+                    block.text + " " + relevant_text
+                )
             entities.append(entity)
     return entities
 
@@ -199,6 +203,11 @@ def _entity_from_schema_item(item: dict[str, Any], source_url: str) -> Entity | 
     phone = _text(item.get("telephone", ""))
     email = _text(item.get("email", ""))
 
+    start_date = _text(item.get("startDate", ""))
+    end_date = _text(item.get("endDate", ""))
+    if not start_date and tourist_type == "Event":
+        start_date, end_date = extract_event_dates(description)
+
     return Entity(
         name=name,
         types=[tourist_type],
@@ -214,6 +223,8 @@ def _entity_from_schema_item(item: dict[str, Any], source_url: str) -> Entity | 
         description=description,
         images=images,
         evidence=f"Extraido de structured data ({schema_type})",
+        startDate=start_date,
+        endDate=end_date,
     )
 
 
@@ -270,6 +281,105 @@ def _parse_images(value: Any) -> list[str]:
             result.extend(_parse_images(item))
         return result
     return []
+
+
+_MONTH_ES: dict[str, int] = {
+    "enero": 1, "febrero": 2, "marzo": 3, "abril": 4,
+    "mayo": 5, "junio": 6, "julio": 7, "agosto": 8,
+    "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12,
+}
+
+_RE_FECHA_INICIO = re.compile(
+    r"fecha\s+de\s+inicio\s*:\s*(?:\w+,\s*)?(\d{1,2})\s+de\s+(\w+)[,\s]+(\d{4})\s*[-–]\s*(\d{1,2}:\d{2})",
+    re.IGNORECASE,
+)
+_RE_FECHA_FIN = re.compile(
+    r"fecha\s+de\s+fin\s*:\s*(?:\w+,\s*)?(\d{1,2})\s+de\s+(\w+)[,\s]+(\d{4})\s*[-–]\s*(\d{1,2}:\d{2})",
+    re.IGNORECASE,
+)
+_RE_DATE_RANGE = re.compile(
+    r"del?\s+(\d{1,2})\s+de\s+(\w+)\s+al?\s+(\d{1,2})\s+de\s+(\w+)(?:\s+de\s+(\d{4}))?",
+    re.IGNORECASE,
+)
+_RE_SINGLE_DATE = re.compile(
+    r"\b(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})\b",
+    re.IGNORECASE,
+)
+_RE_ISO_DATE = re.compile(r"\b(\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2})?)?)\b")
+
+
+def _month_num(name: str) -> int | None:
+    return _MONTH_ES.get(name.lower().strip())
+
+
+def _to_iso(day: int, month: int, year: int, time: str = "00:00") -> str:
+    return f"{year:04d}-{month:02d}-{day:02d}T{time}:00"
+
+
+def extract_event_dates(text: str) -> tuple[str, str]:
+    """Return (startDate, endDate) as ISO-8601 strings parsed from Spanish event text.
+
+    Tries, in order:
+    1. "Fecha de Inicio / Fin" labelled pattern (most reliable, used by turismo.granada.org)
+    2. ISO date literals already in text
+    3. "del DD de MONTH al DD de MONTH [de YYYY]" range
+    4. First single date found → used as both start and end
+    """
+    start = end = ""
+
+    m_start = _RE_FECHA_INICIO.search(text)
+    m_end = _RE_FECHA_FIN.search(text)
+    if m_start:
+        day, mon_name, year, time = m_start.group(1), m_start.group(2), m_start.group(3), m_start.group(4)
+        mn = _month_num(mon_name)
+        if mn:
+            start = _to_iso(int(day), mn, int(year), time)
+    if m_end:
+        day, mon_name, year, time = m_end.group(1), m_end.group(2), m_end.group(3), m_end.group(4)
+        mn = _month_num(mon_name)
+        if mn:
+            end = _to_iso(int(day), mn, int(year), time)
+    if start or end:
+        return start, end or start
+
+    iso_dates = _RE_ISO_DATE.findall(text)
+    if len(iso_dates) >= 2:
+        return iso_dates[0], iso_dates[1]
+    if len(iso_dates) == 1:
+        return iso_dates[0], iso_dates[0]
+
+    m_range = _RE_DATE_RANGE.search(text)
+    if m_range:
+        d1, mon1, d2, mon2 = m_range.group(1), m_range.group(2), m_range.group(3), m_range.group(4)
+        raw_year = m_range.group(5)
+        if raw_year:
+            year = int(raw_year)
+        else:
+            # Try to find a 4-digit year mentioned nearby in the text (e.g. "EN 2026 SE CELEBRA...")
+            context_year = re.search(r"\b(20\d{2})\b", text[:m_range.start()])
+            year = int(context_year.group(1)) if context_year else _guess_year(int(d1), _month_num(mon1) or 1)
+        mn1, mn2 = _month_num(mon1), _month_num(mon2)
+        if mn1 and mn2:
+            return _to_iso(int(d1), mn1, year), _to_iso(int(d2), mn2, year)
+
+    m_single = _RE_SINGLE_DATE.search(text)
+    if m_single:
+        day, mon_name, year = m_single.group(1), m_single.group(2), m_single.group(3)
+        mn = _month_num(mon_name)
+        if mn:
+            iso = _to_iso(int(day), mn, int(year))
+            return iso, iso
+
+    return "", ""
+
+
+def _guess_year(day: int, month: int) -> int:
+    import datetime
+    today = datetime.date.today()
+    year = today.year
+    if datetime.date(year, month, day) < today:
+        year += 1
+    return year
 
 
 def heuristic_entities(page: PageExtraction) -> list[Entity]:
@@ -880,6 +990,8 @@ def _is_valid_entity(entity: Entity, page: PageExtraction) -> bool:
     # Reject numbered list items like "1. Casa Ricardo" or "4. La Chicotá"
     if re.match(r"^\d+[.\)]\s", entity.name):
         return False
+    if _has_url_only_description(entity):
+        return False
     if not entity.types and not _has_substantive_evidence(entity):
         return False
     return True
@@ -894,6 +1006,8 @@ EDITORIAL_NAME_PREFIXES = (
     "descubre esta",
     "disfruta de",
     "consejos para",
+    "consejos y",
+    "gastronomia de",
     "opciones unicas",
     "los tesoros de",
     "las claves de",
@@ -917,13 +1031,16 @@ def _is_editorial_title(name: str, source_url: str, types: list[str]) -> bool:
     if not name_key:
         return False
     word_count = len(name_key.split())
+    # Editorial prefixes and sub-article suffixes take priority over the event-URL allowance below.
+    if any(name_key.startswith(prefix) for prefix in EDITORIAL_NAME_PREFIXES):
+        return True
+    if re.search(r",?\s+(dia\s+a\s+dia|d\xeda\s+a\s+d\xeda)\s*$", name_plain):
+        return True
     path_segments = set(urlparse(source_url or "").path.strip("/").split("/"))
     is_event_url = "evento" in path_segments
     # Allow only short event names on dedicated event pages
     if is_event_url and "Event" in types and word_count <= 8 and ":" not in name_plain:
         return False
-    if any(name_key.startswith(prefix) for prefix in EDITORIAL_NAME_PREFIXES):
-        return True
     # "N consejos/razones/ideas..." — number-led article title
     if re.match(r"^\d{1,2}\s+(consejos?|razones?|tips?|ideas?|secretos?)\b", name_key):
         return True
@@ -951,6 +1068,9 @@ def _is_editorial_title(name: str, source_url: str, types: list[str]) -> bool:
     # "X y su relación/vínculo/conexión con Y"
     if re.search(r"\by su \w+ con\b", name_key):
         return True
+    # Editorial event sub-articles: "Semana Santa, día a día" / "Semana Santa accesible"
+    if re.search(r",?\s+(dia\s+a\s+dia|d\xeda\s+a\s+d\xeda)\s*$", name_plain):
+        return True
     return False
 
 
@@ -966,6 +1086,18 @@ def _is_url_like_name(name: str, page_url: str) -> bool:
     host_key = normalize_key(host.rsplit(":", 1)[0])
     raw_key = normalize_key(raw)
     return bool(host_key and raw_key in {host_key, host_key.replace(" ", "")})
+
+
+def _has_url_only_description(entity: Entity) -> bool:
+    """Return True when all description content is just a single URL with no other text."""
+    combined = " ".join(filter(None, [
+        entity.shortDescription, entity.longDescription,
+        entity.description, entity.sourceText,
+    ])).strip()
+    if not combined:
+        return False
+    tokens = combined.split()
+    return len(tokens) == 1 and ("://" in tokens[0] or tokens[0].startswith("www."))
 
 
 def _has_substantive_evidence(entity: Entity) -> bool:

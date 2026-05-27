@@ -176,11 +176,38 @@ def _build_object(
     if entity.types:
         obj["hasAdditionalType"] = [item for item in entity.types if item]
 
+    if class_name == "Event":
+        _add_event_fields(entity, obj)
+
     # Keep destination linkage empty unless the caller enriches it later with real URIs.
     if class_name in {"TourismDestination", "DestinationExperience", "Tour", "Route"}:
         obj.setdefault("relatedTourismDestination", [])
 
     return obj
+
+
+# Maps internal event type names → schema.org SKOS concept URIs.
+_EVENT_TYPE_URIS: dict[str, str] = {
+    "Festival": "https://schema.org/Festival",
+    "MusicEvent": "https://schema.org/MusicEvent",
+    "TheaterEvent": "https://schema.org/TheaterEvent",
+    "ExhibitionEvent": "https://schema.org/ExhibitionEvent",
+    "SportsEvent": "https://schema.org/SportsEvent",
+}
+_EVENT_TYPE_DEFAULT_URI = "https://schema.org/Event"
+
+
+def _add_event_fields(entity: Entity, obj: dict[str, Any]) -> None:
+    if entity.startDate:
+        obj["startsAt"] = entity.startDate
+    if entity.endDate:
+        obj["endsAt"] = entity.endDate
+
+    uri = next(
+        (_EVENT_TYPE_URIS[t] for t in entity.types if t in _EVENT_TYPE_URIS),
+        _EVENT_TYPE_DEFAULT_URI,
+    )
+    obj["eventType"] = [{"uri": uri}]
 
 
 def _description_ref(
